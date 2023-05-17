@@ -1,0 +1,38 @@
+{
+  "name": "heccbot",
+  "version": "7.0.0",
+  "description": "A semi-private general purpose Discord Bot",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TwilightZebby/HeccBot.git"
+  },
+  "keywords": [
+    "discord",
+    "discord-bot",
+    "nodejs",
+    "discordjs",
+    "node-js",
+    "discord-js",
+    "private"
+  ],
+  "author": "TwilightZebby",
+  "license": "https://github.com/TwilightZebby/license",
+  "bugs": {
+    "url": "https://github.com/TwilightZebby/HeccBot/issues"
+  },
+  "homepage": "https://github.com/TwilightZebby/HeccBot#readme",
+  "dependencies": {
+    "bufferutil": "^4.0.6",
+    "discord.js": "^14.11.0",
+    "emoji-regex": "^10.1.0",
+    "erlpack": "github:discord/erlpack",
+    "node-fetch": "^2.6.7",
+    "statuspage.js": "^1.0.17",
+    "utf-8-validate": "^5.0.9",
+    "zlib-sync": "^0.1.7"
+  }
+}
