@@ -62,6 +62,13 @@ module.exports = {
      */
     async execute(slashCommand)
     {
+        // Ensure only those with the Role in my Server can use this, just in case
+        if ( !slashCommand.member.roles.includes("1100037281617817661") )
+        {
+            await slashCommand.reply({ ephemeral: true, content: `Sorry, but you do not have permissions to use this Command!` });
+            return;
+        }
+
         // Generate Invite Link
         const HeccBotInvite = DiscordClient.generateInvite({
             scopes: [ OAuth2Scopes.Bot, OAuth2Scopes.ApplicationsCommands ],
