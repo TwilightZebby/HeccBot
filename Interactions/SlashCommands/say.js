@@ -5,17 +5,19 @@ const { BotDevID } = require("../../config.js");
  * Modal for Plain-text /say Subcommand
  */
 const PlainTextModal = new ModalBuilder().setCustomId("say-plain").setTitle("Say Plain Text").addComponents([
-    new ActionRowBuilder().addComponents([ new TextInputBuilder().setCustomId("content").setLabel("Message Content").setMaxLength(2000).setRequired(true).setStyle(TextInputStyle.Paragraph) ]),
-    new ActionRowBuilder().addComponents([ new TextInputBuilder().setCustomId("reference").setLabel("Message ID to reply to").setMaxLength(24).setRequired(false).setStyle(TextInputStyle.Short) ])
+    new ActionRowBuilder().addComponents([ new TextInputBuilder().setCustomId("reference").setLabel("Message ID to reply to").setMaxLength(24).setRequired(false).setStyle(TextInputStyle.Short) ]),
+    new ActionRowBuilder().addComponents([ new TextInputBuilder().setCustomId("content").setLabel("Message Content").setMaxLength(2000).setRequired(true).setStyle(TextInputStyle.Paragraph) ])
 ]);
 
 /**
  * Modal for Embed /say Subcommand
  */
-const EmbedModal = new ModalBuilder().setCustomId("say-plain").setTitle("Say Embed").addComponents([
+const EmbedModal = new ModalBuilder().setCustomId("say-embed").setTitle("Say Embed").addComponents([
+    new ActionRowBuilder().addComponents([ new TextInputBuilder().setCustomId("reference").setLabel("Message ID to reply to").setMaxLength(24).setRequired(false).setStyle(TextInputStyle.Short) ]),
     new ActionRowBuilder().addComponents([ new TextInputBuilder().setCustomId("title").setLabel("Embed Title").setMaxLength(100).setRequired(false).setStyle(TextInputStyle.Short) ]),
     new ActionRowBuilder().addComponents([ new TextInputBuilder().setCustomId("description").setLabel("Embed Description").setMaxLength(4000).setRequired(false).setStyle(TextInputStyle.Paragraph) ]),
-    new ActionRowBuilder().addComponents([ new TextInputBuilder().setCustomId("attachment").setLabel("Embed Attachment Link").setMaxLength(1000).setRequired(false).setStyle(TextInputStyle.Short) ])
+    new ActionRowBuilder().addComponents([ new TextInputBuilder().setCustomId("attachment").setLabel("Embed Attachment Link").setMaxLength(1000).setRequired(false).setStyle(TextInputStyle.Short) ]),
+    new ActionRowBuilder().addComponents([ new TextInputBuilder().setCustomId("color").setLabel("Embed Colour").setMaxLength(7).setMinLength(7).setRequired(false).setStyle(TextInputStyle.Short).setPlaceholder("#ab44ff") ])
 ]);
 
 module.exports = {
