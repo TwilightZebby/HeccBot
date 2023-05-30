@@ -1,5 +1,4 @@
 const { ChatInputCommandInteraction, ChatInputApplicationCommandData, ApplicationCommandType, AutocompleteInteraction, PermissionFlagsBits, ApplicationCommandOptionType, ModalBuilder, ActionRowBuilder, TextInputBuilder, TextInputStyle } = require("discord.js");
-const { DiscordClient, Collections } = require("../../constants.js");
 const { BotDevID } = require("../../config.js");
 
 /**
@@ -97,6 +96,13 @@ module.exports = {
         if ( slashCommand.user.id !== BotDevID )
         {
             await slashCommand.reply({ ephemeral: true, content: `Sorry, but only my Developer can use this Command!` });
+            return;
+        }
+
+        // Ensure Send Messages Permission
+        if ( !slashCommand.appPermissions.has(PermissionFlagsBits.ViewChannel) || !slashCommand.appPermissions.has(PermissionFlagsBits.SendMessages) )
+        {
+            await slashCommand.reply({ ephemeral: true, content: `Sorry, but I don't seem to have Permissions to View this Channel, or Send Messages here!` });
             return;
         }
 
