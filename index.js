@@ -299,7 +299,7 @@ DiscordStatusClient.on("incident_update", async (incident) => {
     {
         // New Outage, so new Message(s)
         const OutageEmbedNew = new EmbedBuilder()
-        .setColor(incident.impact === "none" ? 'DEFAULT' : incident.impact === "minor" ? '#13b307' : incident.impact === "major" ? '#e8e409' : '#940707')
+        .setColor(incident.impact === "none" ? Colors.Default : incident.impact === "minor" ? '#13b307' : incident.impact === "major" ? '#e8e409' : '#940707')
         .setTitle(incident.name)
         .setDescription(`Impact: ${incident.impact}`)
         .addFields(incident.incident_updates.reverse().map(incidentUpdate => { return { name: `${incidentUpdate.status.charAt(0).toUpperCase() + incidentUpdate.status.slice(1)} ( <t:${Math.floor(incidentUpdate.updated_at.getTime() / 1000)}:R> )`, value: (incidentUpdate.body || "No information available.") } }).slice(-24))
@@ -351,7 +351,7 @@ DiscordStatusClient.on("incident_update", async (incident) => {
     {
         // Ongoing Outage, so edit Message(s)
         const OutageEmbedUpdate = new EmbedBuilder()
-        .setColor(incident.impact === "none" ? 'DEFAULT' : incident.impact === "minor" ? '#13b307' : incident.impact === "major" ? '#e8e409' : '#940707')
+        .setColor(incident.impact === "none" ? Colors.Default : incident.impact === "minor" ? '#13b307' : incident.impact === "major" ? '#e8e409' : '#940707')
         .setTitle(incident.name)
         .setDescription(`Impact: ${incident.impact}`)
         .addFields(incident.incident_updates.reverse().map(incidentUpdate => { return { name: `${incidentUpdate.status.charAt(0).toUpperCase() + incidentUpdate.status.slice(1)} ( <t:${Math.floor(incidentUpdate.updated_at.getTime() / 1000)}:R> )`, value: (incidentUpdate.body || "No information available.") } }).slice(-24))
