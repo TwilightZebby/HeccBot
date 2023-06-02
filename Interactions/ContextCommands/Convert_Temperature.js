@@ -34,7 +34,7 @@ function convertTemperature(originalTemperature, locale)
         // Check for invalid Temperature
         if ( CToK < 0 ) { return `:warning: ${originalValue}C is a temperature that cannot exist! (It is below Absolute Zero!)`; }
         // Return converted temperatures
-        return `${originalValue}C is about ${CToF}F or ${CToK}K`;
+        return `${originalValue}C is about ${CToF.toFixed(0)}F or ${CToK.toFixed(0)}K`;
     }
     else if ( originalScale === "f" )
     {
@@ -43,7 +43,7 @@ function convertTemperature(originalTemperature, locale)
         // Check for invalid Temperature
         if ( FToK < 0 ) { return `:warning: ${originalValue}F is a temperature that cannot exist! (It is below Absolute Zero!)`; }
         // Return converted temperatures
-        return `${originalValue}F is about ${FToC}C or ${FToK}K`;
+        return `${originalValue}F is about ${FToC.toFixed(0)}C or ${FToK.toFixed(0)}K`;
     }
     else if ( originalScale === "k" )
     {
@@ -52,7 +52,7 @@ function convertTemperature(originalTemperature, locale)
         // Check for invalid Temperature
         if ( originalValue < 0 ) { return `:warning: ${originalValue}K is a temperature that cannot exist! (It is below Absolute Zero!)`; }
         // Return converted temperatures
-        return `${originalValue}K is about ${KToC}C or ${KToF}F`;
+        return `${originalValue}K is about ${KToC.toFixed(0)}C or ${KToF.toFixed(0)}F`;
     }
 }
 

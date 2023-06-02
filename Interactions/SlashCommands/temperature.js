@@ -95,7 +95,7 @@ module.exports = {
                 const CToF = (ValueOption * 9/5) + 32;
                 const CToK = ValueOption + 273.15;
                 if ( CToK < 0 ) { return await slashCommand.reply({ ephemeral: true, content: `:warning: ${ValueOption}C is a temperature that cannot exist! (It is below Absolute Zero!)` }); }
-                await slashCommand.reply({ ephemeral: true, content: `${ValueOption}C is about ${CToF}F or ${CToK}K` });
+                await slashCommand.reply({ ephemeral: true, content: `${ValueOption}C is about ${CToF.toFixed(0)}F or ${CToK.toFixed(0)}K` });
                 break;
 
             // F TO C/K
@@ -103,7 +103,7 @@ module.exports = {
                 const FToC = (ValueOption - 32) * 5/9;
                 const FToK = (ValueOption - 32) * 5/9 + 273.15;
                 if ( FToK < 0 ) { return await slashCommand.reply({ ephemeral: true, content: `:warning: ${ValueOption}F is a temperature that cannot exist! (It is below Absolute Zero!)` }); }
-                await slashCommand.reply({ ephemeral: true, content: `${ValueOption}F is about ${FToC}C or ${FToK}K` });
+                await slashCommand.reply({ ephemeral: true, content: `${ValueOption}F is about ${FToC.toFixed(0)}C or ${FToK.toFixed(0)}K` });
                 break;
 
             // K TO C/F
@@ -111,7 +111,7 @@ module.exports = {
                 const KToC = ValueOption - 273.15;
                 const KToF = (ValueOption - 273.15) * 9/5 + 32;
                 if ( ValueOption < 0 ) { return await slashCommand.reply({ ephemeral: true, content: `:warning: ${ValueOption}K is a temperature that cannot exist! (It is below Absolute Zero!)` }); }
-                await slashCommand.reply({ ephemeral: true, content: `${ValueOption}K is about ${KToC}C or ${KToF}F` });
+                await slashCommand.reply({ ephemeral: true, content: `${ValueOption}K is about ${KToC.toFixed(0)}C or ${KToF.toFixed(0)}F` });
                 break;
 
             default:
