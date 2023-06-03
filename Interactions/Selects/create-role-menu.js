@@ -232,7 +232,7 @@ module.exports = {
             // Clean up
             clearTimeout(MenuDataCache.timeout);
             Collections.RoleMenuCreation.delete(selectInteraction.guildId);
-            await selectInteraction.deleteReply();
+            await selectInteraction.followUp({ ephemeral: true, content: `Successfully created & posted your new Role Menu!\n\nIf you need to, you can edit or delete your Role Menus by using my [Message Context Commands](https://i.imgur.com/m1uBo5J.png).` });
             return;
         })
         .catch(err => {
