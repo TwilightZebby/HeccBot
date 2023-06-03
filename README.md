@@ -179,6 +179,11 @@ Please note that these will NOT have GIFs attached, custom reason support, nor t
 ### `/info bot`
 > *Displays information about HeccBot itself.*
 
+### `/info channel`
+> *Displays information about the given Channel.*
+> 
+> *If no Channel was specified, this will display information about the Channel this Command was used in.*
+
 <!-- Divider
 
 
@@ -215,9 +220,6 @@ Commands for Role Menu Setup/Configuration are as follows:
 
 ### `/rolemenu create`
 > *Used to start creating a new Role Menu for the Channel this was used in.*
-
-### `/rolemenu configure`
-> *Use to bring up a guide on how to configure/edit your existing Role Menus made with this Bot.*
 
 ### `"Edit Role Menu"` (Message Context Command)
 > *Used to start the configuration process for editing an existing Role Menu made with this Bot.*
