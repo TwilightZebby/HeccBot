@@ -31,7 +31,7 @@ module.exports = {
     Name: "rolemenu",
 
     // Command's Description
-    Description: `Use to create or configure Self-Assignable Role Menus`,
+    Description: `Use to create Self-Assignable Role Menus`,
 
     // Command's Category
     Category: "GENERAL",
@@ -44,9 +44,7 @@ module.exports = {
     //     IF SUBCOMMAND: name as "subcommandName"
     //     IF SUBCOMMAND GROUP: name as "subcommandGroupName_subcommandName"
     SubcommandCooldown: {
-        "create": 30,
-        "configure": 15,
-        "delete": 15
+        "create": 30
     },
 
     // Scope of Command's usage
@@ -58,9 +56,7 @@ module.exports = {
     //     IF SUBCOMMAND: name as "subcommandName"
     //     IF SUBCOMMAND GROUP: name as "subcommandGroupName_subcommandName"
     SubcommandScope: {
-        "create": "GUILD",
-        "configure": "GUILD",
-        "delete": "GUILD"
+        "create": "GUILD"
     },
 
 
@@ -84,16 +80,6 @@ module.exports = {
                 type: ApplicationCommandOptionType.Subcommand,
                 name: "create",
                 description: "Create a new Self-Assignable Role Menu"
-            },
-            {
-                type: ApplicationCommandOptionType.Subcommand,
-                name: "configure",
-                description: "Displays instructions on how to edit an existing Role Menu"
-            },
-            {
-                type: ApplicationCommandOptionType.Subcommand,
-                name: "delete",
-                description: "Displays instructions on how to delete an existing Role Menu"
             }
         ];
 
@@ -167,25 +153,7 @@ An auto-updating preview of what your new Self-Assignable Role Menu will look li
 
             Collections.RoleMenuCreation.set(slashCommand.guildId, newDataObject);
         }
-        // Menu Configuring
-        else if ( SubCommandName === "configure" )
-        {
-            // ACK to User
-            await slashCommand.reply({ ephemeral: true, content: `This configure subcommand is no longer used for editing Role Menus.
-To edit your Role Menus with this Bot, please use my [Message Context Command](https://i.imgur.com/rJ1Y8we.png) instead!
-
-**Desktop/Web:** Right-click the Message with the Role Menu -> Apps -> Edit Role Menu
-**Mobile:** Long-press (Press-and-hold) the Message with the Role Menu -> Apps -> Edit Role Menu` });
-        }
-        // Menu Configuring
-        else if ( SubCommandName === "delete" )
-        {
-            // ACK to User
-            await slashCommand.reply({ ephemeral: true, content: `To delete your Role Menus with this Bot, please use my Message Context Command!
-
-**Desktop/Web:** Right-click the Message with the Role Menu -> Apps -> Delete Role Menu
-**Mobile:** Long-press (Press-and-hold) the Message with the Role Menu -> Apps -> Delete Role Menu` });
-        }
+        
 
         return;
     },
