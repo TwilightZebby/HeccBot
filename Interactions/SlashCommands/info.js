@@ -1430,7 +1430,7 @@ ${ExternalEmojiPermission && InviteGuild.verified ? `${EMOJI_VERIFIED} ` : ""}**
         .setAuthor({ name: `${DiscordClient.user.username} Information`, iconURL: `${DiscordClient.user.avatarURL({ extension: 'png' })}` })
         .setDescription(`A private general purpose Bot. Has features such as \`/bonk\`, Button Role Menus, and more.`)
         .addFields(
-            { name: `Developer`, value: `TwilightZebby#1955`, inline: true },
+            { name: `Developer`, value: `TwilightZebby`, inline: true },
             { name: `Bot Version`, value: `${Package.version}`, inline: true },
             { name: `Discord.JS Version`, value: `${Package.dependencies['discord.js']}`, inline: true },
 
