@@ -24,10 +24,11 @@ module.exports = {
         // Fetch data needed
         const MemberVoting = buttonInteraction.member;
         const ChoiceVoted = buttonInteraction.customId.split("_").pop();
+        const SourceMessage = buttonInteraction.message;
         let pollJson = require("../../JsonFiles/Hidden/ActivePolls.json");
 
         // Check if Member has already voted on this poll
-        if ( pollJson[buttonInteraction.message.id]["MEMBERS_VOTED"].includes(MemberVoting.id) )
+        if ( pollJson[SourceMessage.id]["MEMBERS_VOTED"].includes(MemberVoting.id) )
         {
             await buttonInteraction.reply({ ephemeral: true, content: `You have already voted on this Poll!\nIt is not possible to vote multiple times or to change your vote on Polls made with this Bot.` });
             return;
@@ -35,8 +36,8 @@ module.exports = {
 
 
         // Add Vote
-        pollJson[buttonInteraction.message.id]["CHOICES"][ChoiceVoted] += 1;
-        pollJson[buttonInteraction.message.id]["MEMBERS_VOTED"].push(MemberVoting.id);
+        pollJson[SourceMessage.id]["CHOICES"][ChoiceVoted] += 1;
+        pollJson[SourceMessage.id]["MEMBERS_VOTED"].push(MemberVoting.id);
         
         // Save to JSON
         fs.writeFile('./JsonFiles/Hidden/ActivePolls.json', JSON.stringify(pollJson, null, 4), async (err) => {
@@ -49,12 +50,47 @@ module.exports = {
 
 
         // Edit total votes into Embed
-        const UpdatePollEmbed = EmbedBuilder.from(buttonInteraction.message.embeds.pop());
-        UpdatePollEmbed.setFooter({ text: `Current Total Votes: ${pollJson[buttonInteraction.message.id]["MEMBERS_VOTED"].length}` });
+        const UpdatePollEmbed = EmbedBuilder.from(SourceMessage.embeds.pop());
+        UpdatePollEmbed.setFooter({ text: `Current Total Votes: ${pollJson[SourceMessage.id]["MEMBERS_VOTED"].length}` });
+
+
+        // Calculate current results
+        const OriginalChoices = UpdatePollEmbed.data.fields.shift().value.split(`• `);
+        const FinalChoiceVotes = pollJson[SourceMessage.id]["CHOICES"];
+        /** @type {Number} */
+        const TotalVotes = pollJson[SourceMessage.id]["MEMBERS_VOTED"].length;
+
         
+        // Calculate & map votes & percentages to their Choices
+        let mappedResults = [];
+        OriginalChoices.forEach(ChoiceString => {
+            if ( ChoiceString != "" && ChoiceString != " " )
+            {
+                ChoiceString = ChoiceString.trim();
+                let temp = "";
+                let choiceValue = ChoiceString.toLowerCase().replace(" ", "-");
+                
+                // Choice Name (For UX)
+                temp += `• **${ChoiceString}** `;
+                // Number of Votes for Choice
+                temp += `- ${FinalChoiceVotes[choiceValue]} Vote${FinalChoiceVotes[choiceValue] === 1 ? "" : "s"} `;
+                // Percentage of Total Votes
+                temp += `(~${((FinalChoiceVotes[choiceValue] / TotalVotes) * 100).toFixed(1)}%)`
+
+                mappedResults.push(temp);
+            }
+        });
+
+        let currentResultsEmbed = new EmbedBuilder().setTitle("Current Results")
+        .setColor(UpdatePollEmbed.data.color)
+        .addFields({ name: `Choices:`, value: mappedResults })
+        .setFooter({ text: `Current Total Votes: ${TotalVotes}` });
+
+        
+        // ACK        
         await buttonInteraction.update({ embeds: [UpdatePollEmbed] }).then(async updatedMessage => {
             // ACK to Member that their vote has been submitted
-            await buttonInteraction.followUp({ ephemeral: true, content: `✅ Successfully voted for **${ChoiceVoted.replace("-", " ")}**` });
+            await buttonInteraction.followUp({ ephemeral: true, embeds: [currentResultsEmbed], content: `✅ Successfully voted for **${ChoiceVoted.replace("-", " ")}**` });
             return;
         });
 
