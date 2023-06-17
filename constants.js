@@ -1,12 +1,16 @@
 const { Client, GatewayIntentBits, Collection, Partials, EmbedBuilder, StringSelectMenuInteraction, ButtonBuilder } = require("discord.js");
 const { StatuspageUpdates } = require("statuspage.js");
 const { DiscordStatusPageID } = require("./config.js");
+const { VoiceConnection, AudioPlayer } = require("@discordjs/voice");
 
 module.exports =
 {
     // Discord Client representing the Bot/App
     DiscordClient: new Client({
-        intents: [ GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildIntegrations, GatewayIntentBits.MessageContent ],
+        intents: [
+            GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildIntegrations, GatewayIntentBits.MessageContent,
+            GatewayIntentBits.GuildVoiceStates
+        ],
         partials: [ Partials.Message ]
     }),
     // StatusPage Client
@@ -37,6 +41,11 @@ module.exports =
 
         /** Contains Message IDs for each Incident, mapped by Webhook IDs, all mapped by Incident IDs
          * @type {Collection<String, Collection<String, String>} */
-        DiscordStatusUpdates: new Collection()
+        DiscordStatusUpdates: new Collection(),
+
+        /** Holds the cache for the Karaoke Music Player, mapped by Guild IDs
+         * @type {Collection<String, {connection: VoiceConnection, player: AudioPlayer}}
+         */
+        KaraokeCache: new Collection()
     }
 }
