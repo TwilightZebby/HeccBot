@@ -63,7 +63,7 @@ module.exports = {
     async execute(slashCommand)
     {
         // Ensure only those with the Role in my Server can use this, just in case
-        if ( !slashCommand.member.roles.includes("1100037281617817661") )
+        if ( !slashCommand.member.roles.cache.has("1100037281617817661") )
         {
             await slashCommand.reply({ ephemeral: true, content: `Sorry, but you do not have permissions to use this Command!` });
             return;
