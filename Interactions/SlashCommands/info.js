@@ -1,5 +1,5 @@
 const { ChatInputCommandInteraction, ChatInputApplicationCommandData, ApplicationCommandType, ApplicationCommandOptionType, AutocompleteInteraction, PermissionFlagsBits, EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder, TextChannel, VoiceChannel, StageChannel, NewsChannel, CategoryChannel, GuildVerificationLevel, GuildExplicitContentFilter, GuildDefaultMessageNotifications, GuildMFALevel, GuildNSFWLevel, GuildPremiumTier, Routes, Invite, ChannelType, InviteTargetType, GuildMember, ForumChannel, Role, DMChannel, PartialGroupDMChannel, ThreadChannel, DirectoryChannel, ThreadAutoArchiveDuration, SortOrderType, ChannelFlags, VideoQualityMode, GuildMemberFlags } = require("discord.js");
-const { DiscordClient } = require("../../constants.js");
+const { DiscordClient, checkPomelo } = require("../../constants.js");
 const Package = require('../../package.json');
 const fetch = require('node-fetch');
 
@@ -1044,7 +1044,7 @@ ${fetchedChannel.parentId != null ? `**Parent Channel:** <#${fetchedChannel.pare
         .addFields(
             {
                 name: `>> General`,
-                value: `${ExternalEmojiPermission ? `${EMOJI_OWNER_CROWN} ` : ""}**Owner:** ${GuildOwner.user.tag}
+                value: `${ExternalEmojiPermission ? `${EMOJI_OWNER_CROWN} ` : ""}**Owner:** ${checkPomelo(GuildOwner.user) ? `${GuildOwner.user.username}` : `${GuildOwner.user.username}#${GuildOwner.user.discriminator}`}
 ${ExternalEmojiPermission ? `${readableGuildPremiumTierEmoji(GuildBoostTier)} ` : ""}**Boost Level:** ${readableGuildPremiumTier(GuildBoostTier)}
 ${ExternalEmojiPermission ? `${EMOJI_BOOST} ` : ""}**Boost Count:** ${GuildBoostCount}
 ${ExternalEmojiPermission ? `${EMOJI_EMOJI} ` : ""}**Emojis:** ${TotalEmojiCount}
@@ -1215,7 +1215,7 @@ ${ExternalEmojiPermission ? `${EMOJI_CHANNEL_FORUM} ` : ""}**Forum:** ${forumCha
         if ( fetchedMember.flags.has(GuildMemberFlags.StartedOnboarding) ) { MemberFlagStrings.push(`Started Onboarding`); }
         if ( fetchedMember.flags.has(GuildMemberFlags.CompletedOnboarding) ) { MemberFlagStrings.push(`Completed Onboarding`); }
 
-        const UserInfoEmbed = new EmbedBuilder().setAuthor({ iconURL: fetchedMember.displayAvatarURL({ extension: 'png' }), name: `${fetchedMember.user.tag}` })
+        const UserInfoEmbed = new EmbedBuilder().setAuthor({ iconURL: fetchedMember.displayAvatarURL({ extension: 'png' }), name: `${checkPomelo(fetchedMember.user) ? `${fetchedMember.user.username}` : `${fetchedMember.user.username}#${fetchedMember.user.discriminator}`}` })
         .setColor(MemberDisplayColorHex);
 
         
@@ -1363,7 +1363,7 @@ ${ExternalEmojiPermission ? `${EMOJI_CHANNEL_FORUM} ` : ""}**Forum:** ${forumCha
         
         // General Invite Info
         let generalInviteInfo = "";
-        if ( InviteCreatorUser != null ) { generalInviteInfo += `**Inviter:** ${InviteCreatorUser.tag}\n**Bot User:** ${InviteCreatorUser.bot}`; }
+        if ( InviteCreatorUser != null ) { generalInviteInfo += `**Inviter:** ${checkPomelo(InviteCreatorUser) ? `${InviteCreatorUser.username}` : `${InviteCreatorUser.username}#${InviteCreatorUser.discriminator}`}\n**Bot User:** ${InviteCreatorUser.bot}`; }
         if ( InviteCreatedTime != null ) { generalInviteInfo += `${generalInviteInfo.length > 1 ? `\n` : ""}**Created:** <t:${Math.floor(InviteCreatedTime / 1000)}:R>`; }
         if ( InviteExpireTime != null ) { generalInviteInfo += `${generalInviteInfo.length > 1 ? `\n` : ""}**Expires:** <t:${Math.floor(InviteExpireTime / 1000)}:R>`; }
         if ( generalInviteInfo.length > 1 ) { InviteInfoEmbed.addFields({ name: `>> General Info`, value: generalInviteInfo }); }
