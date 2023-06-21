@@ -1,6 +1,6 @@
 const { ChatInputCommandInteraction, ChatInputApplicationCommandData, ApplicationCommandType, AutocompleteInteraction, PermissionFlagsBits, ApplicationCommandOptionType, ChannelType, TextChannel, ThreadChannel, ForumChannel, DMChannel, PartialGroupDMChannel } = require("discord.js");
 const fs = require('fs');
-const { DiscordClient } = require("../../constants.js");
+const { DiscordClient, checkPomelo } = require("../../constants.js");
 
 module.exports = {
     // Command's Name
@@ -156,10 +156,10 @@ async function subscribeToFeed(slashCommand)
         // Subscribe Server to Feed, by creating a Webhook in that Channel
         let feedWebhook;
         let threadId = null;
-        if ( InputChannel instanceof TextChannel ) { feedWebhook = await InputChannel.createWebhook({ name: "Dis-Outage Feed", avatar: "https://i.imgur.com/gXWXIpr.png", reason: `${slashCommand.user.tag} subscribed to the Discord Outage Feed` }); }
+        if ( InputChannel instanceof TextChannel ) { feedWebhook = await InputChannel.createWebhook({ name: "Dis-Outage Feed", avatar: "https://i.imgur.com/gXWXIpr.png", reason: `${checkPomelo(slashCommand.user) ? `${slashCommand.user.username}` : `${slashCommand.user.username}#${slashCommand.user.discriminator}`} subscribed to the Discord Outage Feed` }); }
         else 
         { 
-            feedWebhook = await InputChannel.parent.createWebhook({ name: "Dis-Outage Feed", avatar: "https://i.imgur.com/gXWXIpr.png", reason: `${slashCommand.user.tag} subscribed to the Discord Outage Feed` });
+            feedWebhook = await InputChannel.parent.createWebhook({ name: "Dis-Outage Feed", avatar: "https://i.imgur.com/gXWXIpr.png", reason: `${checkPomelo(slashCommand.user) ? `${slashCommand.user.username}` : `${slashCommand.user.username}#${slashCommand.user.discriminator}`} subscribed to the Discord Outage Feed` });
             threadId = InputChannel.id;
         }
 
@@ -200,7 +200,7 @@ async function unsubscribeFromFeed(slashCommand)
     const FeedWebhook = await DiscordClient.fetchWebhook(DiscordOutageFeedJson[`${slashCommand.guildId}`]["DISCORD_FEED_WEBHOOK_ID"]);
     let webhookDeletionErrorMessage = null;
     try {
-        await FeedWebhook.delete(`${slashCommand.user.tag} unsubscribed from the Discord Outage Feed`);
+        await FeedWebhook.delete(`${checkPomelo(slashCommand.user) ? `${slashCommand.user.username}` : `${slashCommand.user.username}#${slashCommand.user.discriminator}`} unsubscribed from the Discord Outage Feed`);
     } 
     catch (err) {
         //console.error(err);
