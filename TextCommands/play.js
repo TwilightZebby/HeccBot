@@ -2,7 +2,7 @@ const { Message, StageChannel, PermissionFlagsBits } = require("discord.js");
 const { DiscordClient, Collections } = require("../constants.js");
 const { createAudioResource } = require("@discordjs/voice");
 const play = require('play-dl');
-const { PREFIX } = require("../config.js");
+const { PREFIX, BotDevID } = require("../config.js");
 
 module.exports = {
     // Command's Name
@@ -57,7 +57,7 @@ module.exports = {
             return;
         }
 
-        if ( !(message.member.voice?.channel instanceof StageChannel) )
+        if ( !(message.member.voice?.channel instanceof StageChannel) && message.author.id !== BotDevID )
         {
             await message.reply({ allowedMentions: { parse: [], repliedUser: false }, content: `Sorry, you must be connected to a Stage Channel (__NOT__ a Voice Channel) to use this Karaoke Command!` });
             return;
@@ -71,7 +71,7 @@ module.exports = {
         }
 
         // Ensure Bot has Perms to unsuppress itself in Stages
-        if ( !message.member.voice?.channel.permissionsFor(DiscordClient.user.id).has(PermissionFlagsBits.MuteMembers) )
+        if ( (message.member.voice?.channel instanceof StageChannel) && !message.member.voice?.channel.permissionsFor(DiscordClient.user.id).has(PermissionFlagsBits.MuteMembers) )
         {
             await message.reply({ allowedMentions: {parse: [], repliedUser: false}, content: `Sorry, but I need to have the "Mute Members" Permission in <#${message.member.voice.channelId}> in order to play music! (I need to be able to unsuppress myself in Stages).` });
             return;
@@ -79,7 +79,7 @@ module.exports = {
 
         let musicCache = Collections.KaraokeCache.get(message.guildId);
 
-        if ( !(message.guild.members.me.voice?.channel instanceof StageChannel) )
+        if ( !(message.guild.members.me.voice?.channel instanceof StageChannel) && message.author.id !== BotDevID )
         {
             await message.reply({ allowedMentions: { parse: [], repliedUser: false }, content: `Sorry, but you cannot use my Karaoke Feature in Voice Channels, only in Stage Channels.` });
 
@@ -96,10 +96,21 @@ module.exports = {
 
         // Check URI
         let audioUri = arguments.shift();
-
-        if ( !audioUri.startsWith("https://www.youtube.com/watch?") && !audioUri.startsWith("https://youtu.be/") )
+        let linkCheck = false;
+        if ( audioUri.startsWith("https://") && play.yt_validate(audioUri) === "video" )
         {
-            await message.reply({ allowedMentions: { parse: [], repliedUser: false }, content: `Sorry, but I can only play YouTube links for Karaokes at this time!` });
+            linkCheck = true;
+        }
+
+        if ( audioUri.startsWith("https://") && play.yt_validate(audioUri) === "playlist" )
+        {
+            audioUri = audioUri.split("&").shift();
+            if ( play.yt_validate(audioUri) === "video" ) { linkCheck = true; }
+        }
+
+        if ( !linkCheck )
+        {
+            await message.reply({ allowedMentions: { parse: [], repliedUser: false }, content: `Sorry, but I can only play YouTube links for Karaokes at this time!\n(Make sure the YouTube link is not a Playlist link, and instead a direct video link!)` });
             return;
         }
 

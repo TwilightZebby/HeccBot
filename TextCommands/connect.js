@@ -1,7 +1,7 @@
 const { Message, StageChannel, PermissionFlagsBits } = require("discord.js");
 const { DiscordClient, Collections } = require("../constants.js");
 const { joinVoiceChannel, createAudioPlayer, NoSubscriberBehavior } = require("@discordjs/voice");
-const { PREFIX } = require("../config.js");
+const { PREFIX, BotDevID } = require("../config.js");
 
 module.exports = {
     // Command's Name
@@ -56,14 +56,14 @@ module.exports = {
             return;
         }
 
-        if ( !(message.member.voice?.channel instanceof StageChannel) )
+        if ( !(message.member.voice?.channel instanceof StageChannel) && message.author.id !== BotDevID )
         {
             await message.reply({ allowedMentions: { parse: [], repliedUser: false }, content: `Sorry, you must be connected to a Stage Channel (__NOT__ a Voice Channel) to use this Karaoke Command!` });
             return;
         }
 
         // Ensure Bot has Perms to unsuppress itself in Stages
-        if ( !message.member.voice?.channel.permissionsFor(DiscordClient.user.id).has(PermissionFlagsBits.MuteMembers) )
+        if ( (message.member.voice?.channel instanceof StageChannel) && !message.member.voice?.channel.permissionsFor(DiscordClient.user.id).has(PermissionFlagsBits.MuteMembers) )
         {
             await message.reply({ allowedMentions: {parse: [], repliedUser: false}, content: `Sorry, but I need to have the "Mute Members" Permission in <#${message.member.voice.channelId}> in order to play music! (I need to be able to unsuppress myself in Stages).` });
             return;
@@ -91,7 +91,7 @@ module.exports = {
 
             await message.reply({ allowedMentions: { parse: [], repliedUser: false }, content: `Successfully connected to <#${message.member.voice.channelId}>!\nUse \`${PREFIX}play\` to play the music for your Karaoke Session.` })
             .then(async sentMessage => {
-                await sentMessage.guild.members.me.voice.setSuppressed(false);
+                if ( message.member.voice.channel instanceof StageChannel ) { await sentMessage.guild.members.me.voice.setSuppressed(false); }
                 if ( message.member.voice.channel.permissionsFor(sentMessage.guild.members.me.id).has(PermissionFlagsBits.DeafenMembers) && !sentMessage.guild.members.me.voice.serverDeaf ) { await sentMessage.guild.members.me.voice.setDeaf(true); }
             });
             return;

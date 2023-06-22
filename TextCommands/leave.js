@@ -1,5 +1,6 @@
 const { Message, StageChannel } = require("discord.js");
 const { Collections } = require("../constants.js");
+const { BotDevID } = require("../config.js");
 
 module.exports = {
     // Command's Name
@@ -54,7 +55,7 @@ module.exports = {
             return;
         }
 
-        if ( !(message.member.voice?.channel instanceof StageChannel) )
+        if ( !(message.member.voice?.channel instanceof StageChannel) && message.author.id !== BotDevID )
         {
             await message.reply({ allowedMentions: { parse: [], repliedUser: false }, content: `Sorry, you must be connected to a Stage Channel (__NOT__ a Voice Channel) to use this Karaoke Command!` });
             return;
