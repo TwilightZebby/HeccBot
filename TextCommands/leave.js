@@ -49,7 +49,7 @@ module.exports = {
     async execute(message, arguments)
     {
         // Ensure Member is in a Stage Channel
-        if ( !message.member.voice?.channel )
+        if ( !message.member.voice?.channel && message.author.id !== BotDevID )
         {
             await message.reply({ allowedMentions: { parse: [], repliedUser: false }, content: `Sorry, you must be connected to a Stage Channel to use this Karaoke Command!` });
             return;
@@ -63,7 +63,7 @@ module.exports = {
 
         if ( !Collections.KaraokeCache.get(message.guildId) )
         {
-            await message.reply({ allowedMentions: { parse: [], repliedUser: false }, content: `Test` });
+            //await message.reply({ allowedMentions: { parse: [], repliedUser: false }, content: `Test` });
             return;
         }
         else
