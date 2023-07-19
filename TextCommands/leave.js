@@ -1,6 +1,7 @@
 const { Message, StageChannel } = require("discord.js");
 const { Collections } = require("../constants.js");
 const { BotDevID } = require("../config.js");
+const { getVoiceConnection } = require("@discordjs/voice");
 
 module.exports = {
     // Command's Name
@@ -63,12 +64,12 @@ module.exports = {
 
         if ( !Collections.KaraokeCache.get(message.guildId) )
         {
-            await message.reply({ allowedMentions: { parse: [], repliedUser: false }, content: `*ERROR:** You shouldn't see this error. If you do, let TwilightZebby know!` });
+            await message.reply({ allowedMentions: { parse: [], repliedUser: false }, content: `You can't make me leave a Stage/Voice Channel when I'm not connected to one!` });
             return;
         }
         else
         {
-            await message.guild.members.me.voice.disconnect();
+            getVoiceConnection(message.guildId).disconnect();
             let musicCache = Collections.KaraokeCache.get(message.guildId);
             musicCache.player.stop();
             musicCache.connection.destroy();
