@@ -1,6 +1,6 @@
 {
   "name": "heccbot",
-  "version": "7.3.0",
+  "version": "7.3.1",
   "description": "A semi-private general purpose Discord Bot",
   "main": "index.js",
   "scripts": {

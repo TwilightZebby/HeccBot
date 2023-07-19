@@ -63,7 +63,7 @@ module.exports = {
 
         if ( !Collections.KaraokeCache.get(message.guildId) )
         {
-            //await message.reply({ allowedMentions: { parse: [], repliedUser: false }, content: `Test` });
+            await message.reply({ allowedMentions: { parse: [], repliedUser: false }, content: `*ERROR:** You shouldn't see this error. If you do, let TwilightZebby know!` });
             return;
         }
         else

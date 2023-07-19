@@ -98,7 +98,7 @@ module.exports = {
         }
         else
         {
-            await message.reply({ allowedMentions: { parse: [], repliedUser: false }, content: `I seem to already be connected to a Stage Channel!\nUse \`${PREFIX}play\` to play music for your Karaoke Session.` });
+            await message.reply({ allowedMentions: { parse: [], repliedUser: false }, content: `I seem to already be connected to a Channel! (Specifically <#${message.guild.members.me.voice?.channel.id}>)\nUse \`${PREFIX}play\` to play music for your Karaoke Session.` });
             return;
         }
     }
