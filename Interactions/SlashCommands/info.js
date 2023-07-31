@@ -1059,7 +1059,7 @@ ${ExternalEmojiPermission ? `${EMOJI_CHANNEL_NEWS} ` : ""}**Announcement:** ${an
 ${ExternalEmojiPermission ? `${EMOJI_CHANNEL_VOICE} ` : ""}**Voice:** ${voiceChannelCount}
 ${ExternalEmojiPermission ? `${EMOJI_CHANNEL_STAGE} ` : ""}**Stage:** ${stageChannelCount}
 ${ExternalEmojiPermission ? `${EMOJI_CHANNEL_CATEGORY} ` : ""}**Category:** ${categoryChannelCount}
-${ExternalEmojiPermission ? `${EMOJI_CHANNEL_FORUM} ` : ""}**Forum:** ${forumChannelCount}${unknownChannelCount > 0 ? `\n${ExternalEmojiPermission ? `❓ ` : ""}**Unknown Type(s):** ${unknownChannelCount}` : ""}${AfkChannelId != null ? `\n${ExternalEmojiPermission ? `${EMOJI_STATUS_IDLE} ` : ""}**AFK:** <#${AfkChannelId}>` : ""}${SystemChannelId != null ? `\n${ExternalEmojiPermission ? `⚙ ` : ""}**System:** <#${SystemChannelId}>` : ""}${RulesChannelId != null ? `\n${ExternalEmojiPermission ? `${EMOJI_CHANNEL_RULES} ` : ""}**Rules:** <#${RulesChannelId}>` : ""}`,
+${ExternalEmojiPermission ? `${EMOJI_CHANNEL_FORUM} ` : ""}**Forum:** ${forumChannelCount}${unknownChannelCount > 0 ? `\n${ExternalEmojiPermission ? `❓ ` : ""}**Unknown Type(s):** ${unknownChannelCount}` : ""}${AfkChannelId != null ? `\n${ExternalEmojiPermission ? `${EMOJI_STATUS_IDLE} ` : ""}**AFK:** <#${AfkChannelId}>` : ""}${SystemChannelId != null ? `\n${ExternalEmojiPermission ? `:gear: ` : ""}**System:** <#${SystemChannelId}>` : ""}${RulesChannelId != null ? `\n${ExternalEmojiPermission ? `${EMOJI_CHANNEL_RULES} ` : ""}**Rules:** <#${RulesChannelId}>` : ""}`,
                 inline: true
             },
             {
