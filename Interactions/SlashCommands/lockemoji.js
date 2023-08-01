@@ -1,5 +1,5 @@
 const { ChatInputCommandInteraction, ChatInputApplicationCommandData, ApplicationCommandType, AutocompleteInteraction, PermissionFlagsBits, ApplicationCommandOptionType, DMChannel, PartialGroupDMChannel } = require("discord.js");
-const { checkPomelo } = require("../../constants");
+const { fetchDisplayName } = require("../../constants");
 
 module.exports = {
     // Command's Name
@@ -120,7 +120,7 @@ module.exports = {
         await slashCommand.deferReply({ ephemeral: true });
 
         // Upload to Server        
-        await slashCommand.guild.emojis.create({ attachment: InputAttachment.url, name: "UnnamedEmoji", roles: [InputRole.id], reason: `Role-locked Custom Emoji uploaded by ${checkPomelo(slashCommand.user) ? `${slashCommand.user.username}` : `${slashCommand.user.username}#${slashCommand.user.discriminator}`}` })
+        await slashCommand.guild.emojis.create({ attachment: InputAttachment.url, name: "UnnamedEmoji", roles: [InputRole.id], reason: `Role-locked Custom Emoji uploaded by ${fetchDisplayName(slashCommand.user, true)}` })
         .then(async newEmoji => {
             slashCommand.editReply({ content: `Successfully uploaded your new Role-locked Custom Emoji to this Server. You can rename and/or delete your Emoji, much like others, in Server Settings > Emojis, providing you have the __Manage Emojis and Stickers__ Permission.` });
             return;

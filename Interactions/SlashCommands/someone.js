@@ -1,5 +1,5 @@
 const { ChatInputCommandInteraction, ChatInputApplicationCommandData, ApplicationCommandType, AutocompleteInteraction, PermissionFlagsBits, ThreadChannel, GuildMember, ThreadMember, DMChannel, PartialGroupDMChannel } = require("discord.js");
-const { checkPomelo } = require("../../constants");
+const { fetchDisplayName } = require("../../constants");
 
 module.exports = {
     // Command's Name
@@ -88,7 +88,7 @@ module.exports = {
         }
 
         // Send in chat
-        await slashCommand.reply({ allowedMentions: { parse: [] }, content: `\`@someone\` *(${checkPomelo(RandomMember.user) ? `${RandomMember.user.username}` : `${RandomMember.user.username}#${RandomMember.user.discriminator}`})*` });
+        await slashCommand.reply({ allowedMentions: { parse: [] }, content: `\`@someone\` *(${fetchDisplayName(RandomMember.user, true)})*` });
         return;
     },
 

@@ -1,7 +1,7 @@
 const { RateLimitError, DMChannel, Collection, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, Webhook, Colors, TextChannel, PartialGroupDMChannel } = require("discord.js");
 const { Statuspage, StatuspageUpdates } = require("statuspage.js");
 const fs = require("fs");
-const { DiscordClient, Collections, DiscordStatusClient, checkPomelo } = require("./constants.js");
+const { DiscordClient, Collections, DiscordStatusClient, checkPomelo, fetchDisplayName } = require("./constants.js");
 const Config = require("./config.js");
 
 
@@ -247,7 +247,7 @@ DiscordClient.on('guildCreate', async (guild) => {
     .setTitle(`Joined ${guild.name}`)
     .setThumbnail(guild.iconURL({ extension: 'png' }))
     .addFields(
-        { name: `Guild Owner`, value: `**User ID:** ${GuildOwner.id}\n**Tag:** ${checkPomelo(GuildOwner.user) ? `${GuildOwner.user.username}` : `${GuildOwner.user.username}#${GuildOwner.user.discriminator}`}\n**Mention:** <@${GuildOwner.id}>` },
+        { name: `Guild Owner`, value: `**User ID:** ${GuildOwner.id}\n**Tag:** ${fetchDisplayName(GuildOwner.user, true)}\n**Mention:** <@${GuildOwner.id}>` },
         { name: `Guild Info`, value: `**Approx. Member Count:** ${guild.approximateMemberCount}` }
     )
     .setFooter({ text: `${guild.id}` });
