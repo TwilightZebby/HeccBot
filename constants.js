@@ -1,4 +1,4 @@
-const { Client, GatewayIntentBits, Collection, Partials, EmbedBuilder, StringSelectMenuInteraction, ButtonBuilder } = require("discord.js");
+const { Client, GatewayIntentBits, Collection, Partials, EmbedBuilder, StringSelectMenuInteraction, ButtonBuilder, User } = require("discord.js");
 const { StatuspageUpdates } = require("statuspage.js");
 const { DiscordStatusPageID } = require("./config.js");
 const { VoiceConnection, AudioPlayer } = require("@discordjs/voice");
@@ -47,5 +47,18 @@ module.exports =
          * @type {Collection<String, {connection: VoiceConnection, player: AudioPlayer}}
          */
         KaraokeCache: new Collection()
+    },
+
+
+    /**
+     * Checks the Tag/Discrim of the given User object, to see if they're on the new Username system or not
+     * @param {User} user User object to check
+     * 
+     * @returns {Boolean} True if on the new Username system
+     */
+    checkPomelo(user)
+    {
+        if ( user.discriminator === "0" ) { return true; }
+        else { return false; }
     }
 }
