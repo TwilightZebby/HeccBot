@@ -1,4 +1,5 @@
 const { ChatInputCommandInteraction, ChatInputApplicationCommandData, ApplicationCommandType, AutocompleteInteraction, PermissionFlagsBits, ThreadChannel, GuildMember, ThreadMember, DMChannel, PartialGroupDMChannel } = require("discord.js");
+const { fetchDisplayName } = require("../../constants");
 
 module.exports = {
     // Command's Name
@@ -87,7 +88,7 @@ module.exports = {
         }
 
         // Send in chat
-        await slashCommand.reply({ allowedMentions: { parse: [] }, content: `\`@someone\` *(${RandomMember.user.tag})*` });
+        await slashCommand.reply({ allowedMentions: { parse: [] }, content: `\`@someone\` *(${fetchDisplayName(RandomMember.user, true)})*` });
         return;
     },
 

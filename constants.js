@@ -1,4 +1,4 @@
-const { Client, GatewayIntentBits, Collection, Partials, EmbedBuilder, StringSelectMenuInteraction, ButtonBuilder } = require("discord.js");
+const { Client, GatewayIntentBits, Collection, Partials, EmbedBuilder, StringSelectMenuInteraction, ButtonBuilder, User, GuildMember } = require("discord.js");
 const { StatuspageUpdates } = require("statuspage.js");
 const { DiscordStatusPageID } = require("./config.js");
 const { VoiceConnection, AudioPlayer } = require("@discordjs/voice");
@@ -47,5 +47,47 @@ module.exports =
          * @type {Collection<String, {connection: VoiceConnection, player: AudioPlayer}}
          */
         KaraokeCache: new Collection()
+    },
+
+
+    /**
+     * Checks the Tag/Discrim of the given User object, to see if they're on the new Username system or not
+     * @param {User} user User object to check
+     * 
+     * @returns {Boolean} True if on the new Username system
+     */
+    checkPomelo(user)
+    {
+        if ( user.discriminator === "0" ) { return true; }
+        else { return false; }
+    },
+
+
+    /**
+     * Fetches the highest-level Display Name for the provided User or Member
+     * @param {User|GuildMember} userMember User or Member object
+     * @param {Boolean?} skipNicknames Set to True to skip Server Nicknames
+     * 
+     * @returns {String} The Username, Display Name or Nickname of the User/Member Object - whichever's highest
+     */
+    fetchDisplayName(userMember, skipNicknames)
+    {
+        let highestName = "";
+        let isPomelo = false;
+        if ( (userMember instanceof GuildMember) && userMember.user.discriminator === "0" ) { isPomelo = true; }
+        if ( (userMember instanceof User) && userMember.discriminator === "0" ) { isPomelo = true; }
+
+        // Usernames
+        highestName = userMember instanceof GuildMember ? `@${userMember.user.username}${isPomelo ? "" : `#${userMember.user.discriminator}`}`
+            : `@${userMember.username}${isPomelo ? "" : `#${userMember.discriminator}`}`;
+        
+        // Display Names
+        if ( (userMember instanceof User) && (userMember.globalName != null) ) { highestName = userMember.globalName; }
+        if ( (userMember instanceof GuildMember) && (userMember.user.globalName != null) ) { highestName = userMember.user.globalName; }
+
+        // Server Nicknames
+        if ( !skipNicknames && (userMember instanceof GuildMember) && (userMember.nickname != null) ) { highestName = userMember.nickname; }
+
+        return highestName;
     }
 }
