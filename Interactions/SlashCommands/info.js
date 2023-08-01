@@ -767,6 +767,11 @@ module.exports = {
         /** @type {TextChannel|CategoryChannel|ForumChannel|NewsChannel|StageChannel|ThreadChannel|VoiceChannel} */
         let fetchedChannel;
         const OptionChannel = slashCommand.options.getChannel("channel");
+
+        // Catch for KNOWN unsupported Channel Types
+        if ( OptionChannel.type === 14 ) { await slashCommand.editReply({ content: `Sorry, but this Bot doesn't support the [Directory Channel](<https://support.discord.com/hc/en-us/articles/4406046651927>) Type!` }); return; }
+        if ( OptionChannel.type === 16 ) { await slashCommand.editReply({ content: `Sorry, but this Bot currently doesn't support the [Media Channel](<https://creator-support.discord.com/hc/en-us/articles/14346342766743>) Type yet!` }); return; }
+
         try
         {
             if ( !OptionChannel || OptionChannel == null ) { fetchedChannel = await slashCommand.channel.fetch(); }
@@ -785,13 +790,7 @@ module.exports = {
             await slashCommand.editReply({ content: `Sorry, but this Command cannot be used to fetch information of Direct Messages (DMs) or Group Direct Messages (GDMs)!` });
             return;
         }
-
-        // Reject Directories
-        /* if ( fetchedChannel instanceof DirectoryChannel )
-        {
-            await slashCommand.editReply({ content: `Sorry, but this Command cannot be used to fetch information of Directory Channels!` });
-            return;
-        } */
+        
 
         // Embed & Basic Info
         const EmbedChannel = new EmbedBuilder().setTitle(`#${fetchedChannel.name}`)
