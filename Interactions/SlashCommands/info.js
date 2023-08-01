@@ -940,6 +940,18 @@ ${fetchedChannel.parentId != null ? `**Parent Channel:** <#${fetchedChannel.pare
             });
         }
 
+
+
+        // General Channel Flags, excluding ones already included above
+        let channelFlagArray = [];
+        if ( fetchedChannel.flags.has(ChannelFlags.ClydeAI) ) { channelFlagArray.push(`ClydeAI`); }
+        if ( fetchedChannel.flags.has(ChannelFlags.IsGuildResourceChannel) ) { channelFlagArray.push(`Is Guide Resource`); }
+        if ( fetchedChannel.flags.has(ChannelFlags.IsScheduledForDeletion) ) { channelFlagArray.push(`Is Scheduled For Deletion`); }
+        if ( fetchedChannel.flags.has(ChannelFlags.IsSpam) ) { channelFlagArray.push(`Is Spam`); }
+
+        if ( channelFlagArray.length > 0 ) { EmbedChannel.addFields({ name: `>> Channel Flags`, value: channelFlagArray.join(", ") }); }
+
+
         await slashCommand.editReply({ embeds: [EmbedChannel] });
         return;
     },
@@ -1215,6 +1227,10 @@ ${ExternalEmojiPermission ? `${EMOJI_CHANNEL_FORUM} ` : ""}**Forum:** ${forumCha
         //if ( fetchedMember.flags.has(GuildMemberFlags.BypassesVerification) ) { MemberFlagStrings.push(`Bypasses Verification`); } // Not going to include this for safety reasons
         if ( fetchedMember.flags.has(GuildMemberFlags.StartedOnboarding) ) { MemberFlagStrings.push(`Started Onboarding`); }
         if ( fetchedMember.flags.has(GuildMemberFlags.CompletedOnboarding) ) { MemberFlagStrings.push(`Completed Onboarding`); }
+        if ( fetchedMember.flags.has(GuildMemberFlags.AutomodQuarantinedBio) ) { MemberFlagStrings.push(`Quarantined by AutoMod (Bio Filter)`); }
+        if ( fetchedMember.flags.has(GuildMemberFlags.AutomodQuarantinedUsernameOrGuildNickname) ) { MemberFlagStrings.push(`Quarantined by AutoMod (User/Display Name Filter)`); }
+        if ( fetchedMember.flags.has(GuildMemberFlags.StartedHomeActions) ) { MemberFlagStrings.push(`Started Guide ToDo Tasks`); }
+        if ( fetchedMember.flags.has(GuildMemberFlags.CompletedHomeActions) ) { MemberFlagStrings.push(`Completed Guide ToDo Tasks`); }
 
         const UserInfoEmbed = new EmbedBuilder().setAuthor({ iconURL: fetchedMember.displayAvatarURL({ extension: 'png' }), name: `${fetchDisplayName(fetchedMember, true)}` })
         .setColor(MemberDisplayColorHex);
