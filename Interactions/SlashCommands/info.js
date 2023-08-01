@@ -1196,6 +1196,7 @@ ${ExternalEmojiPermission ? `${EMOJI_CHANNEL_FORUM} ` : ""}**Forum:** ${forumCha
         const HasMemberAvatar = fetchedMember.avatar == null ? false : true;
         const HasGlobalAvatar = MemberUser?.avatar == null ? false : true;
         const HasGlobalBanner = MemberUser?.banner == null ? false : true;
+        const HasAvatarDecoration = MemberUser?.avatarDecoration == null ? false : true;
 
         // User Flags
         const RawUserFlags = await MemberUser.fetchFlags(true);
@@ -1257,6 +1258,7 @@ ${ExternalEmojiPermission ? `${EMOJI_CHANNEL_FORUM} ` : ""}**Forum:** ${forumCha
             if ( HasMemberAvatar ) { UserInfoActionRow.addComponents(new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel("Member Avatar").setURL(fetchedMember.avatarURL())); }
             if ( HasGlobalAvatar ) { UserInfoActionRow.addComponents(new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel("Global Avatar").setURL(MemberUser.avatarURL())); }
             if ( HasGlobalBanner ) { UserInfoActionRow.addComponents(new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel("Global Banner").setURL(MemberUser.bannerURL())); }
+            if ( HasAvatarDecoration ) { UserInfoActionRow.addComponents(new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel("Avatar Decoration").setURL(MemberUser.avatarDecorationURL())); }
 
             // Send Embed and Buttons
             return await slashCommand.editReply({ embeds: [UserInfoEmbed], components: [UserInfoActionRow] });
