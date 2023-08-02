@@ -84,10 +84,17 @@ module.exports = {
             return;
         }
 
-        // Ensure Bot has MANAGE_EMOJI Permission
-        if ( !slashCommand.appPermissions.has(PermissionFlagsBits.ManageGuildExpressions) )
+        // Ensure Bot has CREATE_EXPRESSIONS Permission
+        if ( !slashCommand.appPermissions.has(BigInt(1 << 43)) )
         {
-            await slashCommand.reply({ ephemeral: true, content: `Sorry, but I cannot upload a Custom Emoji to this Server without having the **Manage Expressions** Permission.\nPlease try again, once I have been granted that Permission!` });
+            await slashCommand.reply({ ephemeral: true, content: `Sorry, but I cannot upload a Custom Emoji to this Server without having the __**Create Expressions**__ Permission.\nPlease try again, once I have been granted that Permission!` });
+            return;
+        }
+
+        // Ensure no outages
+        if ( !slashCommand.guild.available )
+        {
+            await slashCommand.reply({ ephemeral: true, content: `Sorry, but this Command is unusable while there's a Discord Outage affecting your Server. You can check [Discord's Outage Page](https://discordstatus.com) for extra details.` });
             return;
         }
 
@@ -109,20 +116,13 @@ module.exports = {
             return;
         }
 
-        // Ensure no outages
-        if ( !slashCommand.guild.available )
-        {
-            await slashCommand.reply({ ephemeral: true, content: `Sorry, but this Command is unusable while there's a Discord Outage affecting your Server. You can check [Discord's Outage Page](https://discordstatus.com) for extra details.` });
-            return;
-        }
-
         // Defer, just in case
         await slashCommand.deferReply({ ephemeral: true });
 
         // Upload to Server        
         await slashCommand.guild.emojis.create({ attachment: InputAttachment.url, name: "UnnamedEmoji", roles: [InputRole.id], reason: `Role-locked Custom Emoji uploaded by ${fetchDisplayName(slashCommand.user, true)}` })
         .then(async newEmoji => {
-            slashCommand.editReply({ content: `Successfully uploaded your new Role-locked Custom Emoji to this Server. You can rename and/or delete your Emoji, much like others, in Server Settings > Emojis, providing you have the __Manage Emojis and Stickers__ Permission.` });
+            slashCommand.editReply({ content: `Successfully uploaded your new Role-locked Custom Emoji to this Server. You can rename and/or delete your Emoji, much like others, in Server Settings > Emojis, providing you have the __**Manage Expressions**__ Permission.` });
             return;
         })
         .catch(async err => {
