@@ -1400,6 +1400,7 @@ ${ExternalEmojiPermission ? `${EMOJI_CHANNEL_FORUM} ` : ""}**Forum:** ${forumCha
             let guildInviteInfo = `**Name:** ${InviteGuild.name}
 ${ExternalEmojiPermission && InviteGuild.partnered ? `${EMOJI_PARTNER} ` : ""}**Partnered:** ${InviteGuild.partnered}
 ${ExternalEmojiPermission && InviteGuild.verified ? `${EMOJI_VERIFIED} ` : ""}**Verified:** ${InviteGuild.verified}`;
+            if ( InviteGuild.premiumSubscriptionCount != null ) { guildInviteInfo += `\n**Boosts:** ${InviteGuild.premiumSubscriptionCount}` }
             if ( fetchedInvite.memberCount ) { guildInviteInfo += `\n**Approx. Total Members:** ${fetchedInvite.memberCount}`; }
             if ( fetchedInvite.presenceCount ) { guildInviteInfo += `\n**Approx. Online Members:** ${fetchedInvite.presenceCount}`; }
             InviteInfoEmbed.addFields({ name: `>> Server Info`, value: guildInviteInfo });
