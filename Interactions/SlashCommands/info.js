@@ -1199,7 +1199,7 @@ ${ExternalEmojiPermission ? `${EMOJI_CHANNEL_FORUM} ` : ""}**Forum:** ${forumCha
         const MemberDisplayName = ( fetchedMember.displayName || null );
         const MemberDisplayColorHex = fetchedMember.displayHexColor;
         const MemberJoinedTime = ( fetchedMember.joinedAt || null );
-        const MemberHighestRole = fetchedMember.roles.highest;
+        const MemberHighestRole = fetchedMember.roles.highest.id === slashCommand.guildId ? "@everyone" : fetchedMember.roles.highest;
         const MemberRoleCount = fetchedMember.roles.cache.filter(role => role.id !== fetchedMember.guild.id).size;
         const MemberTimedOut = ( fetchedMember.communicationDisabledUntil || null );
 
