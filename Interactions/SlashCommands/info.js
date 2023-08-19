@@ -1254,7 +1254,7 @@ ${ExternalEmojiPermission ? `${EMOJI_CHANNEL_FORUM} ` : ""}**Forum:** ${forumCha
             if ( MemberUser.id === slashCommand.guild.ownerId ) { memberInformationString += `${ExternalEmojiPermission ? `${EMOJI_OWNER_CROWN} `: ""}**Is Server Owner**`; }
             if ( MemberDisplayName != null ) { memberInformationString += `${memberInformationString.length > 1 ? `\n`: ""}**Display Name:** \`${MemberDisplayName}\``; }
             if ( MemberJoinedTime != null ) { memberInformationString += `${memberInformationString.length > 1 ? `\n`: ""}**Joined Server:** <t:${Math.floor(MemberJoinedTime.getTime() / 1000)}:R>`; }
-            if ( MemberHighestRole != null ) { memberInformationString += `${memberInformationString.length > 1 ? `\n`: ""}**Highest Role:** <@&${MemberHighestRole.id}>`; }
+            if ( MemberHighestRole != null ) { memberInformationString += `${memberInformationString.length > 1 ? `\n`: ""}**Highest Role:** ${MemberHighestRole === "@everyone" ? "@everyone" : `<@&${MemberHighestRole.id}>`}`; }
             if ( MemberRoleCount > 0 ) { memberInformationString += `${memberInformationString.length > 1 ? `\n`: ""}${ExternalEmojiPermission ? `${EMOJI_ROLE} ` : ""}**Role Count:** ${MemberRoleCount}`; }
             if ( MemberStartedBoosting != null ) { memberInformationString += `${memberInformationString.length > 1 ? `\n`: ""}${ExternalEmojiPermission ? `${EMOJI_BOOST} ` : ""}**Boosting Server Since:** <t:${Math.floor(MemberStartedBoosting.getTime() / 1000)}:R>`; }
             if ( MemberPending === true ) { memberInformationString += `${memberInformationString.length > 1 ? `\n`: ""}${ExternalEmojiPermission ? `${EMOJI_MEMBERSHIP_GATING} ` : ""}Yet to pass Membership Screening`; }
