@@ -1167,7 +1167,7 @@ ${ExternalEmojiPermission ? `${EMOJI_CHANNEL_FORUM} ` : ""}**Forum:** ${forumCha
         let roleFlagString = "";
         if ( RoleOption.flags.has(RoleFlags.InPrompt) ) { roleFlagString += `In Onboarding Prompt`; }
 
-        RoleInfoEmbed.addFields({ name: `>> Role Flags`, value: roleFlagString });
+        if ( roleFlagString.length > 4 ) { RoleInfoEmbed.addFields({ name: `>> Role Flags`, value: roleFlagString }); }
 
 
         // ACK to User
