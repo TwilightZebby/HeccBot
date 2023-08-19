@@ -1431,6 +1431,9 @@ ${ExternalEmojiPermission && InviteGuild.verified ? `${EMOJI_VERIFIED} ` : ""}**
         // Defer
         await slashCommand.deferReply({ ephemeral: true });
 
+        // Fetch Bot itself to update stuff
+        const ApproxServerCount = (await DiscordClient.application.fetch()).approximateGuildCount;
+
         // Create Link Buttons
         const PrivacyButton = new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel("Privacy Policy").setURL("https://github.com/TwilightZebby/HeccBot/blob/main/PRIVACY_POLICY.md");
         const LicenseButton = new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel("License").setURL("https://github.com/TwilightZebby/license/blob/main/license.md");
@@ -1457,7 +1460,7 @@ ${ExternalEmojiPermission && InviteGuild.verified ? `${EMOJI_VERIFIED} ` : ""}**
             { name: `Total App Commands`, value: `${TotalRegisteredCommands}`, inline: true },
 
             { name: `\u200B`, value: `\u200B`, inline: true },
-            { name: `Servers`, value: `${DiscordClient.guilds.cache.size}`, inline: true },
+            { name: `Approx. Server Count`, value: `${ApproxServerCount}`, inline: true },
             { name: `\u200B`, value: `\u200B`, inline: true }
         );
 
