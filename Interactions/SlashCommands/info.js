@@ -1,4 +1,4 @@
-const { ChatInputCommandInteraction, ChatInputApplicationCommandData, ApplicationCommandType, ApplicationCommandOptionType, AutocompleteInteraction, PermissionFlagsBits, EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder, TextChannel, VoiceChannel, StageChannel, NewsChannel, CategoryChannel, GuildVerificationLevel, GuildExplicitContentFilter, GuildDefaultMessageNotifications, GuildMFALevel, GuildNSFWLevel, GuildPremiumTier, Routes, Invite, ChannelType, InviteTargetType, GuildMember, ForumChannel, Role, DMChannel, PartialGroupDMChannel, ThreadChannel, DirectoryChannel, ThreadAutoArchiveDuration, SortOrderType, ChannelFlags, VideoQualityMode, GuildMemberFlags } = require("discord.js");
+const { ChatInputCommandInteraction, ChatInputApplicationCommandData, ApplicationCommandType, ApplicationCommandOptionType, AutocompleteInteraction, PermissionFlagsBits, EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder, TextChannel, VoiceChannel, StageChannel, NewsChannel, CategoryChannel, GuildVerificationLevel, GuildExplicitContentFilter, GuildDefaultMessageNotifications, GuildMFALevel, GuildNSFWLevel, GuildPremiumTier, Routes, Invite, ChannelType, InviteTargetType, GuildMember, ForumChannel, Role, DMChannel, PartialGroupDMChannel, ThreadChannel, DirectoryChannel, ThreadAutoArchiveDuration, SortOrderType, ChannelFlags, VideoQualityMode, GuildMemberFlags, RoleFlags } = require("discord.js");
 const { DiscordClient, fetchDisplayName } = require("../../constants.js");
 const Package = require('../../package.json');
 const fetch = require('node-fetch');
@@ -1161,6 +1161,13 @@ ${ExternalEmojiPermission ? `${EMOJI_CHANNEL_FORUM} ` : ""}**Forum:** ${forumCha
 
             if ( roleTagString.length > 4 ) { RoleInfoEmbed.addFields({ name: `>> Role Tags`, value: roleTagString }); }
         }
+
+
+        // Role Flags (if any)
+        let roleFlagString = "";
+        if ( RoleOption.flags.has(RoleFlags.InPrompt) ) { roleFlagString += `In Onboarding Prompt`; }
+
+        RoleInfoEmbed.addFields({ name: `>> Role Flags`, value: roleFlagString });
 
 
         // ACK to User
