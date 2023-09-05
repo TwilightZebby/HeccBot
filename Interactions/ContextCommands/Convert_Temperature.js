@@ -1,10 +1,10 @@
 const { ApplicationCommandType, ApplicationCommandData, ContextMenuCommandInteraction } = require("discord.js");
 
 // REGEXS
-const TemperatureRegex = new RegExp(/(?<amount>-?\d+(?:\.\d*)?)[^\S\n]*(?<degrees>°|deg(?:rees?)?|in)?[^\S\n]*(?<unit>c(?:(?=el[cs]ius\b|entigrades?\b|\b))|f(?:(?=ahrenheit\b|\b))|k(?:(?=elvins?\b|\b)))/gi);
-const CelsiusRegex = new RegExp(/(?<amount>-?\d+(?:\.\d*)?)[^\S\n]*(?<degrees>°|deg(?:rees?)?|in)?[^\S\n]*(?<unit>c(?:(?=el[cs]ius\b|entigrades?\b|\b)))/gi);
-const FahernheitRegex = new RegExp(/(?<amount>-?\d+(?:\.\d*)?)[^\S\n]*(?<degrees>°|deg(?:rees?)?|in)?[^\S\n]*(?<unit>f(?:(?=ahrenheit\b|\b)))/gi);
-const KelvinRegex = new RegExp(/(?<amount>-?\d+(?:\.\d*)?)[^\S\n]*(?<degrees>°|deg(?:rees?)?|in)?[^\S\n]*(?<unit>k(?:(?=elvins?\b|\b)))/gi);
+const TemperatureRegex = new RegExp(/(?<amount>-?\d+(?:\.\d*)?)[^\S\n]*(?<degrees>°|'|deg(?:rees?)?|in)?[^\S\n]*(?<unit>c(?:(?=el[cs]ius\b|entigrades?\b|\b))|f(?:(?=ahrenheit\b|\b))|k(?:(?=elvins?\b|\b)))/gi);
+const CelsiusRegex = new RegExp(/(?<amount>-?\d+(?:\.\d*)?)[^\S\n]*(?<degrees>°|'|deg(?:rees?)?|in)?[^\S\n]*(?<unit>c(?:(?=el[cs]ius\b|entigrades?\b|\b)))/gi);
+const FahernheitRegex = new RegExp(/(?<amount>-?\d+(?:\.\d*)?)[^\S\n]*(?<degrees>°|'|deg(?:rees?)?|in)?[^\S\n]*(?<unit>f(?:(?=ahrenheit\b|\b)))/gi);
+const KelvinRegex = new RegExp(/(?<amount>-?\d+(?:\.\d*)?)[^\S\n]*(?<degrees>°|'|deg(?:rees?)?|in)?[^\S\n]*(?<unit>k(?:(?=elvins?\b|\b)))/gi);
 
 
 /**
@@ -118,9 +118,9 @@ module.exports = {
         const MatchedTemperatures = SourceMessage.content.match(TemperatureRegex);
 
         // No Temperatures found
-        if ( !MatchedTemperatures || MatchedTemperatures == null ) { console.log("004"); return await contextCommand.reply({ ephemeral: true, content: "Sorry, but I couldn't find any temperatures to convert from that Message." }); }
+        if ( !MatchedTemperatures || MatchedTemperatures == null ) { return await contextCommand.reply({ ephemeral: true, content: "Sorry, but I couldn't find any temperatures to convert from that Message." }); }
         // More than 10 results
-        else if ( MatchedTemperatures.length > 10 ) { console.log("005"); return await contextCommand.reply({ ephemeral: true, content: "Sorry, but there are too many temperatures found in that Message!\n(I have a maximum limit of 10 temperatures per Message that I can convert)" }); }
+        else if ( MatchedTemperatures.length > 10 ) { return await contextCommand.reply({ ephemeral: true, content: "Sorry, but there are too many temperatures found in that Message!\n(I have a maximum limit of 10 temperatures per Message that I can convert)" }); }
         // One single result
         else if ( MatchedTemperatures.length === 1 )
         {
