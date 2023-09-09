@@ -149,7 +149,7 @@ An auto-updating preview of what your new Poll will look like is shown below.`,
     INFO_COMMAND_GUILD_VERIFICATION_VERY_HIGH: `Highest (Verified Phone Number)`,
 
     INFO_COMMAND_GUILD_EXPLICIT_FILTER_DISABLED: `Disabled`,
-    INFO_COMMAND_GUILD_EXPLICIT_FILTER_ROLELESS: `Only scan roleless Members' content`,
+    INFO_COMMAND_GUILD_EXPLICIT_FILTER_ROLELESS: `Only scan roleless Members content`,
     INFO_COMMAND_GUILD_EXPLICIT_FILTER_EVERYONE: `Scan content from everyone`,
 
     INFO_COMMAND_GUILD_DEFAULT_NOTIFICATION_ALL_MESSAGES: `All Messages`,
