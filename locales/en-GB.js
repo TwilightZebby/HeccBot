@@ -377,4 +377,34 @@ An auto-updating preview of what your new Poll will look like is shown below.`,
     INFO_COMMAND_USER_BUTTON_GLOBAL_AVATAR: `Global Avatar`,
     INFO_COMMAND_USER_BUTTON_GLOBAL_BANNER: `Global Banner`,
     INFO_COMMAND_USER_AVATAR_DECORATION: `Avatar Decoration`,
+
+
+    INFO_COMMAND_INVITE_ERROR_INVALID_INVITE: `Sorry, either that wasn't a valid Server Invite, or the Invite doesn't exist on Discord!`,
+
+    INFO_COMMAND_INVITE_DATA: `Data for Invite Code:`,
+    INFO_COMMAND_INVITE_CREATOR: `**Inviter:**`,
+    INFO_COMMAND_INVITE_CREATOR_IS_BOT: `**Inviter is Bot:**`,
+    INFO_COMMAND_INVITE_CREATED: `**Created:**`,
+    INFO_COMMAND_INVITE_EXPIRES: `**Expires:**`,
+
+    INFO_COMMAND_INVITE_CHANNEL_TYPE: `**Channel Type:**`,
+    INFO_COMMAND_INVITE_CHANNEL_NAME: `**Channel Name:**`,
+    INFO_COMMAND_INVITE_TARGET_TYPE: `**Target Type:**`,
+    INFO_COMMAND_INVITE_TARGET_STREAM: `Screenshare`,
+    INFO_COMMAND_INVITE_TARGET_ACTIVITY: `Voice Activity`,
+    INFO_COMMAND_INVITE_TARGET_ACTIVITY_NAME: `**Activity Name:**`,
+
+    INFO_COMMAND_INVITE_SERVER_NAME: `**Server Name:**`,
+    INFO_COMMAND_INVITE_SERVER_PARTNERED: `**Is Partnered:**`,
+    INFO_COMMAND_INVITE_SERVER_VERIFIED: `**Is Verified:**`,
+    INFO_COMMAND_INVITE_SERVER_BOOST_COUNT: `**Boost Count:**`,
+    INFO_COMMAND_INVITE_SERVER_TOTAL_MEMBERS: `**Approximate Total Members:**`,
+    INFO_COMMAND_INVITE_SERVER_ONLINE_MEMBERS: `**Approximate Online Members:**`,
+
+    INFO_COMMAND_INVITE_GENERAL_INFO: `>> General Information`,
+    INFO_COMMAND_INVITE_TARGET_INFO: `>> Target Information`,
+    INFO_COMMAND_INVITE_SERVER_INFO: `>> Server Information`,
+    INFO_COMMAND_INVITE_SERVER_FLAG_INFO: `>> Server Feature Flags`,
+
+    INFO_COMMAND_INVITE_BUTTON_JOIN: `Join Server`,
 };
