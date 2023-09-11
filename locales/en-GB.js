@@ -314,4 +314,26 @@ An auto-updating preview of what your new Poll will look like is shown below.`,
     INFO_COMMAND_SERVER_BUTTON_BANNER: `Banner`,
     INFO_COMMAND_SERVER_BUTTON_INVITE_SPLASH: `Invite Splash`,
     INFO_COMMAND_SERVER_BUTTON_DISCOVERY_SPLASH: `Discovery Splash`,
+
+
+    INFO_COMMAND_ROLE_ERROR_ATEVERYONE_UNSUPPORTED: `Sorry, but I cannot bring up Role information about @everyone`,
+
+    INFO_COMMAND_ROLE_CREATED: `**Role Created:**`,
+    INFO_COMMAND_ROLE_COLOR: `**Colour:**`,
+    INFO_COMMAND_ROLE_HOISTED: `**Hoisted:**`,
+    INFO_COMMAND_ROLE_MANAGED: `**Managed by Integration:**`,
+    INFO_COMMAND_ROLE_MEMBERS: `**Cached Members with Role:**`,
+    INFO_COMMAND_ROLE_ICON: `**Role's Emoji Icon:**`,
+
+    INFO_COMMAND_ROLE_BOT: `**Role for Bot:**`,
+    INFO_COMMAND_ROLE_INTEGRATION: `**Role for Integration:**`,
+    INFO_COMMAND_ROLE_SERVER_BOOST: `**Is Server Booster Role:**`,
+    INFO_COMMAND_ROLE_MONETIZATION: `**Is a Server Subscription Role:**`,
+    INFO_COMMAND_ROLE_PURCHASABLE: `**Is Purchasable:**`,
+    INFO_COMMAND_ROLE_LINKED_CONNECTION: `**Is a Linked Role:**`,
+    INFO_COMMAND_ROLE_FLAG_PROMPT: `In Onboarding Prompt`,
+
+    INFO_COMMAND_ROLE_GENERAL_INFO: `>> General Information`,
+    INFO_COMMAND_ROLE_TAG_INFO: `>> Role Tags`,
+    INFO_COMMAND_ROLE_FLAG_INFO: `>> Role Flags`,
 };
