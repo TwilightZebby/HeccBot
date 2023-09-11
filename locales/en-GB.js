@@ -33,6 +33,10 @@ module.exports = {
     CHANNEL_TYPE_VOICE: `Voice`,
     CHANNEL_TYPE_MEDIA: `Media`,
     CHANNEL_TYPE_UNKNOWN: `Unknown`,
+    // While not Types of Channels, these are specially flagged Channels
+    CHANNEL_AFK: `AFK`,
+    CHANNEL_SYSTEM: `System`,
+    CHANNEL_RULES: `Rules`,
 
 
 
@@ -277,4 +281,37 @@ An auto-updating preview of what your new Poll will look like is shown below.`,
     INFO_COMMAND_CHANNEL_POST_INFO: `>> Forum Post Information`,
     INFO_COMMAND_CHANNEL_VOICE_INFO: `>> Voice Information`,
     INFO_COMMAND_CHANNEL_FLAG_INFO: `>> Channel Flags`,
+
+
+    INFO_COMMAND_SERVER_ERROR_OUTAGE: `Sorry, it seems I'm currently unable to read this Server's information - this could be due to an on-going [Discord outage](https://discordstatus.com).\nIf so, please wait and try again later.`,
+
+    INFO_COMMAND_SERVER_PARTNERED: `**Is Partnered**`,
+    INFO_COMMAND_SERVER_VERIFIED: `**Is Verified**`,
+    INFO_COMMAND_SERVER_OWNER: `**Owner:**`,
+    INFO_COMMAND_SERVER_BOOST_TIER: `**Boost Tier:**`,
+    INFO_COMMAND_SERVER_BOOST_COUNT: `**Boost Count:**`,
+    INFO_COMMAND_SERVER_EMOJIS: `**Emojis:**`,
+    INFO_COMMAND_SERVER_STICKERS: `**Stickers:**`,
+    INFO_COMMAND_SERVER_SOUNDS: `**Soundboard Sounds:**`,
+    INFO_COMMAND_SERVER_ROLES: `**Roles:**`,
+    INFO_COMMAND_SERVER_SCHEDULED_EVENTS: `**Scheduled Events:**`,
+    INFO_COMMAND_SERVER_VANITY: `**Invite Vanity:**`,
+    INFO_COMMAND_SERVER_APPROX_TOTAL_MEMBERS: `**Approximate Total Members:**`,
+    INFO_COMMAND_SERVER_APPROX_ONLINE_MEMBERS: `**Appproximate Online Members:**`,
+
+    INFO_COMMAND_SERVER_VERIFICATION_LEVEL: `**Verification Level:**`,
+    INFO_COMMAND_SERVER_EXPLICITY_FILTER: `**Explicit Content Filter:**`,
+    INFO_COMMAND_SERVER_MFA_MODERATION: `**MFA-enabled Moderation:**`,
+    INFO_COMMAND_SERVER_NSFW_LEVEL: `**Age-restricted Level:**`,
+    INFO_COMMAND_SERVER_DEFAULT_NOTIFICATIONS: `**Default Notifications:**`,
+
+    INFO_COMMAND_SERVER_GENERAL_INFO: `>> General Information`,
+    INFO_COMMAND_SERVER_CHANNEL_INFO: `>> Channels`,
+    INFO_COMMAND_SERVER_SECURITY_INFO: `>> Security & Moderation`,
+    INFO_COMMAND_SERVER_FEATURE_FLAG_INFO: `>> Feature Flags`,
+
+    INFO_COMMAND_SERVER_BUTTON_ICON: `Icon`,
+    INFO_COMMAND_SERVER_BUTTON_BANNER: `Banner`,
+    INFO_COMMAND_SERVER_BUTTON_INVITE_SPLASH: `Invite Splash`,
+    INFO_COMMAND_SERVER_BUTTON_DISCOVERY_SPLASH: `Discovery Splash`,
 };
