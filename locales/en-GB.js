@@ -10,6 +10,12 @@ module.exports = {
 
 
 
+    // ******* FOR HECCBOT DESCRIPTIONS, ETC
+    HECCBOT_DESCRIPTION_SHORT: `A general purpose Discord Bot. Features Action Commands (like {{0}}), Button Role Menus, Polls, and more.`,
+    HECCBOT_DESCRIPTION_LONG: `A general purpose Discord Bot, actually focusing on "general" features.\nExamples of HeccBot's features includes: Button Role Menus, Polls, Action Commands (like {{0}}), Temperature Conversions, ability to Role-lock Custom Emojis, and more!`,
+
+
+
     // ******* GENERIC SLASH COMMAND STUFF
     SLASH_COMMAND_ERROR_GENERIC: `Sorry, but there was a problem trying to run this Slash Command.`,
     SLASH_COMMAND_ERROR_NO_DMS: `Sorry, but this Slash Command __cannot__ be used within DMs (Direct Messages) or Group DMs.`,
@@ -407,4 +413,22 @@ An auto-updating preview of what your new Poll will look like is shown below.`,
     INFO_COMMAND_INVITE_SERVER_FLAG_INFO: `>> Server Feature Flags`,
 
     INFO_COMMAND_INVITE_BUTTON_JOIN: `Join Server`,
+
+
+    INFO_COMMAND_BOT_INFO: `HeccBot Information`,
+    INFO_COMMAND_BOT_DEVELOPER: `Developer`,
+    INFO_COMMAND_BOT_BOT_VERSION: `Bot's Version`,
+    INFO_COMMAND_BOT_DISCORDJS_VERSION: `Discord.JS Version`,
+    INFO_COMMAND_BOT_GLOBAL_COMMANDS: `Global Commands`,
+    INFO_COMMAND_BOT_SERVER_COMMANDS: `Server Commands`,
+    INFO_COMMAND_BOT_TOTAL_COMMANDS: `Total Commands`,
+    INFO_COMMAND_BOT_SERVER_COUNT: `Approximate Server Count`,
+
+    INFO_COMMAND_BOT_BUTTON_PRIVACY: `Privacy Policy`,
+    INFO_COMMAND_BOT_BUTTON_LICENSE: `License`,
+    INFO_COMMAND_BOT_BUTTON_GITHUB: `GitHub`,
+    INFO_COMMAND_BOT_BUTTON_CHANGELOG: `Changelogs`,
+
+
+    // Yay! That's it for INFO command! Now to move on to everything else...
 };
