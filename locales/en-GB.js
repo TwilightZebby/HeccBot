@@ -1,6 +1,12 @@
 module.exports = {
     // ******* GENERIC STUFF
     PLEASE_SELECT_AN_ACTION: `Please select an action`,
+    CREATED: `Created`,
+    TRUE_LOWERCASE: `true`,
+    FALSE_LOWERCASE: `false`,
+    NO_LIMIT: `No limit`,
+    KBPS: `kbps`,
+    SECONDS: `seconds`,
 
 
 
@@ -204,4 +210,71 @@ An auto-updating preview of what your new Poll will look like is shown below.`,
     INFO_COMMAND_APPLICATION_FLAG_MANAGED_EMOJI: `Managed Emoji`,
     INFO_COMMAND_APPLICATION_FLAG_RPC_CONNECTED: `RPC has connected`,
     INFO_COMMAND_APPLICATION_FLAG_VERIFICATION_BLOCKED_BY_GROWTH: `Verification blocked by unusual growth`,
+
+    INFO_COMMAND_CHANNEL_DIRECTORY_UNSUPPORTED: `Sorry, but the [Directory Channel](<https://support.discord.com/hc/en-us/articles/4406046651927>) type isn't supported by this Bot!`,
+    INFO_COMMAND_CHANNEL_MEDIA_UNSUPPORTED: `Sorry, but the [Media Channel](<https://creator-support.discord.com/hc/en-us/articles/14346342766743>) type isn't currently supported yet by this Bot!`,
+    INFO_COMMAND_CHANNEL_DM_UNSUPPORTED: `Sorry, but this Bot cannot be used to fetch information of Direct Messages (DMs) or Group Direct Messages (GDMs)!`,
+
+    INFO_COMMAND_ERROR_CHANNEL_FETCH_FAILED: `Sorry, there was an error trying to fetch information about that Channel.\nI may not have the **View Channels** Permission to be able to see that specified Channel, __or__ something in my code failed.`,
+
+    INFO_COMMAND_CHANNEL_TYPE: `**Channel Type:**`,
+    INFO_COMMAND_CHANNEL_MENTION: `**Channel Mention:**`,
+    INFO_COMMAND_CHANNEL_PARENT: `**Parent Channel:**`,
+    INFO_COMMAND_CHANNEL_CATEGORY_PARENT: `**Parent Category:**`,
+    INFO_COMMAND_CHANNEL_CACHED_CHILDREN: `**Cached Child Channels:**`,
+    INFO_COMMAND_CHANNEL_NSFW: `**Age-Restricted:**`,
+    INFO_COMMAND_CHANNEL_DEFAULT_THREAD_AUTO_HIDE: `**Default Thread Auto-hide Duration:**`,
+    INFO_COMMAND_CHANNEL_MESSAGE_SLOWMODE: `**Message Slowmode:**`,
+    INFO_COMMAND_CHANNEL_AUDIO_BITRATE: `**Audio Bitrate:**`,
+    INFO_COMMAND_CHANNEL_CONNECTED_MEMBERS: `**Cached Connected Members:**`,
+    INFO_COMMAND_CHANNEL_VIDEO_QUALITY_MODE: `**Video Quality Mode:**`,
+
+    INFO_COMMAND_CHANNEL_FORUM_DEFAULT_REACTION: `**Has Set Default Reaction:**`,
+    INFO_COMMAND_CHANNEL_FORUM_DEFAULT_SORT_ORDER: `**Default Sort Order:**`,
+    INFO_COMMAND_CHANNEL_FORUM_SORT_CREATION: `Creation Date`,
+    INFO_COMMAND_CHANNEL_FORUM_SORT_ACTIVITY: `Latest Activity`,
+    INFO_COMMAND_CHANNEL_FORUM_DEFAULT_AUTO_HIDE: `**Default Post Auto-hide Duration:**`,
+    INFO_COMMAND_CHANNEL_FORUM_AUTO_HIDE_DURATION_ONE_HOUR: `One Hour`,
+    INFO_COMMAND_CHANNEL_FORUM_AUTO_HIDE_DURATION_ONE_DAY: `One Day`,
+    INFO_COMMAND_CHANNEL_FORUM_AUTO_HIDE_DURATION_THREE_DAYS: `Three Days`,
+    INFO_COMMAND_CHANNEL_FORUM_AUTO_HIDE_DURATION_ONE_WEEK: `One Week`,
+    INFO_COMMAND_CHANNEL_FORUM_DEFAULT_MESSAGE_SLOWMODE: `**Default Message Slowmode:**`,
+    INFO_COMMAND_CHANNEL_FORUM_POST_SLOWMODE: `**Post Creation Slowmode:**`,
+    INFO_COMMAND_CHANNEL_FORUM_REQUIRES_TAGS: `**Requires Tags for Posts:**`,
+    INFO_COMMAND_CHANNEL_FORUM_TAG_AMOUNT: `**Number of Tags:**`,
+
+    INFO_COMMAND_CHANNEL_STAGE_FULL: `**Is Stage full:**`,
+    INFO_COMMAND_CHANNEL_STAGE_LIMIT: `**Stage Member Limit:**`,
+    INFO_COMMAND_CHANNEL_STAGE_LIVE_STARTED: `**Live Stage started:**`,
+    INFO_COMMAND_CHANNEL_STAGE_EVENT_CONNECTION: `**Connected to Scheduled Event:**`,
+    INFO_COMMAND_CHANNEL_STAGE_TOPIC: `**Stage Topic:**`,
+
+    INFO_COMMAND_CHANNEL_THREAD_CREATOR: `**Thread/Post Creator:**`,
+    INFO_COMMAND_CHANNEL_THREAD_APPLIED_TAGS: `**Number of Applied Tags:**`,
+    INFO_COMMAND_CHANNEL_THREAD_CLOSED: `**Closed:**`,
+    INFO_COMMAND_CHANNEL_THREAD_LOCKED: `**Locked:**`,
+    INFO_COMMAND_CHANNEL_THREAD_AUTO_HIDE_DURATION: `**Auto-hide Duration:**`,
+    INFO_COMMAND_CHANNEL_THREAD_INVITABLE: `**Can Anyone Invite to Private Thread:**`,
+    INFO_COMMAND_CHANNEL_THREAD_PINNED: `**Is Post Pinned:**`,
+
+    INFO_COMMAND_CHANNEL_VOICE_FULL: `**Is Voice full:**`,
+    INFO_COMMAND_CHANNEL_VOICE_LIMIT: `**Voice Member Limit:**`,
+
+    INFO_COMMAND_CHANNEL_FLAG_CLYDE: `ClydeAI`, // Discord please burn ClydeAI already you don't need it so stop bandwagoning :S
+    INFO_COMMAND_CHANNEL_FLAG_RESOURCE: `Is Guide Resource`,
+    INFO_COMMAND_CHANNEL_FLAG_SCHEDULED_DELETION: `Is Scheduled for Deletion`,
+    INFO_COMMAND_CHANNEL_FLAG_SPAM: `Is Spam`,
+    
+    INFO_COMMAND_CHANNEL_GENERAL: `>> General Information`,
+    INFO_COMMAND_CHANNEL_CATEGORY_INFO: `>> Category Information`,
+    INFO_COMMAND_CHANNEL_FORUM_INFO: `>> Forum Information`,
+    INFO_COMMAND_CHANNEL_FORUM_TAG_INFO: `>> Available Tags`,
+    INFO_COMMAND_CHANNEL_ANNOUNCEMENT_INFO: `>> Announcement Information`,
+    INFO_COMMAND_CHANNEL_STAGE_INFO: `>> Stage Information`,
+    INFO_COMMAND_CHANNEL_LIVE_STAGE_INFO: `>> Live Stage Information`,
+    INFO_COMMAND_CHANNEL_TEXT_INFO: `>> Text Information`,
+    INFO_COMMAND_CHANNEL_THREAD_INFO: `>> Thread Information`,
+    INFO_COMMAND_CHANNEL_POST_INFO: `>> Forum Post Information`,
+    INFO_COMMAND_CHANNEL_VOICE_INFO: `>> Voice Information`,
+    INFO_COMMAND_CHANNEL_FLAG_INFO: `>> Channel Flags`,
 };
