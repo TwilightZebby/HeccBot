@@ -198,6 +198,14 @@ An auto-updating preview of what your new Poll will look like is shown below.`,
     INFO_COMMAND_USER_FLAG_VERIFIED_BOT: `Verified Bot`,
     INFO_COMMAND_USER_FLAG_VERIFIED_BOT_DEVELOPER: `Early Verified Bot Developer`,
 
+    INFO_COMMAND_MEMBER_FLAG_REJOIN: `Did Rejoin`,
+    INFO_COMMAND_MEMBER_FLAG_ONBOARDING_STARTED: `Started Onboarding`,
+    INFO_COMMAND_MEMBER_FLAG_ONBOARDING_COMPLETED: `Completed Onboarding`,
+    INFO_COMMAND_MEMBER_FLAG_AUTOMOD_QUARANTIED_BIO: `Quarantied by AutoMod (Profile Bio Filter)`,
+    INFO_COMMAND_MEMBER_FLAG_AUTOMOD_QUARANTIED_NAME: `Quarantied by AutoMod (User/Display/Nick Name Filter)`,
+    INFO_COMMAND_MEMBER_FLAG_GUIDE_TODO_STARTED: `Started Guide ToDo Tasks`,
+    INFO_COMMAND_MEMBER_FLAG_GUIDE_TODO_COMPLETED: `Completed Guide ToDo Tasks`,
+
     INFO_COMMAND_APPLICATION_FLAG_AUTOMOD_BADGE: `Uses AutoMod API`,
     INFO_COMMAND_APPLICATION_FLAG_APPLICATION_COMMANDS_BADGE: `Supports Application Commands`,
     INFO_COMMAND_APPLICATION_FLAG_EMBEDDED: `Embedded`,
@@ -336,4 +344,37 @@ An auto-updating preview of what your new Poll will look like is shown below.`,
     INFO_COMMAND_ROLE_GENERAL_INFO: `>> General Information`,
     INFO_COMMAND_ROLE_TAG_INFO: `>> Role Tags`,
     INFO_COMMAND_ROLE_FLAG_INFO: `>> Role Flags`,
+
+
+    INFO_COMMAND_USER_ERROR_NOT_IN_GUILD: `Sorry, but that User isn't a Member of this Server!`,
+
+    INFO_COMMAND_USER_SERVER_OWNER: `**Is Server Owner:**`,
+    INFO_COMMAND_USER_DISPLAY_NAME: `**Display Name:**`,
+    INFO_COMMAND_USER_JOINED_SERVER: `**Joined Server:**`,
+    INFO_COMMAND_USER_HIGHEST_ROLE: `**Highest Role:**`,
+    INFO_COMMAND_USER_ROLE_COUNT: `**Role Count:**`,
+    INFO_COMMAND_USER_BOOSTING_SERVER: `**Boosting Server Since:**`,
+    INFO_COMMAND_USER_PENDING: `Yet to pass Rules Screening`,
+    INFO_COMMAND_USER_TIMED_OUT: `Currently Timed-out (expires {{0}})`,
+
+    INFO_COMMAND_USER_MENTION: `**Mention:**`,
+    INFO_COMMAND_USER_CREATED: `**Account Created:**`,
+    INFO_COMMAND_USER_BOT: `**Is Bot:**`,
+    INFO_COMMAND_USER_HECCBOT_CREATOR: `**Is Creator of HeccBot**`,
+
+    INFO_COMMAND_USER_BOT_INVITABLE: `**Is Publicly Invitable:**`,
+    INFO_COMMAND_USER_BOT_OAUTH: `**Requires OAuth Grant:**`,
+
+    INFO_COMMAND_USER_MEMBER_INFO: `>> Member Information`,
+    INFO_COMMAND_USER_USER_INFO: `>> User Information`,
+    INFO_COMMAND_USER_USER_FLAGS: `>> User Flags`,
+    INFO_COMMAND_USER_MEMBER_FLAGS: `>> Server Member Flags`,
+    INFO_COMMAND_USER_BOT_INFO: `>> Bot Information`,
+    INFO_COMMAND_USER_BOT_FLAGS: `>> Bot Flags`,
+
+    INFO_COMMAND_USER_BUTTON_ROLES: `Roles`,
+    INFO_COMMAND_USER_BUTTON_MEMBER_AVATAR: `Member Avatar`,
+    INFO_COMMAND_USER_BUTTON_GLOBAL_AVATAR: `Global Avatar`,
+    INFO_COMMAND_USER_BUTTON_GLOBAL_BANNER: `Global Banner`,
+    INFO_COMMAND_USER_AVATAR_DECORATION: `Avatar Decoration`,
 };
