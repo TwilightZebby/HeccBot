@@ -8,7 +8,7 @@ module.exports = {
     KBPS: `kbps`,
     SECONDS: `seconds`,
 
-    ERROR_GENERIC: `An error occurred.`,
+    ERROR_GENERIC: `An error has occurred.`,
 
 
 
@@ -113,7 +113,7 @@ module.exports = {
     // ******* ROLE MENU STUFF
     ROLE_MENU_PREVIEW_EMPTY: `*Role Menu is currently empty. Please use the Select Menu below to configure this Role Menu.*`,
     ROLE_MENU_SET_MENU_TYPE: `Set Menu Type`,
-    ROLE_MENU_SET_MENU_TYPE_DESCRIPTION: `Change how this Menu will behave once saved`,
+    ROLE_MENU_SET_MENU_TYPE_DESCRIPTION: `Change how this Menu will behave once posted`,
     ROLE_MENU_CONFIGURE_EMBED: `Configure Embed`,
     ROLE_MENU_CONFIGURE_EMBED_DESCRIPTION: `Set the Title, Description, and Colour of the Embed`,
     ROLE_MENU_CANCEL_CREATION: `Cancel Creation`,
@@ -162,18 +162,41 @@ An auto-updating preview of what your new Self-Assignable Role Menu will look li
     // ******* POLL STUFF
     POLL_PREVIEW_EMPTY: `*Poll is currently empty. Please use the Select Menu below to configure this Poll.*`,
     POLL_SET_POLL_TYPE: `Set Poll Type`,
-    POLL_SET_POLL_TYPE_DESCRIPTION: `Change how this Poll will behave once saved`,
+    POLL_SET_POLL_TYPE_DESCRIPTION: `Change how this Poll will behave once posted`,
     POLL_CONFIGURE_EMBED: `Configure Embed`,
     POLL_CONFIGURE_EMBED_DESCRIPTION: `Set the Question, Description, and Colour of this Poll`,
+    POLL_ADD_CHOICE: `Add Choice`,
+    POLL_ADD_CHOICE_DESCRIPTION: `Add a Choice to this Poll`,
+    POLL_REMOVE_CHOICE: `Remove Choice`,
+    POLL_REMOVE_CHOICE_DESCRIPTION: `Remove a Choice from this Poll`,
+    POLL_SAVE_AND_POST: `Save & Post`,
+    POLL_SAVE_AND_POST_DESCRIPTION: `Saves this Poll, and posts it in chat for all Members to use.`,
     POLL_CANCEL_CREATION: `Cancel Creation`,
     POLL_CANCEL_CREATION_DESCRIPTION: `Cancels creation of this Poll`,
+
+    POLL_ANSWER_CHOICE: `Answer Choice`,
+    POLL_SELECT_CHOICE_REMOVE: `Pick a Choice to remove`,
+
+    POLL_CONFIGURE_POLL_EMBED: `Configure Poll Embed`,
+    POLL_POLL_QUESTION: `Poll Question`,
+    POLL_POLL_DESCRIPTION: `Poll Description`,
+    POLL_POLL_COLOR: `Embed Colour (in hex format)`,
+
+    POLL_RESULTS_SHOWN_WHEN_ENDED: `*Results will be shown once this Poll ends.*`,
 
     POLL_CREATE_INTRUCTIONS: `__**Poll Creation**__
 Use the Select Menu to configure this Poll's Embed and Buttons. Press an existing Button to edit its label.
     
 An auto-updating preview of what your new Poll will look like is shown below.`,
 
+    POLL_REMOVE_CHOICE_INSTRUCTIONS: `Please use the Select Menu below to pick which Choice you want to remove from your Poll.`,
+
+    POLL_CREATION_CANCELLED: `Creation of your new Poll has been cancelled. You may now dismiss or delete this Message.`,
+    POLL_CREATION_SUCCESS: `Successfully created and posted your new Poll!\n\nTo end your Poll, simply right-click or long-press on the Message containing the Poll, and use the "End Poll" Command under the "App" section. [Image Example]({{0}})`,
+
     POLL_ERROR_ACTIVE_CREATION: `Sorry, but there seems to already be an active Poll creation happening on this Server right now; either by yourself or someone else.\nPlease either wait for the User to finish creating their Poll, or wait for the inactive creation timer to expire (which is about one hour from initial use of this Slash Command).`,
+    POLL_ERROR_EXCEEDED_BUTTON_LIMIT: `Sorry, but you cannot add more than 5 Choices to a single Poll at this time.`,
+    POLL_ERROR_CREATION_GENERIC: `Sorry, but there was an error trying to save your new Poll...`,
 
 
 
