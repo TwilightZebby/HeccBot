@@ -38,6 +38,11 @@ module.exports = {
 
 
 
+    // ******* GENERIC BUTTON STUFF
+    BUTTON_ERROR_GENERIC: `An error occurred while trying to process that Button press...`,
+
+
+
     // ******* CHANNEL TYPES
     CHANNEL_TYPE_DM: `Direct Message (DM)`,
     CHANNEL_TYPE_GROUP_DM: `Group DM`,
@@ -109,6 +114,9 @@ module.exports = {
     ACTION_RETURN_BOOP: `**{{0}}** revenge booped **{{1}}**!`,
     ACTION_RETURN_KISS: `**{{0}}** kissed **{{1}}** in return!`,
 
+    ACTION_ERROR_RETURN_NOT_TARGETED_AT_SELF: `You cannot return an Action that wasn't aimed at you!`,
+    ACTION_ERROR_CANNOT_RETURN_TO_SENDER: `You cannot return the Action you sent!`,
+
 
 
     // ******* FOR TEMPERATURE STUFF
@@ -167,6 +175,7 @@ module.exports = {
     ROLE_MENU_BUTTON_RED: `Red`,
 
     ROLE_MENU_SET_BUTTON_LABEL: `Set Button Label`,
+    ROLE_MENU_EDIT_BUTTON_LABEL: `Edit Button Label`,
     ROLE_MENU_BUTTON_LABEL: `Button Label (Required if no Emoji)`,
     ROLE_MENU_BUTTON_EMOJI: `Button Emoji (Required if no Label)`,
 
@@ -200,6 +209,13 @@ An auto-updating preview of what your updated Role Menu will look like is shown 
     ROLE_MENU_CONFIGURATION_SUCCESS: `Successfully saved your updated Role Menu!`,
 
     DELETE_ROLE_MENU_COMMAND_VALIDATION: `Are you sure you want to delete this Role Menu?`,
+    DELETE_ROLE_MENU_COMMAND_SUCCESS: `Successfully deleted that Role Menu.`,
+    DELETE_ROLE_MENU_COMMAND_CANCELLED: `Cancelled deletion of that Role Menu.`,
+
+    ROLE_BUTTON_AUDIT_LOG_ENTRY: `Role Menu in {{0}}`,
+    ROLE_BUTTON_REVOKE_SUCCESS: `Successfully revoked the {{0}} Role from you.`,
+    ROLE_BUTTON_GRANT_SUCCESS: `Successfully granted the {{0}} Role to you.`,
+    ROLE_BUTTON_SWAP_SUCCESS: `Successfully swapped the {{0}} Role for the {{1}} Role for you.`,
 
     ROLE_MENU_ERROR_MISSING_MANAGE_ROLES_PERMISSION: `:warning: I do not seem to have the **Manage Roles** Permission!\nPlease ensure I have been granted it in order for my Role Module to work.`,
     ROLE_MENU_ERROR_MISSING_SEND_MESSAGES_PERMISSION: `:warning: Sorry, but I cannot create a Role Menu in this Channel without having the **Send Messages** Permission!`,
@@ -217,6 +233,13 @@ An auto-updating preview of what your updated Role Menu will look like is shown 
     EDIT_ROLE_MENU_COMMAND_ERROR_MESSAGE_INVALID: `Sorry, but that Message doesn't seem to contain any of my Role Menus.`,
     EDIT_ROLE_MENU_COMMAND_ERROR_MISSING_MANAGE_ROLE_PERMISSION: `I do not seem to have the **Manage Roles** Permission!\nPlease ensure I have been granted it in order for my Button Role Module to work.`,
     EDIT_ROLE_MENU_COMMAND_ERROR_MISSING_MESSAGE_HISTORY_PERMISSION: `Sorry, but I cannot edit an existing Role Menu in this Channel without having the **Read Message History** Permission!`,
+    
+    DELETE_ROLE_MENU_COMMAND_ERROR_GENERIC: `Sorry, there was an error trying to delete that Role Menu...`,
+
+    ROLE_BUTTON_ERROR_REVOKE_FAILED: `Sorry, something went wrong while trying to revoke the {{0}} Role from you...`,
+    ROLE_BUTTON_ERROR_GRANT_FAILED: `Sorry, something went wrong while trying to grant the {{0}} Role to you...`,
+    ROLE_BUTTON_ERROR_SWAP_FAILED: `Sorry, something went wrong while trying to swap between the {{0}} and {{1}} Roles for you...`,
+    ROLE_BUTTON_ERROR_SINGLE_USE_ONLY: `Sorry! You cannot swap or revoke Roles from yourself using Single-use Role Menus.\nThese Single-use Role Menus are designed to only be usable once per User per Menu.\n\nThe Role you already have from this Menu is the {{0}} Role.`,
 
 
 
@@ -236,6 +259,7 @@ An auto-updating preview of what your updated Role Menu will look like is shown 
     POLL_CANCEL_CREATION_DESCRIPTION: `Cancels creation of this Poll`,
 
     POLL_ANSWER_CHOICE: `Answer Choice`,
+    POLL_EDIT_CHOICE: `Edit Choice`,
     POLL_SELECT_CHOICE_REMOVE: `Pick a Choice to remove`,
 
     POLL_CONFIGURE_POLL_EMBED: `Configure Poll Embed`,
@@ -256,6 +280,10 @@ An auto-updating preview of what your new Poll will look like is shown below.`,
     POLL_CREATION_SUCCESS: `Successfully created and posted your new Poll!\n\nTo end your Poll, simply right-click or long-press on the Message containing the Poll, and use the "End Poll" Command under the "App" section. [Image Example]({{0}})`,
     END_POLL_COMMAND_SUCCESS: `Successfully ended your Poll.`,
 
+    POLL_BUTTON_CHOICES: `Choices:`,
+    POLL_BUTTON_CURRENT_TOTAL_VOTES: `Current Total Votes: {{0}}`,
+    POLL_BUTTON_VOTE_SUCCESS: `Successfully voted for {{0}}`,
+
     POLL_ERROR_ACTIVE_CREATION: `Sorry, but there seems to already be an active Poll creation happening on this Server right now; either by yourself or someone else.\nPlease either wait for the User to finish creating their Poll, or wait for the inactive creation timer to expire (which is about one hour from initial use of this Slash Command).`,
     POLL_ERROR_EXCEEDED_BUTTON_LIMIT: `Sorry, but you cannot add more than 5 Choices to a single Poll at this time.`,
     POLL_ERROR_CREATION_GENERIC: `Sorry, but there was an error trying to save your new Poll...`,
@@ -263,6 +291,9 @@ An auto-updating preview of what your new Poll will look like is shown below.`,
     
     END_POLL_COMMAND_ERROR_MESSAGE_INVALID: `Sorry, but this Command can only be used on Messages containing active Polls.`,
     END_POLL_COMMAND_ERROR_GENERIC: `An error occurred trying to end your Poll...`,
+
+    POLL_BUTTON_ERROR_ALREADY_VOTED: `You have already voted on this Poll!\nIt is not possible to vote multiple times or to edit your vote on Polls made with this Bot.`,
+    POLL_BUTTON_ERROR_GENERIC: `Sorry, an error occurred while trying to process your Poll vote...`,
 
 
 
@@ -497,6 +528,7 @@ An auto-updating preview of what your new Poll will look like is shown below.`,
     INFO_COMMAND_USER_MEMBER_FLAGS: `>> Server Member Flags`,
     INFO_COMMAND_USER_BOT_INFO: `>> Bot Information`,
     INFO_COMMAND_USER_BOT_FLAGS: `>> Bot Flags`,
+    INFO_COMMAND_USER_ROLES: `{{0}} Roles`,
 
     INFO_COMMAND_USER_BUTTON_ROLES: `Roles`,
     INFO_COMMAND_USER_BUTTON_MEMBER_AVATAR: `Member Avatar`,
