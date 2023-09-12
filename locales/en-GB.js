@@ -112,12 +112,23 @@ module.exports = {
 
     // ******* ROLE MENU STUFF
     ROLE_MENU_PREVIEW_EMPTY: `*Role Menu is currently empty. Please use the Select Menu below to configure this Role Menu.*`,
+
     ROLE_MENU_SET_MENU_TYPE: `Set Menu Type`,
-    ROLE_MENU_SET_MENU_TYPE_DESCRIPTION: `Change how this Menu will behave once posted`,
+    ROLE_MENU_SET_MENU_TYPE_DESCRIPTION: `Change how this Menu will behave once saved`,
     ROLE_MENU_CONFIGURE_EMBED: `Configure Embed`,
     ROLE_MENU_CONFIGURE_EMBED_DESCRIPTION: `Set the Title, Description, and Colour of the Embed`,
+    ROLE_MENU_ADD_ROLE: `Add Role`,
+    ROLE_MENU_ADD_ROLE_DESCRIPTION: `Add a Role to this Menu`,
+    ROLE_MENU_REMOVE_ROLE: `Remove Role`,
+    ROLE_MENU_REMOVE_ROLE_DESCRIPTION: `Remove a Role from this Menu`,
+    ROLE_MENU_SAVE_AND_POST: `Save & Post`,
+    ROLE_MENU_SAVE_AND_POST_DESCRIPTION: `Saves this Menu, and posts it in chat for Members to use`,
+    ROLE_MENU_SAVE_AND_UPDATE: `Save & Update`,
+    ROLE_MENU_SAVE_AND_UPDATE_DESCRIPTION: `Saves this Menu, and updates it in chat for Members to use`,
     ROLE_MENU_CANCEL_CREATION: `Cancel Creation`,
     ROLE_MENU_CANCEL_CREATION_DESCRIPTION: `Cancels creation of this Role Menu`,
+    ROLE_MENU_CANCEL_CONFIGURATION: `Cancel Configuration`,
+    ROLE_MENU_CANCEL_CONFIGURATION_DESCRIPTION: `Cancels configuration of this Role Menu`,
     
     ROLE_MENU_ROLE_ADD_SEARCH: `Search for a Role to add`,
     ROLE_MENU_ROLE_REMOVE_SEARCH: `Search for a Role to remove`,
@@ -132,6 +143,16 @@ module.exports = {
     ROLE_MENU_EMBED_DESCRIPTION: `Embed Description`,
     ROLE_MENU_EMBED_COLOR: `Embed Colour (in hex format)`,
 
+    ROLE_MENU_SELECT_BUTTON_COLOR: `Select a Button colour`,
+    ROLE_MENU_BUTTON_BLURPLE: `Blurple`,
+    ROLE_MENU_BUTTON_GREEN: `Green`,
+    ROLE_MENU_BUTTON_GREY: `Grey`,
+    ROLE_MENU_BUTTON_RED: `Red`,
+
+    ROLE_MENU_SET_BUTTON_LABEL: `Set Button Label`,
+    ROLE_MENU_BUTTON_LABEL: `Button Label (Required if no Emoji)`,
+    ROLE_MENU_BUTTON_EMOJI: `Button Emoji (Required if no Label)`,
+
     ROLE_MENU_CREATE_INTRUCTIONS: `__**Self-Assignable Role Menu Creation**__
 Use the Select Menu below to configure this Menu's Type, Embed and Role Buttons. Press an existing Role Button to edit its label and/or emoji.
 If including in Buttons, please make sure to have the relevant Emoji IDs ready (such as in a notepad program); as you won't be able to copy from a Discord Message while an Input Form is open.
@@ -145,17 +166,24 @@ An auto-updating preview of what your new Self-Assignable Role Menu will look li
 • **Swappable** - Users can only have 1 Role per **Swappable** Menu. Attempting to select another Role on the same **Swappable** Menu would swap the two Roles instead. Useful for Colour Role Menus!
 • **Single-use** - Users can only use a **Single-use** Menu once, and are unable to revoke or swap out the selected Role from themselves. Useful for Team Roles in Events.`,
 
-    ROLE_MENU_ROLE_ADD_INSTRUCTIONS: `Please use the Role Select Menu below to pick which Role from this Server you would like to add to your new Role Menu.`,
+    ROLE_MENU_ROLE_ADD_INSTRUCTIONS: `Please use the Role Select Menu below to pick which Role from this Server you would like to add to your Role Menu.`,
     ROLE_MENU_ROLE_REMOVE_INSTRUCTIONS: `Please use the Role Select Menu below to pick which Role you would like to remove from your Role Menu.`,
+    ROLE_MENU_BUTTON_SET_INSTRUCTIONS: `**Selected Role: {{0}}**\nNext, please use the Select Menu below to pick which [colour of Button]({{1}}) you want to use for this Role.`,
 
     ROLE_MENU_CREATION_CANCELLED: `Creation of this Role Menu has been cancelled. You may now dismiss or delete this Message.`,
     ROLE_MENU_CREATION_SUCCESS: `Successfully created and posted your new Role Menu!\n\nIf you need to, you can edit or delete your Role Menu by using my [Message Context Commands]({{0}})`,
+    ROLE_MENU_CONFIGURATION_CANCELLED: `Configuration of this Role Menu has been cancelled. You may now dismiss or delete this Message.`,
+    ROLE_MENU_CONFIGURATION_SUCCESS: `Successfully saved your updated Role Menu!`,
 
     ROLE_MENU_ERROR_MISSING_MANAGE_ROLES_PERMISSION: `:warning: I do not seem to have the **Manage Roles** Permission!\nPlease ensure I have been granted it in order for my Self-Assignable Role Module to work.`,
     ROLE_MENU_ERROR_MISSING_SEND_MESSAGES_PERMISSION: `:warning: Sorry, but I cannot create a Role Menu in this Channel without having the **Send Messages** Permission!`,
     ROLE_MENU_ERROR_ACTIVE_CREATION: `Sorry, but there seems to already be an active Role Menu creation happening on this Server right now; either by yourself or someone else.\nPlease either wait for the User to finish creating their Role Menu, or wait for the inactive creation timer to expire (which is about one hour from initial use of this Slash Command).`,
     ROLE_MENU_ERROR_BUTTON_LIMIT_EXCEEDED: `Sorry, but you cannot add more than 10 Role Buttons to a single Menu.`,
     ROLE_MENU_ERROR_CREATION_GENERIC: `An error occurred while trying to save your new Role Menu...`,
+    ROLE_MENU_ERROR_ROLE_NOT_ON_MENU: `{{0}} is __not__ on this Menu!`,
+    ROLE_MENU_ERROR_ROLE_ALREADY_ON_MENU: `{{0}} has already been added to this Role Menu!`,
+    ROLE_MENU_ERROR_ROLE_TOO_HIGH: `{{0}} is higher than this Bot's own highest Role ({{1}}). As such, this Bot won't be able to grant or revoke it for other Members.`,
+    ROLE_MENU_ERROR_CONFIGURATION_GENERIC: `An error occurred while trying to save your updated Role Menu...`,
 
 
 
@@ -170,7 +198,7 @@ An auto-updating preview of what your new Self-Assignable Role Menu will look li
     POLL_REMOVE_CHOICE: `Remove Choice`,
     POLL_REMOVE_CHOICE_DESCRIPTION: `Remove a Choice from this Poll`,
     POLL_SAVE_AND_POST: `Save & Post`,
-    POLL_SAVE_AND_POST_DESCRIPTION: `Saves this Poll, and posts it in chat for all Members to use.`,
+    POLL_SAVE_AND_POST_DESCRIPTION: `Saves this Poll, and posts it in chat for Members to use`,
     POLL_CANCEL_CREATION: `Cancel Creation`,
     POLL_CANCEL_CREATION_DESCRIPTION: `Cancels creation of this Poll`,
 
