@@ -2,11 +2,15 @@ module.exports = {
     // ******* GENERIC STUFF
     PLEASE_SELECT_AN_ACTION: `Please select an action`,
     CREATED: `Created`,
+    DELETE: `Delete`,
+    CANCEL: `Cancel`,
     TRUE_LOWERCASE: `true`,
     FALSE_LOWERCASE: `false`,
     NO_LIMIT: `No limit`,
     KBPS: `kbps`,
     SECONDS: `seconds`,
+
+    JUMP_TO_SOURCE_MESSAGE: `Jump to source Message`,
 
     ERROR_GENERIC: `An error has occurred.`,
     ERROR_INVALID_COLOR_HEX: `That wasn't a valid hex colour code! Please try again, using a valid hex colour code, including the \`#\` (hash) at the start.`,
@@ -21,9 +25,16 @@ module.exports = {
 
     // ******* GENERIC SLASH COMMAND STUFF
     SLASH_COMMAND_ERROR_GENERIC: `Sorry, but there was a problem trying to run this Slash Command.`,
-    SLASH_COMMAND_ERROR_NO_DMS: `Sorry, but this Slash Command __cannot__ be used within DMs (Direct Messages) or Group DMs.`,
+    SLASH_COMMAND_ERROR_DMS_UNSUPPORTED: `Sorry, but this Slash Command cannot be used within DMs (Direct Messages) or Group DMs.`,
     SLASH_COMMAND_ERROR_ONLY_TEXT_CHANNELS: `Sorry, but this Slash Command can only be used inside of Server Text Channels.\n(You used it in {{0}} Channel)`,
     SLASH_COMMAND_ERROR_DISCORD_OUTAGE: `Sorry, but this Command is unusable while there's a Discord Outage affecting your Server. You can check [Discord's Outage Page](https://discordstatus.com) for extra details.`,
+
+
+
+    // ******* GENERIC CONTEXT COMMAND STUFF
+    CONTEXT_COMMAND_ERROR_DMS_UNSUPPORTED: `Sorry, but this Context Command cannot be used within DMs (Direct Messages) or Group DMs.`,
+    CONTEXT_COMMAND_ERROR_SYSTEM_AND_BOT_MESSAGES_UNSUPPORTED: `Sorry, but this Context Command cannot be used on a System or Bot Message.`,
+    CONTEXT_COMMAND_ERROR_MISSING_CONTENT: `Sorry, but that Message doesn't have any content! (Attachments aren't checked by this Context Command).`,
 
 
 
@@ -101,8 +112,13 @@ module.exports = {
 
 
     // ******* FOR TEMPERATURE STUFF
-    TEMPERATURE_COMMAND_INVALID_TEMPERATURE: `:warning: {{0}}{{1}} is a temperature that cannot exist! (It is below Absolute Zero!)`,
     TEMPERATURE_COMMAND_CONVERTED: `{{0}}{{1}} is about {{2}}{{3}} or {{4}}{{5}}`,
+    TEMPERATURE_COMMAND_SUCCESS_SINGLAR: `Here is your converted temperature:`,
+    TEMPERATURE_COMMAND_SUCCESS_MULTIPLE: `Here are your converted temperatures:`,
+
+    TEMPERATURE_COMMAND_ERROR_INVALID_TEMPERATURE: `:warning: {{0}}{{1}} is a temperature that cannot exist! (It is below Absolute Zero!)`,
+    TEMPERATURE_COMMAND_ERROR_TEMPERATURE_NOT_FOUND: `Sorry, but I couldn't find any temperatures to convert from that Message.`,
+    TEMPERATURE_COMMAND_ERROR_EXCEEDED_TEMPERATURE_LIMIT: `Sorry, but there are too many temperatures found in that Message!\nI have a maximum limit of 10 temperatures per Message that I can convert.`,
 
 
 
@@ -154,12 +170,19 @@ module.exports = {
     ROLE_MENU_BUTTON_LABEL: `Button Label (Required if no Emoji)`,
     ROLE_MENU_BUTTON_EMOJI: `Button Emoji (Required if no Label)`,
 
-    ROLE_MENU_CREATE_INTRUCTIONS: `__**Self-Assignable Role Menu Creation**__
+    ROLE_MENU_CREATE_INTRUCTIONS: `__**Role Menu Creation**__
 Use the Select Menu below to configure this Menu's Type, Embed and Role Buttons. Press an existing Role Button to edit its label and/or emoji.
 If including in Buttons, please make sure to have the relevant Emoji IDs ready (such as in a notepad program); as you won't be able to copy from a Discord Message while an Input Form is open.
 Additionally, both Custom Discord Emojis, and standard Unicode Emojis, are supported.
 
-An auto-updating preview of what your new Self-Assignable Role Menu will look like is shown below.`,
+An auto-updating preview of what your new Role Menu will look like is shown below.`,
+
+    ROLE_MENU_CONFIGURATION_INTRUCTIONS: `__**Role Menu Configuration**__
+Use the Select Menu below to configure this Menu's Type, Embed and Role Buttons. Press an existing Role Button to edit its label and/or emoji.
+If including in Buttons, please make sure to have the relevant Emoji IDs ready (such as in a notepad program); as you won't be able to copy from a Discord Message while an Input Form is open.
+Additionally, both Custom Discord Emojis, and standard Unicode Emojis, are supported.
+
+An auto-updating preview of what your updated Role Menu will look like is shown below.`,
 
     ROLE_MENU_SET_MENU_TYPE_INSTRUCTIONS: `Please use the Select Menu below to pick which type of Role Menu you want.
 
@@ -176,9 +199,12 @@ An auto-updating preview of what your new Self-Assignable Role Menu will look li
     ROLE_MENU_CONFIGURATION_CANCELLED: `Configuration of this Role Menu has been cancelled. You may now dismiss or delete this Message.`,
     ROLE_MENU_CONFIGURATION_SUCCESS: `Successfully saved your updated Role Menu!`,
 
-    ROLE_MENU_ERROR_MISSING_MANAGE_ROLES_PERMISSION: `:warning: I do not seem to have the **Manage Roles** Permission!\nPlease ensure I have been granted it in order for my Self-Assignable Role Module to work.`,
+    DELETE_ROLE_MENU_COMMAND_VALIDATION: `Are you sure you want to delete this Role Menu?`,
+
+    ROLE_MENU_ERROR_MISSING_MANAGE_ROLES_PERMISSION: `:warning: I do not seem to have the **Manage Roles** Permission!\nPlease ensure I have been granted it in order for my Role Module to work.`,
     ROLE_MENU_ERROR_MISSING_SEND_MESSAGES_PERMISSION: `:warning: Sorry, but I cannot create a Role Menu in this Channel without having the **Send Messages** Permission!`,
     ROLE_MENU_ERROR_ACTIVE_CREATION: `Sorry, but there seems to already be an active Role Menu creation happening on this Server right now; either by yourself or someone else.\nPlease either wait for the User to finish creating their Role Menu, or wait for the inactive creation timer to expire (which is about one hour from initial use of this Slash Command).`,
+    ROLE_MENU_ERROR_ACTIVE_CONFIGURATION: `Sorry, but there seems to already be an active Role Menu configuration happening on this Server right now; either by yourself or someone else.\nPlease either wait for the User to finish creating their Role Menu, or wait for the inactive creation timer to expire (which is about one hour from initial use of this Context Command).`,
     ROLE_MENU_ERROR_BUTTON_LIMIT_EXCEEDED: `Sorry, but you cannot add more than 10 Role Buttons to a single Menu.`,
     ROLE_MENU_ERROR_CREATION_GENERIC: `An error occurred while trying to save your new Role Menu...`,
     ROLE_MENU_ERROR_ROLE_NOT_ON_MENU: `{{0}} is __not__ on this Menu!`,
@@ -187,6 +213,10 @@ An auto-updating preview of what your new Self-Assignable Role Menu will look li
     ROLE_MENU_ERROR_CONFIGURATION_GENERIC: `An error occurred while trying to save your updated Role Menu...`,
     ROLE_MENU_ERROR_CANNOT_HAVE_BLANK_BUTTON: `Sorry, but you cannot leave both the Label and the Emoji fields blank.\nPlease try again, ensuring you include at least one of either Label or Emoji (or both).`,
     ROLE_MENU_ERROR_INVALID_EMOJI: `Sorry, but there was an error trying to validate your included Emoji.\nPlease try again, ensuring you use either an [Unicode Emoji]({{0}}), or a raw Discord Custom Emoji string (example: \`<:grass_block:601353406577246208>\`)`,
+    
+    EDIT_ROLE_MENU_COMMAND_ERROR_MESSAGE_INVALID: `Sorry, but that Message doesn't seem to contain any of my Role Menus.`,
+    EDIT_ROLE_MENU_COMMAND_ERROR_MISSING_MANAGE_ROLE_PERMISSION: `I do not seem to have the **Manage Roles** Permission!\nPlease ensure I have been granted it in order for my Button Role Module to work.`,
+    EDIT_ROLE_MENU_COMMAND_ERROR_MISSING_MESSAGE_HISTORY_PERMISSION: `Sorry, but I cannot edit an existing Role Menu in this Channel without having the **Read Message History** Permission!`,
 
 
 
@@ -224,11 +254,15 @@ An auto-updating preview of what your new Poll will look like is shown below.`,
 
     POLL_CREATION_CANCELLED: `Creation of your new Poll has been cancelled. You may now dismiss or delete this Message.`,
     POLL_CREATION_SUCCESS: `Successfully created and posted your new Poll!\n\nTo end your Poll, simply right-click or long-press on the Message containing the Poll, and use the "End Poll" Command under the "App" section. [Image Example]({{0}})`,
+    END_POLL_COMMAND_SUCCESS: `Successfully ended your Poll.`,
 
     POLL_ERROR_ACTIVE_CREATION: `Sorry, but there seems to already be an active Poll creation happening on this Server right now; either by yourself or someone else.\nPlease either wait for the User to finish creating their Poll, or wait for the inactive creation timer to expire (which is about one hour from initial use of this Slash Command).`,
     POLL_ERROR_EXCEEDED_BUTTON_LIMIT: `Sorry, but you cannot add more than 5 Choices to a single Poll at this time.`,
     POLL_ERROR_CREATION_GENERIC: `Sorry, but there was an error trying to save your new Poll...`,
     POLL_ERROR_DUPLICATE_CHOICE: `Sorry, but your new Choice was detected to be a duplicate of an existing Choice already on your Poll!`,
+    
+    END_POLL_COMMAND_ERROR_MESSAGE_INVALID: `Sorry, but this Command can only be used on Messages containing active Polls.`,
+    END_POLL_COMMAND_ERROR_GENERIC: `An error occurred trying to end your Poll...`,
 
 
 
