@@ -9,6 +9,7 @@ module.exports = {
     SECONDS: `seconds`,
 
     ERROR_GENERIC: `An error has occurred.`,
+    ERROR_INVALID_COLOR_HEX: `That wasn't a valid hex colour code! Please try again, using a valid hex colour code, including the \`#\` (hash) at the start.`,
 
 
 
@@ -184,6 +185,8 @@ An auto-updating preview of what your new Self-Assignable Role Menu will look li
     ROLE_MENU_ERROR_ROLE_ALREADY_ON_MENU: `{{0}} has already been added to this Role Menu!`,
     ROLE_MENU_ERROR_ROLE_TOO_HIGH: `{{0}} is higher than this Bot's own highest Role ({{1}}). As such, this Bot won't be able to grant or revoke it for other Members.`,
     ROLE_MENU_ERROR_CONFIGURATION_GENERIC: `An error occurred while trying to save your updated Role Menu...`,
+    ROLE_MENU_ERROR_CANNOT_HAVE_BLANK_BUTTON: `Sorry, but you cannot leave both the Label and the Emoji fields blank.\nPlease try again, ensuring you include at least one of either Label or Emoji (or both).`,
+    ROLE_MENU_ERROR_INVALID_EMOJI: `Sorry, but there was an error trying to validate your included Emoji.\nPlease try again, ensuring you use either an [Unicode Emoji]({{0}}), or a raw Discord Custom Emoji string (example: \`<:grass_block:601353406577246208>\`)`,
 
 
 
@@ -225,6 +228,7 @@ An auto-updating preview of what your new Poll will look like is shown below.`,
     POLL_ERROR_ACTIVE_CREATION: `Sorry, but there seems to already be an active Poll creation happening on this Server right now; either by yourself or someone else.\nPlease either wait for the User to finish creating their Poll, or wait for the inactive creation timer to expire (which is about one hour from initial use of this Slash Command).`,
     POLL_ERROR_EXCEEDED_BUTTON_LIMIT: `Sorry, but you cannot add more than 5 Choices to a single Poll at this time.`,
     POLL_ERROR_CREATION_GENERIC: `Sorry, but there was an error trying to save your new Poll...`,
+    POLL_ERROR_DUPLICATE_CHOICE: `Sorry, but your new Choice was detected to be a duplicate of an existing Choice already on your Poll!`,
 
 
 
