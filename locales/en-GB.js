@@ -8,6 +8,8 @@ module.exports = {
     KBPS: `kbps`,
     SECONDS: `seconds`,
 
+    ERROR_GENERIC: `An error occurred.`,
+
 
 
     // ******* FOR HECCBOT DESCRIPTIONS, ETC
@@ -112,8 +114,23 @@ module.exports = {
     ROLE_MENU_PREVIEW_EMPTY: `*Role Menu is currently empty. Please use the Select Menu below to configure this Role Menu.*`,
     ROLE_MENU_SET_MENU_TYPE: `Set Menu Type`,
     ROLE_MENU_SET_MENU_TYPE_DESCRIPTION: `Change how this Menu will behave once saved`,
+    ROLE_MENU_CONFIGURE_EMBED: `Configure Embed`,
+    ROLE_MENU_CONFIGURE_EMBED_DESCRIPTION: `Set the Title, Description, and Colour of the Embed`,
     ROLE_MENU_CANCEL_CREATION: `Cancel Creation`,
     ROLE_MENU_CANCEL_CREATION_DESCRIPTION: `Cancels creation of this Role Menu`,
+    
+    ROLE_MENU_ROLE_ADD_SEARCH: `Search for a Role to add`,
+    ROLE_MENU_ROLE_REMOVE_SEARCH: `Search for a Role to remove`,
+    ROLE_MENU_SELECT_MENU_TYPE: `Select a Menu Type`,
+    ROLE_MENU_MENU_TYPE_TOGGLE: `Toggle`,
+    ROLE_MENU_MENU_TYPE_SWAPPABLE: `Swappable`,
+    ROLE_MENU_MENU_TYPE_SINGLE: `Single-use`,
+    ROLE_MENU_TYPE_FOOTER: `Menu Type: {{0}}`,
+
+    ROLE_MENU_CONFIGURE_MENU_EMBED: `Configure Menu Embed`,
+    ROLE_MENU_EMBED_TITLE: `Embed Title`,
+    ROLE_MENU_EMBED_DESCRIPTION: `Embed Description`,
+    ROLE_MENU_EMBED_COLOR: `Embed Colour (in hex format)`,
 
     ROLE_MENU_CREATE_INTRUCTIONS: `__**Self-Assignable Role Menu Creation**__
 Use the Select Menu below to configure this Menu's Type, Embed and Role Buttons. Press an existing Role Button to edit its label and/or emoji.
@@ -122,9 +139,23 @@ Additionally, both Custom Discord Emojis, and standard Unicode Emojis, are suppo
 
 An auto-updating preview of what your new Self-Assignable Role Menu will look like is shown below.`,
 
+    ROLE_MENU_SET_MENU_TYPE_INSTRUCTIONS: `Please use the Select Menu below to pick which type of Role Menu you want.
+
+• **Toggle** - Your standard Role Menu Type. Behaves like a classic Reaction Role Menu, but with Buttons instead.
+• **Swappable** - Users can only have 1 Role per **Swappable** Menu. Attempting to select another Role on the same **Swappable** Menu would swap the two Roles instead. Useful for Colour Role Menus!
+• **Single-use** - Users can only use a **Single-use** Menu once, and are unable to revoke or swap out the selected Role from themselves. Useful for Team Roles in Events.`,
+
+    ROLE_MENU_ROLE_ADD_INSTRUCTIONS: `Please use the Role Select Menu below to pick which Role from this Server you would like to add to your new Role Menu.`,
+    ROLE_MENU_ROLE_REMOVE_INSTRUCTIONS: `Please use the Role Select Menu below to pick which Role you would like to remove from your Role Menu.`,
+
+    ROLE_MENU_CREATION_CANCELLED: `Creation of this Role Menu has been cancelled. You may now dismiss or delete this Message.`,
+    ROLE_MENU_CREATION_SUCCESS: `Successfully created and posted your new Role Menu!\n\nIf you need to, you can edit or delete your Role Menu by using my [Message Context Commands]({{0}})`,
+
     ROLE_MENU_ERROR_MISSING_MANAGE_ROLES_PERMISSION: `:warning: I do not seem to have the **Manage Roles** Permission!\nPlease ensure I have been granted it in order for my Self-Assignable Role Module to work.`,
     ROLE_MENU_ERROR_MISSING_SEND_MESSAGES_PERMISSION: `:warning: Sorry, but I cannot create a Role Menu in this Channel without having the **Send Messages** Permission!`,
     ROLE_MENU_ERROR_ACTIVE_CREATION: `Sorry, but there seems to already be an active Role Menu creation happening on this Server right now; either by yourself or someone else.\nPlease either wait for the User to finish creating their Role Menu, or wait for the inactive creation timer to expire (which is about one hour from initial use of this Slash Command).`,
+    ROLE_MENU_ERROR_BUTTON_LIMIT_EXCEEDED: `Sorry, but you cannot add more than 10 Role Buttons to a single Menu.`,
+    ROLE_MENU_ERROR_CREATION_GENERIC: `An error occurred while trying to save your new Role Menu...`,
 
 
 
