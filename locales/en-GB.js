@@ -431,4 +431,18 @@ An auto-updating preview of what your new Poll will look like is shown below.`,
 
 
     // Yay! That's it for INFO command! Now to move on to everything else...
+    
+    // ******* DSTATUS COMMAND
+    DSTATUS_COMMAND_ERROR_THREAD_INVALID: `Sorry, but a Thread cannot be selected if its within a Text or Announcement Channel.\nIf you want to subscribe a Thread to the Discord Outage Feed, please pick a Thread that is within a Forum Channel.\nOtherwise, you can select a standard Text Channel instead.`,
+    DSTATUS_COMMAND_ERROR_MISSING_PERMISSIONS: `Sorry, but my Discord Outage Feed cannot be subscribed to Channels (or Forum Posts) in which I do not have *both* the **View Channel** and **Manage Webhooks** Permissions for!\nPlease try again, once I have been granted those Permissions in that Channel.`,
+    DSTATUS_COMMAND_ERROR_SUBSCRIPTION_GENERIC: `Sorry, but something went wrong while trying to subscribe to the Discord Outage Feed...`,
+    DSTATUS_COMMAND_ERROR_ALREADY_SUBSCRIBED: `This Server is already subscribed to the Discord Outage Feed!\nIf you want to remove an existing Feed in this Server, please use the {{0}} Command.`,
+    DSTATUS_COMMAND_ERROR_NOT_CURRENTLY_SUBSCRIBED: `There is no found Discord Outage Feed for this Server - as such, you cannot unsubscribe from a non-existent Feed subscription!`,
+    DSTATUS_COMMAND_ERROR_WEBHOOK_DELETION_FAILED: `An error occurred while I was trying to delete the Webhook for this Feed.\nYou will have to delete the Webhook manually in Server Settings > Integrations.`,
+    DSTATUS_COMMAND_ERROR_UNSUBSCRIPTION_GENERIC: `Sorry, something went wrong while trying to unsubscribe from the Discord Outage Feed...`,
+
+    DSTATUS_COMMAND_SUBSCRIPTION_SUCCESS_AUDIT_LOG: `{{0}} subscribed to the Discord Outage Feed`,
+    DSTATUS_COMMAND_SUBSCRIPTION_SUCCESS: `Successfully subscribed this Server to the Discord Outage Feed!\nAny Discord Outages will be notified about in the {{0}} Channel.`,
+    DSTATUS_COMMAND_UNSUBSCRIPTION_SUCCESS_AUDIT_LOG: `{{0}} unsubscribed from the Discord Outage Feed`,
+    DSTATUS_COMMAND_UNSUBSCRIPTION_SUCCESS: `Successfully unsubscribed from the Discord Outage Feed.\nThis Server will no longer receive notifications from this Bot about Discord's Outages.{{0}}`,
 };
