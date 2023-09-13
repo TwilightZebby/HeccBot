@@ -10,6 +10,12 @@ module.exports = {
     // Command's Description
     Description: `Display a specific rule for this Server`,
 
+    // Command's Localised Descriptions
+    LocalisedDescriptions: {
+        'en-GB': `Display a specific rule for this Server`,
+        'en-US': `Display a specific rule for this Server`
+    },
+
     // Command's Category
     Category: "INFORMATIONAL",
 
@@ -49,11 +55,16 @@ module.exports = {
 
         Data.name = this.Name;
         Data.description = this.Description;
+        Data.descriptionLocalizations = this.LocalisedDescriptions;
         Data.type = ApplicationCommandType.ChatInput;
         Data.options = [{
             type: ApplicationCommandOptionType.String,
             name: "rule",
-            description: "The Server Rule to fetch",
+            description: "The Server Rule to display",
+            descriptionLocalizations: {
+                'en-GB': `The Server Rule to display`,
+                'en-US': `The Server Rule to display`
+            },
             autocomplete: true,
             required: true
         }];

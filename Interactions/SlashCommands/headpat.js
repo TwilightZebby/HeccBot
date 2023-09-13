@@ -9,6 +9,12 @@ module.exports = {
     // Command's Description
     Description: `Comfort someone with a gentle headpat`,
 
+    // Command's Localised Descriptions
+    LocalisedDescriptions: {
+        'en-GB': `Comfort someone with a gentle headpat`,
+        'en-US': `Comfort someone with a gentle headpat`
+    },
+
     // Command's Category
     Category: "ACTION",
 
@@ -48,6 +54,7 @@ module.exports = {
 
         Data.name = this.Name;
         Data.description = this.Description;
+        Data.descriptionLocalizations = this.LocalisedDescriptions;
         Data.type = ApplicationCommandType.ChatInput;
         Data.dmPermission = false;
         Data.options = [
@@ -55,24 +62,40 @@ module.exports = {
                 type: ApplicationCommandOptionType.Mentionable,
                 name: "person",
                 description: "Person you want to headpat",
+                descriptionLocalizations: {
+                    'en-GB': `Person you want to headpat`,
+                    'en-US': `Person you want to headpat`
+                },
                 required: true
             },
             {
                 type: ApplicationCommandOptionType.Boolean,
                 name: "gif",
                 description: "Should a random GIF be displayed? (default: false)",
+                descriptionLocalizations: {
+                    'en-GB': `Should a random GIF be displayed? (default: false)`,
+                    'en-US': `Should a random GIF be displayed? (default: false)`
+                },
                 required: false
             },
             {
                 type: ApplicationCommandOptionType.Boolean,
                 name: "button",
                 description: "Should the \"Return Headpat\" Button be included? (default: true)",
+                descriptionLocalizations: {
+                    'en-GB': `Should the \"Return Headpat\" Button be included? (default: true)`,
+                    'en-US': `Should the \"Return Headpat\" Button be included? (default: true)`
+                },
                 required: false
             },
             {
                 type: ApplicationCommandOptionType.String,
                 name: "reason",
                 description: "A custom message to be added onto the end of the default message",
+                descriptionLocalizations: {
+                    'en-GB': `A custom message to be added onto the end of the default message`,
+                    'en-US': `A custom message to be added onto the end of the default message`
+                },
                 max_length: 500,
                 required: false
             }

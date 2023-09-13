@@ -9,6 +9,12 @@ module.exports = {
     // Command's Description
     Description: `Description`,
 
+    // Command's Localised Descriptions
+    LocalisedDescriptions: {
+        'en-GB': `British Description`,
+        'en-US': `American Description`
+    },
+
     // Command's Category
     Category: "GENERAL",
 
@@ -48,6 +54,7 @@ module.exports = {
 
         Data.name = this.Name;
         Data.description = this.Description;
+        Data.descriptionLocalizations = this.LocalisedDescriptions;
         Data.type = ApplicationCommandType.ChatInput;
 
         return Data;

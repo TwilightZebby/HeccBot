@@ -7,7 +7,13 @@ module.exports = {
     Name: "someone",
 
     // Command's Description
-    Description: `Simulates an @someone mention, just like the April Fools feature of old!`,
+    Description: `Simulates an @someone mention, just like Discord's old April Fools feature!`,
+
+    // Command's Localised Descriptions
+    LocalisedDescriptions: {
+        'en-GB': `Simulates an @someone mention, just like Discord's old April Fools feature!`,
+        'en-US': `Simulates an @someone mention, just like Discord's old April Fools feature!`
+    },
 
     // Command's Category
     Category: "APRIL_FOOLS",
@@ -48,6 +54,7 @@ module.exports = {
 
         Data.name = this.Name;
         Data.description = this.Description;
+        Data.descriptionLocalizations = this.LocalisedDescriptions;
         Data.type = ApplicationCommandType.ChatInput;
         Data.dmPermission = false;
         Data.defaultMemberPermissions = PermissionFlagsBits.MentionEveryone;

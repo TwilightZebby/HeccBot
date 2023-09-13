@@ -31,7 +31,13 @@ module.exports = {
     Name: "rolemenu",
 
     // Command's Description
-    Description: `Use to create Self-Assignable Role Menus`,
+    Description: `Use to create Button Role Menus`,
+
+    // Command's Localised Descriptions
+    LocalisedDescriptions: {
+        'en-GB': `Use to create Button Role Menus`,
+        'en-US': `Use to create Button Role Menus`
+    },
 
     // Command's Category
     Category: "GENERAL",
@@ -72,6 +78,7 @@ module.exports = {
 
         Data.name = this.Name;
         Data.description = this.Description;
+        Data.descriptionLocalizations = this.LocalisedDescriptions;
         Data.type = ApplicationCommandType.ChatInput;
         Data.dmPermission = false;
         Data.defaultMemberPermissions = PermissionFlagsBits.ManageRoles;
@@ -79,7 +86,11 @@ module.exports = {
             {
                 type: ApplicationCommandOptionType.Subcommand,
                 name: "create",
-                description: "Create a new Self-Assignable Role Menu"
+                description: "Create a new Button Role Menu",
+                descriptionLocalizations: {
+                    'en-GB': `Create a new Button Role Menu`,
+                    'en-US': `Create a new Button Role Menu`
+                },
             }
         ];
 

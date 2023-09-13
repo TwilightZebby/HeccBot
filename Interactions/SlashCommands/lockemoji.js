@@ -9,6 +9,12 @@ module.exports = {
     // Command's Description
     Description: `Upload a Custom Emoji to this Server, that can be locked behind a Role`,
 
+    // Command's Localised Descriptions
+    LocalisedDescriptions: {
+        'en-GB': `Upload a Custom Emoji to this Server, that can be locked behind a Role`,
+        'en-US': `Upload a Custom Emoji to this Server, that can be locked behind a Role`
+    },
+
     // Command's Category
     Category: "MANAGEMENT",
 
@@ -48,6 +54,7 @@ module.exports = {
 
         Data.name = this.Name;
         Data.description = this.Description;
+        Data.descriptionLocalizations = this.LocalisedDescriptions;
         Data.type = ApplicationCommandType.ChatInput;
         Data.defaultMemberPermissions = PermissionFlagsBits.ManageRoles;
         Data.dmPermission = false;
@@ -56,12 +63,20 @@ module.exports = {
                 type: ApplicationCommandOptionType.Attachment,
                 name: "emoji",
                 description: "PNG or GIF of your Custom Emoji",
+                descriptionLocalizations: {
+                    'en-GB': `PNG or GIF of your Custom Emoji`,
+                    'en-US': `PNG or GIF of your Custom Emoji`
+                },
                 required: true
             },
             {
                 type: ApplicationCommandOptionType.Role,
                 name: "role",
                 description: "Role to lock your Custom Emoji behind",
+                descriptionLocalizations: {
+                    'en-GB': `Role to lock your Custom Emoji behind`,
+                    'en-US': `Role to lock your Custom Emoji behind`
+                },
                 required: true
             }
         ];

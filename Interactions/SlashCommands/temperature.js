@@ -8,6 +8,12 @@ module.exports = {
     // Command's Description
     Description: `Convert a given temperature between degrees C, F, and K`,
 
+    // Command's Localised Descriptions
+    LocalisedDescriptions: {
+        'en-GB': `Convert a given temperature between degrees C, F, and K`,
+        'en-US': `Convert a given temperature between degrees F, C, and K`
+    },
+
     // Command's Category
     Category: "INFORMATIONAL",
 
@@ -47,6 +53,7 @@ module.exports = {
 
         Data.name = this.Name;
         Data.description = this.Description;
+        Data.descriptionLocalizations = this.LocalisedDescriptions;
         Data.type = ApplicationCommandType.ChatInput;
         Data.dmPermission = true;
         Data.options = [
@@ -54,6 +61,10 @@ module.exports = {
                 type: ApplicationCommandOptionType.Integer,
                 name: "value",
                 description: "The temperature value you want to convert",
+                descriptionLocalizations: {
+                    'en-GB': `The temperature value you want to convert`,
+                    'en-US': `The temperature value you want to convert`
+                },
                 min_value: -460,
                 max_value: 1000,
                 required: true
@@ -62,11 +73,36 @@ module.exports = {
                 type: ApplicationCommandOptionType.String,
                 name: "scale",
                 description: "The temperature scale of the original value",
+                descriptionLocalizations: {
+                    'en-GB': `The temperature scale of the original value`,
+                    'en-US': `The temperature scale of the original value`
+                },
                 required: true,
                 choices: [
-                    { name: "Celsius", value: "c" },
-                    { name: "Fahernheit", value: "f" },
-                    { name: "Kelvin", value: "k" }
+                    { 
+                        name: "Celsius",
+                        nameLocalizations: {
+                            'en-GB': `Celsius`,
+                            'en-US': `Celsius`
+                        },
+                        value: "c"
+                    },
+                    { 
+                        name: "Fahernheit",
+                        nameLocalizations: {
+                            'en-GB': `Fahernheit`,
+                            'en-US': `Fahernheit`
+                        },
+                        value: "f"
+                    },
+                    { 
+                        name: "Kelvin",
+                        nameLocalizations: {
+                            'en-GB': `Kelvin`,
+                            'en-US': `Kelvin`
+                        },
+                        value: "k"
+                    }
                 ]
             }
         ];

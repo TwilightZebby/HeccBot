@@ -8,7 +8,13 @@ module.exports = {
     Name: "dstatus",
 
     // Command's Description
-    Description: `Enable/Disable receiving Discord Outage updates in your Server`,
+    Description: `Enable or Disable receiving Discord Outage updates in your Server`,
+
+    // Command's Localised Descriptions
+    LocalisedDescriptions: {
+        'en-GB': `Enable or Disable receiving Discord Outage updates in your Server`,
+        'en-US': `Enable or Disable receiving Discord Outage updates in your Server`
+    },
 
     // Command's Category
     Category: "GENERAL",
@@ -51,6 +57,7 @@ module.exports = {
 
         Data.name = this.Name;
         Data.description = this.Description;
+        Data.descriptionLocalizations = this.LocalisedDescriptions;
         Data.type = ApplicationCommandType.ChatInput;
         Data.dmPermission = false;
         Data.defaultMemberPermissions = PermissionFlagsBits.ManageGuild;
@@ -59,11 +66,19 @@ module.exports = {
                 type: ApplicationCommandOptionType.Subcommand,
                 name: "subscribe",
                 description: "Subscribe (enable) to receiving Discord Outage updates",
+                descriptionLocalizations: {
+                    'en-GB': `Subscribe (enable) to receiving Discord Outage updates`,
+                    'en-US': `Subscribe (enable) to receiving Discord Outage updates`
+                },
                 options: [
                     {
                         type: ApplicationCommandOptionType.Channel,
                         name: "channel",
                         description: "Channel to receive Discord Outage updates in",
+                        descriptionLocalizations: {
+                            'en-GB': `Channel to receive Discord Outage updates in`,
+                            'en-US': `Channel to receive Discord Outage updates in`
+                        },
                         channel_types: [ ChannelType.GuildText, ChannelType.PublicThread ], // Public Threads only allowed because Forum Channels
                         required: true
                     }
@@ -72,7 +87,11 @@ module.exports = {
             {
                 type: ApplicationCommandOptionType.Subcommand,
                 name: "unsubscribe",
-                description: "Unsubscribe (disable) receiving Discord Outage updates"
+                description: "Unsubscribe (disable) receiving Discord Outage updates",
+                descriptionLocalizations: {
+                    'en-GB': `Unsubscribe (disable) receiving Discord Outage updates`,
+                    'en-US': `Unsubscribe (disable) receiving Discord Outage updates`
+                },
             }
         ]
 

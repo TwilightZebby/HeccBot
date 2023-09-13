@@ -17,7 +17,13 @@ module.exports = {
     Name: "poll",
 
     // Command's Description
-    Description: `Create Polls that Users can vote on!`,
+    Description: `Create a Poll that Users can vote on`,
+
+    // Command's Localised Descriptions
+    LocalisedDescriptions: {
+        'en-GB': `Create a Poll that Users can vote on`,
+        'en-US': `Create a Poll that Users can vote on`
+    },
 
     // Command's Category
     Category: "MANAGEMENT",
@@ -58,6 +64,7 @@ module.exports = {
 
         Data.name = this.Name;
         Data.description = this.Description;
+        Data.descriptionLocalizations = this.LocalisedDescriptions;
         Data.type = ApplicationCommandType.ChatInput;
         Data.dmPermission = false;
         Data.defaultMemberPermissions = PermissionFlagsBits.ManageChannels;
@@ -65,7 +72,11 @@ module.exports = {
             {
                 type: ApplicationCommandOptionType.Subcommand,
                 name: "create",
-                description: "Create a new Poll for Users to vote in"
+                description: "Create a new Poll for Users to vote in",
+                descriptionLocalizations: {
+                    'en-GB': `Create a new Poll for Users to vote in`,
+                    'en-US': `Create a new Poll for Users to vote in`
+                },
             }
         ];
 

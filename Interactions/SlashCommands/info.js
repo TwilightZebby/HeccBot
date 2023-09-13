@@ -585,7 +585,13 @@ module.exports = {
     Name: "info",
 
     // Command's Description
-    Description: `Shows information about the Server, this Bot, a Discord Invite, or a User`,
+    Description: `Shows information about this Bot, this Server, a User, Role, Channel, or Invite.`,
+
+    // Command's Localised Descriptions
+    LocalisedDescriptions: {
+        'en-GB': `Shows information about this Bot, this Server, a User, Role, Channel, or Invite.`,
+        'en-US': `Shows information about this Bot, this Server, a User, Role, Channel, or Invite.`
+    },
 
     // Command's Category
     Category: "INFORMATION",
@@ -636,23 +642,45 @@ module.exports = {
 
         Data.name = this.Name;
         Data.description = this.Description;
+        Data.descriptionLocalizations = this.LocalisedDescriptions;
         Data.type = ApplicationCommandType.ChatInput;
         Data.dmPermission = false;
         Data.options = [
             {
                 type: ApplicationCommandOptionType.Subcommand,
+                name: "bot",
+                description: "Display information about this Bot",
+                descriptionLocalizations: {
+                    'en-GB': `Display information about this Bot`,
+                    'en-US': `Display information about this Bot`
+                },
+            },
+            {
+                type: ApplicationCommandOptionType.Subcommand,
                 name: "server",
-                description: "Display information about this Server"
+                description: "Display information about this Server",
+                descriptionLocalizations: {
+                    'en-GB': `Display information about this Server`,
+                    'en-US': `Display information about this Server`
+                },
             },
             {
                 type: ApplicationCommandOptionType.Subcommand,
                 name: "user",
                 description: "Display information about either yourself, or another User",
+                descriptionLocalizations: {
+                    'en-GB': `Display information about either yourself, or another User`,
+                    'en-US': `Display information about either yourself, or another User`
+                },
                 options: [
                     {
                         type: ApplicationCommandOptionType.User,
                         name: "user",
                         description: "User to display information about",
+                        descriptionLocalizations: {
+                            'en-GB': `User to display information about`,
+                            'en-US': `User to display information about`
+                        },
                         required: false
                     }
                 ]
@@ -661,11 +689,19 @@ module.exports = {
                 type: ApplicationCommandOptionType.Subcommand,
                 name: "invite",
                 description: "Display information about a given Discord Server Invite",
+                descriptionLocalizations: {
+                    'en-GB': `Display information about a given Discord Server Invite`,
+                    'en-US': `Display information about a given Discord Server Invite`
+                },
                 options: [
                     {
                         type: ApplicationCommandOptionType.String,
                         name: "code",
                         description: "The Discord Invite Code or Link",
+                        descriptionLocalizations: {
+                            'en-GB': `The Discord Invite Code or Link`,
+                            'en-US': `The Discord Invite Code or Link`
+                        },
                         max_length: 150,
                         required: true
                     }
@@ -673,18 +709,21 @@ module.exports = {
             },
             {
                 type: ApplicationCommandOptionType.Subcommand,
-                name: "bot",
-                description: "Display information about this Bot"
-            },
-            {
-                type: ApplicationCommandOptionType.Subcommand,
                 name: "role",
                 description: "Display information about a Role from this Server",
+                descriptionLocalizations: {
+                    'en-GB': `Display information about a Role from this Server`,
+                    'en-US': `Display information about a Role from this Server`
+                },
                 options: [
                     {
                         type: ApplicationCommandOptionType.Role,
                         name: "role",
                         description: "Role to display information about",
+                        descriptionLocalizations: {
+                            'en-GB': `Role to display information about`,
+                            'en-US': `Role to display information about`
+                        },
                         required: true
                     }
                 ]
@@ -693,11 +732,19 @@ module.exports = {
                 type: ApplicationCommandOptionType.Subcommand,
                 name: "channel",
                 description: "Display information about either this Channel, or a specified Channel",
+                descriptionLocalizations: {
+                    'en-GB': `Display information about either this Channel, or a specified Channel`,
+                    'en-US': `Display information about either this Channel, or a specified Channel`
+                },
                 options: [
                     {
                         type: ApplicationCommandOptionType.Channel,
                         name: "channel",
                         description: "Channel to display information about",
+                        descriptionLocalizations: {
+                            'en-GB': `Channel to display information about`,
+                            'en-US': `Channel to display information about`
+                        },
                         required: false
                     }
                 ]
