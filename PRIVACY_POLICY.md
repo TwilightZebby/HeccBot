@@ -1,7 +1,7 @@
 # HeccBot - Privacy Policy
-Last Updated: 13th September 2023
+Last Updated: 16th September 2023
 
-Effective: TBC
+Effective: 30th September 2023
 
 ---
 
