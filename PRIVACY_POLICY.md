@@ -1,5 +1,6 @@
 # HeccBot - Privacy Policy
 Last Updated: 13th September 2023
+
 Effective: TBC
 
 ---
@@ -33,15 +34,11 @@ Should the User want to remove a Poll, all they need to do is use the "End Poll"
 
 ---
 
-**The Bot** also listens to the `GUILD_CREATE` API Event for when it is added to any Discord Servers (named as "Guilds" in the API). This is so the Developer, TwilightZebby, can manually approve or deny Servers from using **The Bot**; due to it being a private-use only Bot (as in, operating on an allow list on which Servers can use **The Bot**). From that API Event, only the following information is logged to a private Text Channel in TwilightZebby's personal Server:
-
-- Server's Name & Icon (if any)
-- Server Owner's Username, Discrim/Tag, and User ID
-- Approximate number of Members the Server has at the time of **The Bot** joining it
-
----
-
 Finally, **The Bot** also makes use of the publicly available locale data (i.e: what language Users and Servers have set) Discord sends to all Bots using Discord's public API for "Interactions" (e.g: Slash Commands, Context Commands, Select Menus, Buttons, Modals). This locale data is only used for knowing which language **The Bot** should send its responses in, and is __NOT__ stored or tracked in any way.
+
+You can see the public API Documentation regarding what the locale data includes on these official Discord API Documentation Pages:
+- [API Locale Reference](https://discord.com/developers/docs/reference#locales)
+- [Locale field in Interaction Objects](https://discord.com/developers/docs/interactions/receiving-and-responding#interaction-object)
 
 ---
 
