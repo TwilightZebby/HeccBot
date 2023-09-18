@@ -12,7 +12,7 @@ module.exports.locales = locales;
  * @param {String} stringId 
  * @param  {...any} params 
  * 
- * @returns {String}
+ * @returns {String} Localised String
  */
 module.exports.localize = (locale, stringId, ...params) => {
     // Attempt to fetch localised string right away
