@@ -151,7 +151,7 @@ module.exports = {
 
     ACTION_COMMAND_MEE6_HEADPAT: `***{{0}}** gave **{{1}}** a headpat...*`,
     ACTION_COMMAND_MEE6_HUG: `***{{0}}** hugged **{{1}}**...*`,
-    ACTION_COMMAND_MEE6_BONK: `**{{0}}** bonked **{{1}}**! >:D`,
+    ACTION_COMMAND_MEE6_BONK: `**{{0}}** bonked **{{1}}**!`,
     ACTION_COMMAND_MEE6_BOOP: `***{{0}}** booped **{{1}}**...*`,
     ACTION_COMMAND_MEE6_KISS: `OK, listen **{{0}}**, **{{1}}** doesn't deserve a kiss.`,
 

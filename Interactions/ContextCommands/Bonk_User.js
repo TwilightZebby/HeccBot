@@ -1,6 +1,7 @@
 const { ApplicationCommandType, ApplicationCommandData, ContextMenuCommandInteraction } = require("discord.js");
 const { DiscordClient } = require("../../constants.js");
 const ActionStrings = require('../../JsonFiles/actionMessages.json');
+const { localize } = require("../../BotModules/LocalizationModule.js");
 
 // REGEXS
 const AuthorRegEx = new RegExp(/{AUTHOR}/g);
@@ -65,27 +66,27 @@ module.exports = {
         // @user (self)
         if ( PersonOption.id === contextCommand.user.id )
         {
-            displayMessage = ActionStrings['SELF_USER'][`bonk`];
-            displayMessage = displayMessage.replace(AuthorRegEx, `${contextCommand.member.displayName}`);
+            displayMessage = localize(contextCommand.guildLocale, `ACTION_COMMAND_SELF_USER_BONK`, contextCommand.member.displayName);
         }
         // @user (this bot)
         else if ( PersonOption.id === DiscordClient.user.id )
         {
-            displayMessage = ActionStrings['HECCBOT'][`bonk`];
-            displayMessage = displayMessage.replace(AuthorRegEx, `${contextCommand.member.displayName}`).replace(ReceiverRegEx, `${PersonOption.displayName}`);
+            displayMessage = localize(contextCommand.guildLocale, `ACTION_COMMAND_HECCBOT_BONK`, contextCommand.member.displayName);
+        }
+        // @user (MeeYuck)
+        else if ( PersonOption.id === '159985870458322944' )
+        {
+            displayMessage = localize(contextCommand.guildLocale, `ACTION_COMMAND_MEE6_BONK`, contextCommand.member.displayName, `<@159985870458322944>`);
         }
         // @user (literally any bot that isn't this one)
         else if ( PersonOption.user.bot )
         {
-            displayMessage = ActionStrings['OTHER_BOT'][`bonk`];
-            displayMessage = displayMessage.replace(AuthorRegEx, `${contextCommand.member.displayName}`).replace(ReceiverRegEx, `${PersonOption.displayName}`);
+            displayMessage = localize(contextCommand.guildLocale, `ACTION_COMMAND_OTHER_BOTS_BONK`, contextCommand.member.displayName, `${PersonOption.displayName}`);
         }
         // @user (literally any other User that doesn't meet the above)
         else
         {
-            displayButton = true;
-            displayMessage = ActionStrings['OTHER_USER'][`bonk`];
-            displayMessage = displayMessage.replace(AuthorRegEx, `${contextCommand.member.displayName}`).replace(ReceiverRegEx, `${PersonOption.displayName}`);
+            displayMessage = localize(contextCommand.guildLocale, `ACTION_COMMAND_OTHER_USER_BONK`, contextCommand.member.displayName, `${PersonOption.displayName}`);
         }
 
 

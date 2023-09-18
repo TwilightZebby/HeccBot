@@ -1,4 +1,5 @@
 const { ApplicationCommandType, ApplicationCommandData, ContextMenuCommandInteraction, PermissionFlagsBits, ActionRowBuilder, ButtonBuilder, ButtonStyle, DMChannel, PartialGroupDMChannel } = require("discord.js");
+const { localize } = require("../../BotModules/LocalizationModule");
 
 module.exports = {
     // Command's Name
@@ -54,7 +55,7 @@ module.exports = {
         // Just in case
         if ( contextCommand.channel instanceof DMChannel || contextCommand.channel instanceof PartialGroupDMChannel )
         {
-            await contextCommand.reply({ ephemeral: true, content: `Sorry, but this Context Command can__not__ be used within DMs or Group DMs.` });
+            await contextCommand.reply({ ephemeral: true, content: localize(contextCommand.locale, 'CONTEXT_COMMAND_ERROR_DMS_UNSUPPORTED') });
             return;
         }
 
@@ -63,18 +64,18 @@ module.exports = {
         const SourceMessage = contextCommand.options.getMessage('message', true);
         if ( !RoleMenuJson[SourceMessage.id] )
         {
-            await contextCommand.reply({ ephemeral: true, content: `That Message doesn't contain any of my Role Menus!` });
+            await contextCommand.reply({ ephemeral: true, content: localize(contextCommand.locale, 'EDIT_ROLE_MENU_COMMAND_ERROR_MESSAGE_INVALID') });
             return;
         }
 
 
         // Construct Confirmation Buttons
         const ConfirmationButtonRow = new ActionRowBuilder().addComponents([
-            new ButtonBuilder().setCustomId(`menu-delete-confirm_${SourceMessage.id}`).setLabel(`Delete`).setStyle(ButtonStyle.Danger),
-            new ButtonBuilder().setCustomId(`menu-delete-cancel`).setLabel(`Cancel`).setStyle(ButtonStyle.Secondary)
+            new ButtonBuilder().setCustomId(`menu-delete-confirm_${SourceMessage.id}`).setLabel(localize(contextCommand.locale, 'DELETE')).setStyle(ButtonStyle.Danger),
+            new ButtonBuilder().setCustomId(`menu-delete-cancel`).setLabel(localize(contextCommand.locale, 'CANCEL')).setStyle(ButtonStyle.Secondary)
         ]);
 
-        await contextCommand.reply({ ephemeral: true, components: [ConfirmationButtonRow], content: `Are you sure you want to delete this Role Menu?` });
+        await contextCommand.reply({ ephemeral: true, components: [ConfirmationButtonRow], content: localize(contextCommand.locale, 'DELETE_ROLE_MENU_COMMAND_VALIDATION') });
         return;
     }
 }
