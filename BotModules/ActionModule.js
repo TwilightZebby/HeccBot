@@ -1,15 +1,11 @@
 const { ChatInputCommandInteraction, ActionRowBuilder, ButtonBuilder, ButtonStyle, Role, GuildMember, EmbedBuilder } = require("discord.js");
 const { DiscordClient } = require('../constants.js');
-const ActionStrings = require('../JsonFiles/actionMessages.json');
 const ActionGifs = require('../JsonFiles/Hidden/ActionGifLinks.json');
 const { localize } = require("./LocalizationModule.js");
 
 // REGEXS
-const AuthorRegEx = new RegExp(/{AUTHOR}/g);
-const ReceiverRegEx = new RegExp(/{RECEIVER}/g);
 const EveryoneMentionRegEx = new RegExp(/@(everyone|here)/g);
 const RoleMentionRegEx = new RegExp(/<@&(\d{17,20})>/g);
-//const UserMentionRegEx = new RegExp(/<@(\!)(\d{17,20})>/g);
 
 /**
  * Checks for [at]Everyone and [at]Here Mentions in a string

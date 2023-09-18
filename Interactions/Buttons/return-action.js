@@ -1,10 +1,5 @@
 const { ButtonInteraction } = require("discord.js");
-const ActionStrings = require('../../JsonFiles/actionMessages.json');
 const { localize } = require("../../BotModules/LocalizationModule");
-
-// REGEXS
-const AuthorRegEx = new RegExp(/{AUTHOR}/g);
-const ReceiverRegEx = new RegExp(/{RECEIVER}/g);
 
 module.exports = {
     // Button's Name

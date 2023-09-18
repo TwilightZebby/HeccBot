@@ -1,5 +1,4 @@
 const { ButtonInteraction } = require("discord.js");
-const { DiscordClient, Collections } = require("../../constants.js");
 const { localize } = require("../../BotModules/LocalizationModule.js");
 
 module.exports = {
