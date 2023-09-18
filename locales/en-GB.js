@@ -6,6 +6,8 @@ module.exports = {
     CANCEL: `Cancel`,
     TRUE_LOWERCASE: `true`,
     FALSE_LOWERCASE: `false`,
+    TRUE: `True`,
+    FALSE: `False`,
     NO_LIMIT: `No limit`,
     KBPS: `kbps`,
     SECONDS: `seconds`,
