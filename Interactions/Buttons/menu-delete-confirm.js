@@ -1,5 +1,6 @@
 const { ButtonInteraction } = require("discord.js");
 const fs = require("fs");
+const { localize } = require("../../BotModules/LocalizationModule");
 
 module.exports = {
     // Button's Name
@@ -40,11 +41,11 @@ module.exports = {
                 }
             });
 
-            await buttonInteraction.editReply({ components: [], content: `Successfully deleted that Role Menu!` });
+            await buttonInteraction.editReply({ components: [], content: `${localize(buttonInteraction.locale, 'DELETE_ROLE_MENU_COMMAND_SUCCESS')}` });
         })
         .catch(async err => {
             console.error(err);
-            await buttonInteraction.editReply({ components: [], content: `Sorry, but there was an error trying to delete that Role Menu.` });
+            await buttonInteraction.editReply({ components: [], content: `${localize(buttonInteraction.locale, 'DELETE_ROLE_MENU_COMMAND_ERROR_GENERIC')}` });
         });
 
         return;

@@ -307,6 +307,7 @@ An auto-updating preview of what your updated Role Menu will look like is shown 
     POLL_CANCEL_CREATION_DESCRIPTION: `Cancels creation of this Poll`,
 
     POLL_ANSWER_CHOICE: `Answer Choice`,
+    POLL_BUTTON_EMOJI: `Button Emoji`,
     POLL_EDIT_CHOICE: `Edit Choice`,
     POLL_SELECT_CHOICE_REMOVE: `Pick a Choice to remove`,
 
@@ -314,6 +315,10 @@ An auto-updating preview of what your updated Role Menu will look like is shown 
     POLL_POLL_QUESTION: `Poll Question`,
     POLL_POLL_DESCRIPTION: `Poll Description`,
     POLL_POLL_COLOR: `Embed Color (in hex format)`,
+
+    POLL_SINGLE_VOTE: `Vote`,
+    POLL_MULTIPLE_VOTES: `Votes`,
+    POLL_CURRENT_RESULTS: `Current Results:`,
 
     POLL_RESULTS_SHOWN_WHEN_ENDED: `*Results will be shown once this Poll ends.*`,
 

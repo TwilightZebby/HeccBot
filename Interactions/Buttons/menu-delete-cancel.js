@@ -1,5 +1,6 @@
 const { ButtonInteraction } = require("discord.js");
 const { DiscordClient, Collections } = require("../../constants.js");
+const { localize } = require("../../BotModules/LocalizationModule.js");
 
 module.exports = {
     // Button's Name
@@ -22,7 +23,7 @@ module.exports = {
     async execute(buttonInteraction)
     {
         // Just a simple ACK Message
-        await buttonInteraction.update({ components: [], content: `Cancelled deletion of that Role Menu.\nFeel free to dismiss or delete this message.` });
+        await buttonInteraction.update({ components: [], content: `${localize(buttonInteraction.locale, 'DELETE_ROLE_MENU_COMMAND_CANCELLED')}` });
         return;
     }
 }

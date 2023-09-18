@@ -1,5 +1,6 @@
 const { ButtonInteraction, ModalBuilder, ActionRowBuilder, TextInputBuilder, TextInputStyle } = require("discord.js");
 const { Collections } = require("../../constants.js");
+const { localize } = require("../../BotModules/LocalizationModule.js");
 
 module.exports = {
     // Button's Name
@@ -40,9 +41,9 @@ module.exports = {
 
 
         // Construct Modal
-        const EditChoiceModal = new ModalBuilder().setCustomId(`create-poll-edit-choice_${ChoiceCustomID}`).setTitle("Edit Choice").addComponents([
-            new ActionRowBuilder().addComponents([ new TextInputBuilder().setCustomId("label").setLabel("Answer Choice").setMaxLength(80).setStyle(TextInputStyle.Short).setRequired(true).setValue(currentLabel != null ? currentLabel : "") ]),
-            new ActionRowBuilder().addComponents([ new TextInputBuilder().setCustomId("emoji").setLabel("Button Emoji").setMaxLength(200).setPlaceholder("<:grass_block:601353406577246208> or ✨").setStyle(TextInputStyle.Short).setRequired(false).setValue(currentEmoji != null ? currentEmoji : "") ])
+        const EditChoiceModal = new ModalBuilder().setCustomId(`create-poll-edit-choice_${ChoiceCustomID}`).setTitle(`${localize(buttonInteraction.locale, 'POLL_EDIT_CHOICE')}`).addComponents([
+            new ActionRowBuilder().addComponents([ new TextInputBuilder().setCustomId("label").setLabel(`${localize(buttonInteraction.locale, 'POLL_ANSWER_CHOICE')}`).setMaxLength(80).setStyle(TextInputStyle.Short).setRequired(true).setValue(currentLabel != null ? currentLabel : "") ]),
+            //new ActionRowBuilder().addComponents([ new TextInputBuilder().setCustomId("emoji").setLabel(`${localize(buttonInteraction.locale, 'POLL_BUTTON_EMOJI')}`).setMaxLength(200).setPlaceholder("<:grass_block:601353406577246208>, ✨").setStyle(TextInputStyle.Short).setRequired(false).setValue(currentEmoji != null ? currentEmoji : "") ])
         ]);
 
         // ACK

@@ -1,5 +1,6 @@
 const { ButtonInteraction } = require("discord.js");
 const ActionStrings = require('../../JsonFiles/actionMessages.json');
+const { localize } = require("../../BotModules/LocalizationModule");
 
 // REGEXS
 const AuthorRegEx = new RegExp(/{AUTHOR}/g);
@@ -31,22 +32,26 @@ module.exports = {
         const OriginalUserId = ButtonArguments[2];
         const OriginalTargetId = ButtonArguments[3];
 
+        // Ensure User who pressed Button isn't the one who sent the Action originally
+        if ( buttonInteraction.user.id === OriginalUserId )
+        {
+            return await buttonInteraction.reply({ ephemeral: true, content: localize(buttonInteraction.locale, 'ACTION_ERROR_CANNOT_RETURN_TO_SENDER') });
+        }
 
         // Ensure User who pressed Button is the Original Target User
         if ( buttonInteraction.user.id !== OriginalTargetId )
         {
-            return await buttonInteraction.reply({ ephemeral: true, content: "You cannot return an Action that wasn't aimed at you!" });
+            return await buttonInteraction.reply({ ephemeral: true, content: localize(buttonInteraction.locale, 'ACTION_ERROR_RETURN_NOT_TARGETED_AT_SELF') });
         }
 
         // Fetch Members, so we can use their Display/Nick Names
         const OriginalMember = await buttonInteraction.guild.members.fetch(OriginalUserId)
-        .catch(async err => { return await buttonInteraction.reply({ ephemeral: true, content: "Sorry, but there was a problem trying to process that Button press." }); });
+        .catch(async err => { return await buttonInteraction.reply({ ephemeral: true, content: localize(buttonInteraction.locale, 'BUTTON_ERROR_GENERIC') }); });
         const OriginalTargetMember = await buttonInteraction.guild.members.fetch(OriginalTargetId)
-        .catch(async err => { return await buttonInteraction.reply({ ephemeral: true, content: "Sorry, but there was a problem trying to process that Button press." }); });
+        .catch(async err => { return await buttonInteraction.reply({ ephemeral: true, content: localize(buttonInteraction.locale, 'BUTTON_ERROR_GENERIC') }); });
 
         // Construct Message
-        let displayMessage = ActionStrings['RETURN'][`${ActionName}`];
-        displayMessage = displayMessage.replace(AuthorRegEx, `${OriginalTargetMember.displayName}`).replace(ReceiverRegEx, `${OriginalMember.displayName}`);
+        let displayMessage = localize(buttonInteraction.guildLocale, `ACTION_RETURN_${ActionName}`, `${OriginalTargetMember.displayName}`, `${OriginalMember.displayName}`);
 
         // Remove Button from original Message
         await buttonInteraction.update({ components: [] });
