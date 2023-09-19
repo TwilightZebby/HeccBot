@@ -1,16 +1,9 @@
 const { ModalMessageModalSubmitInteraction, EmbedBuilder, ActionRowBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder } = require("discord.js");
 const { Collections } = require("../../constants.js");
+const { localize } = require("../../BotModules/LocalizationModule.js");
 
 const HexColourRegex = new RegExp(/#[0-9a-fA-F]{6}/);
 
-const MenuSelectNoChoices = new ActionRowBuilder().addComponents([
-    new StringSelectMenuBuilder().setCustomId(`create-poll`).setMinValues(1).setMaxValues(1).setPlaceholder("Please select an action").setOptions([
-        //new StringSelectMenuOptionBuilder().setLabel("Set Poll Type").setValue("set-type").setDescription("Change how the Poll will behave once saved").setEmoji(`🔧`),
-        new StringSelectMenuOptionBuilder().setLabel("Configure Embed").setValue("configure-embed").setDescription("Set the Question, Description, and Colour of the Poll").setEmoji(`<:StatusRichPresence:842328614883295232>`),
-        new StringSelectMenuOptionBuilder().setLabel("Add Choice").setValue("add-choice").setDescription("Add a Choice to the Poll").setEmoji(`<:plusGrey:997752068439818280>`),
-        new StringSelectMenuOptionBuilder().setLabel("Cancel Creation").setValue("cancel").setDescription("Cancels creation of this Poll").setEmoji(`❌`)
-    ])
-]);
 
 module.exports = {
     // Modal's Name
@@ -28,6 +21,15 @@ module.exports = {
      */
     async execute(modalInteraction)
     {
+        const MenuSelectNoChoices = new ActionRowBuilder().addComponents([
+            new StringSelectMenuBuilder().setCustomId(`create-poll`).setMinValues(1).setMaxValues(1).setPlaceholder(localize(modalInteraction.locale, 'PLEASE_SELECT_AN_ACTION')).setOptions([
+                new StringSelectMenuOptionBuilder().setLabel(localize(modalInteraction.locale, 'POLL_CONFIGURE_EMBED')).setValue("configure-embed").setDescription(localize(modalInteraction.locale, 'POLL_CONFIGURE_EMBED_DESCRIPTION')).setEmoji(`<:StatusRichPresence:842328614883295232>`),
+                new StringSelectMenuOptionBuilder().setLabel(localize(modalInteraction.locale, 'POLL_ADD_CHOICE')).setValue("add-choice").setDescription(localize(modalInteraction.locale, 'POLL_ADD_CHOICE_DESCRIPTION')).setEmoji(`<:plusGrey:997752068439818280>`),
+                new StringSelectMenuOptionBuilder().setLabel(localize(modalInteraction.locale, 'POLL_CANCEL_CREATION')).setValue("cancel").setDescription(localize(modalInteraction.locale, 'POLL_CANCEL_CREATION_DESCRIPTION')).setEmoji(`❌`)
+            ])
+        ]);
+
+
         // Grab Inputs
         const InputTitle = modalInteraction.fields.getTextInputValue("title");
         const InputDescription = modalInteraction.fields.getTextInputValue("description");
@@ -51,7 +53,7 @@ module.exports = {
             if ( !HexColourRegex.test(InputColour) )
             {
                 await modalInteraction.update({ components: originalComponents });
-                await modalInteraction.followUp({ ephemeral: true, content: `That wasn't a valid Hex Colour Code! Please try again, using a valid Hex Colour Code (including the \`#\` (hash) at the start).` });
+                await modalInteraction.followUp({ ephemeral: true, content: localize(modalInteraction.locale, 'ERROR_INVALID_COLOR_HEX') });
                 return;
             }
             else { menuEmbed.setColor(InputColour); }

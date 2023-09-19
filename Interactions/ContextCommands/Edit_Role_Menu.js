@@ -59,7 +59,7 @@ module.exports = {
                 new StringSelectMenuOptionBuilder().setLabel(localize(contextCommand.locale, 'ROLE_MENU_CONFIGURE_EMBED')).setValue("configure-embed").setDescription(localize(contextCommand.locale, 'ROLE_MENU_CONFIGURE_EMBED_DESCRIPTION')).setEmoji(`<:StatusRichPresence:842328614883295232>`),
                 new StringSelectMenuOptionBuilder().setLabel(localize(contextCommand.locale, 'ROLE_MENU_ADD_ROLE')).setValue("add-role").setDescription(localize(contextCommand.locale, 'ROLE_MENU_ADD_ROLE_DESCRIPTION')).setEmoji(`<:plusGrey:997752068439818280>`),
                 new StringSelectMenuOptionBuilder().setLabel(localize(contextCommand.locale, 'ROLE_MENU_REMOVE_ROLE')).setValue("remove-role").setDescription(localize(contextCommand.locale, 'ROLE_MENU_REMOVE_ROLE_DESCRIPTION')).setEmoji(`<:IconDeleteTrashcan:750152850310561853>`),
-                new StringSelectMenuOptionBuilder().setLabel(localize(contextCommand.locale, 'ROLE_MENU_SAVE_AND_POST')).setValue("save").setDescription(localize(contextCommand.locale, 'ROLE_MENU_SAVE_AND_POST_DESCRIPTION')).setEmoji(`<:IconActivity:815246970457161738>`),
+                new StringSelectMenuOptionBuilder().setLabel(localize(contextCommand.locale, 'ROLE_MENU_SAVE_AND_UPDATE')).setValue("save").setDescription(localize(contextCommand.locale, 'ROLE_MENU_SAVE_AND_UPDATE_DESCRIPTION')).setEmoji(`<:IconActivity:815246970457161738>`),
                 new StringSelectMenuOptionBuilder().setLabel(localize(contextCommand.locale, 'ROLE_MENU_CANCEL_CONFIGURATION')).setValue("cancel").setDescription(localize(contextCommand.locale, 'ROLE_MENU_CANCEL_CONFIGURATION_DESCRIPTION')).setEmoji(`❌`)
             ])
         ]);
