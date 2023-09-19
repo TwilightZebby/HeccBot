@@ -1,11 +1,6 @@
 const { ApplicationCommandType, ApplicationCommandData, ContextMenuCommandInteraction } = require("discord.js");
 const { DiscordClient } = require("../../constants.js");
-const ActionStrings = require('../../JsonFiles/actionMessages.json');
 const { localize } = require("../../BotModules/LocalizationModule.js");
-
-// REGEXS
-const AuthorRegEx = new RegExp(/{AUTHOR}/g);
-const ReceiverRegEx = new RegExp(/{RECEIVER}/g);
 
 
 module.exports = {
