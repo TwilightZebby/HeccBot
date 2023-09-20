@@ -1,5 +1,5 @@
 const { StringSelectMenuInteraction, ActionRowBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder } = require("discord.js");
-const { DiscordClient, Collections } = require("../../constants.js");
+const { Collections } = require("../../constants.js");
 const { localize } = require("../../BotModules/LocalizationModule.js");
 
 
