@@ -1024,7 +1024,7 @@ ${fetchedChannel.parentId != null ? `${localize(slashCommand.locale, 'INFO_COMMA
         const CurrentGuild = await slashCommand.guild.fetch();
 
         // If outage happening, return early
-        if ( !CurrentGuild.available ) { return await slashCommand.editReply({ content: "Sorry, it seems I'm currently unable to read this Server's information - this could be due to an on-going [Discord outage](https://discordstatus.com).\nIf so, please wait and try again later." }); }
+        if ( !CurrentGuild.available ) { return await slashCommand.editReply({ content: localize(slashCommand, 'INFO_COMMAND_SERVER_ERROR_OUTAGE') }); }
 
         // Check for External Emoji Permission
         const ExternalEmojiPermission = checkEmojiPermission(slashCommand);
@@ -1103,51 +1103,51 @@ ${fetchedChannel.parentId != null ? `${localize(slashCommand.locale, 'INFO_COMMA
         const HasInviteSplash = CurrentGuild.splash === null ? false : true;
 
         // Construct Embed
-        const ServerInfoEmbed = new EmbedBuilder().setAuthor({ name: GuildName }).setFooter({ text: "Created" }).setTimestamp(CurrentGuild.createdAt);
+        const ServerInfoEmbed = new EmbedBuilder().setAuthor({ name: GuildName }).setFooter({ text: localize(slashCommand, 'CREATED') }).setTimestamp(CurrentGuild.createdAt);
 
-        ServerInfoEmbed.setDescription(`${GuildPartnered ? `${ExternalEmojiPermission ? `${EMOJI_PARTNER} ` : "**Partnered!** "}` : ""} ${GuildVerified ? `${ExternalEmojiPermission ? `${EMOJI_VERIFIED}` : "**Verified!**"}` : ""}\n${GuildDescription}`)
+        ServerInfoEmbed.setDescription(`${GuildPartnered ? `${ExternalEmojiPermission ? `${EMOJI_PARTNER} ` : `${localize(slashCommand, 'INFO_COMMAND_SERVER_PARTNERED')}. `}` : ""} ${GuildVerified ? `${ExternalEmojiPermission ? `${EMOJI_VERIFIED}` : `${localize(slashCommand, 'INFO_COMMAND_SERVER_VERIFIED')}`}` : ""}\n${GuildDescription}`)
         .addFields(
             {
-                name: `>> General`,
-                value: `${ExternalEmojiPermission ? `${EMOJI_OWNER_CROWN} ` : ""}**Owner:** ${fetchDisplayName(GuildOwner.user, true)}
-${ExternalEmojiPermission ? `${readableGuildPremiumTierEmoji(GuildBoostTier)} ` : ""}**Boost Level:** ${readableGuildPremiumTier(GuildBoostTier)}
-${ExternalEmojiPermission ? `${EMOJI_BOOST} ` : ""}**Boost Count:** ${GuildBoostCount}
-${ExternalEmojiPermission ? `${EMOJI_EMOJI} ` : ""}**Emojis:** ${TotalEmojiCount}
-${ExternalEmojiPermission ? `${EMOJI_STICKER} ` : ""}**Stickers:** ${TotalStickerCount}
-${ExternalEmojiPermission ? `${EMOJI_ROLE} ` : ""}**Roles:** ${TotalRoleCount} / 250${TotalScheduledEvents > 0 ? `\n${ExternalEmojiPermission ? `${EMOJI_SCHEDULED_EVENT} ` : ""}**Scheduled Events:** ${TotalScheduledEvents}` : ""}${GuildVanityCode != null ? `\n**Vanity URL:** https://discord.gg/${GuildVanityCode}` : ""}${GuildApproxTotalMembers != null ? `\n**Approx. Total Members:** ${GuildApproxTotalMembers}` : ""}${GuildApproxOnlineMembers != null ? `\n**Approx. Online Members:** ${GuildApproxOnlineMembers}` : ""}`,
+                name: localize(slashCommand, 'INFO_COMMAND_SERVER_GENERAL_INFO'),
+                value: `${ExternalEmojiPermission ? `${EMOJI_OWNER_CROWN} ` : ""}${localize(slashCommand, 'INFO_COMMAND_SERVER_OWNER')} ${fetchDisplayName(GuildOwner.user, true)}
+${ExternalEmojiPermission ? `${readableGuildPremiumTierEmoji(GuildBoostTier)} ` : ""}${INFO_COMMAND_SERVER_BOOST_TIER} ${readableGuildPremiumTier(GuildBoostTier)}
+${ExternalEmojiPermission ? `${EMOJI_BOOST} ` : ""}${localize(slashCommand, 'INFO_COMMAND_SERVER_BOOST_COUNT')} ${GuildBoostCount}
+${ExternalEmojiPermission ? `${EMOJI_EMOJI} ` : ""}${localize(slashCommand, 'INFO_COMMAND_SERVER_EMOJIS')} ${TotalEmojiCount}
+${ExternalEmojiPermission ? `${EMOJI_STICKER} ` : ""}${localize(slashCommand, 'INFO_COMMAND_SERVER_STICKERS')} ${TotalStickerCount}
+${ExternalEmojiPermission ? `${EMOJI_ROLE} ` : ""}${localize(slashCommand, 'INFO_COMMAND_SERVER_ROLES')} ${TotalRoleCount} / 250${TotalScheduledEvents > 0 ? `\n${ExternalEmojiPermission ? `${EMOJI_SCHEDULED_EVENT} ` : ""}${localize(slashCommand, 'INFO_COMMAND_SERVER_SCHEDULED_EVENTS')} ${TotalScheduledEvents}` : ""}${GuildVanityCode != null ? `\n${localize(slashCommand, 'INFO_COMMAND_SERVER_VANITY')} https://discord.gg/${GuildVanityCode}` : ""}${GuildApproxTotalMembers != null ? `\n${localize(slashCommand, 'INFO_COMMAND_SERVER_APPROX_TOTAL_MEMBERS')} ${GuildApproxTotalMembers}` : ""}${GuildApproxOnlineMembers != null ? `\n${localize(slashCommand, 'INFO_COMMAND_SERVER_APPROX_ONLINE_MEMBERS')} ${GuildApproxOnlineMembers}` : ""}`,
                 inline: true
             },
             {
-                 name: `>> Channels (${TotalChannelCount} / 500)`,
-                value: `${ExternalEmojiPermission ? `${EMOJI_CHANNEL_TEXT} ` : ""}**Text:** ${textChannelCount}
-${ExternalEmojiPermission ? `${EMOJI_CHANNEL_NEWS} ` : ""}**Announcement:** ${announcementChannelCount}
-${ExternalEmojiPermission ? `${EMOJI_CHANNEL_VOICE} ` : ""}**Voice:** ${voiceChannelCount}
-${ExternalEmojiPermission ? `${EMOJI_CHANNEL_STAGE} ` : ""}**Stage:** ${stageChannelCount}
-${ExternalEmojiPermission ? `${EMOJI_CHANNEL_CATEGORY} ` : ""}**Category:** ${categoryChannelCount}
-${ExternalEmojiPermission ? `${EMOJI_CHANNEL_FORUM} ` : ""}**Forum:** ${forumChannelCount}${unknownChannelCount > 0 ? `\n${ExternalEmojiPermission ? `❓ ` : ""}**Unknown Type(s):** ${unknownChannelCount}` : ""}${AfkChannelId != null ? `\n${ExternalEmojiPermission ? `${EMOJI_STATUS_IDLE} ` : ""}**AFK:** <#${AfkChannelId}>` : ""}${SystemChannelId != null ? `\n${ExternalEmojiPermission ? `:gear: ` : ""}**System:** <#${SystemChannelId}>` : ""}${RulesChannelId != null ? `\n${ExternalEmojiPermission ? `${EMOJI_CHANNEL_RULES} ` : ""}**Rules:** <#${RulesChannelId}>` : ""}`,
+                 name: `${localize(slashCommand, 'INFO_COMMAND_SERVER_CHANNEL_INFO')} (${TotalChannelCount} / 500)`,
+                value: `${ExternalEmojiPermission ? `${EMOJI_CHANNEL_TEXT} ` : ""}**${localize(slashCommand, 'CHANNEL_TYPE_TEXT')}:** ${textChannelCount}
+${ExternalEmojiPermission ? `${EMOJI_CHANNEL_NEWS} ` : ""}**${localize(slashCommand, 'CHANNEL_TYPE_ANNOUNCEMENT')}:** ${announcementChannelCount}
+${ExternalEmojiPermission ? `${EMOJI_CHANNEL_VOICE} ` : ""}**${localize(slashCommand, 'CHANNEL_TYPE_VOICE')}:** ${voiceChannelCount}
+${ExternalEmojiPermission ? `${EMOJI_CHANNEL_STAGE} ` : ""}**${localize(slashCommand, 'CHANNEL_TYPE_STAGE')}:** ${stageChannelCount}
+${ExternalEmojiPermission ? `${EMOJI_CHANNEL_CATEGORY} ` : ""}**${localize(slashCommand, 'CHANNEL_TYPE_CATEGORY')}:** ${categoryChannelCount}
+${ExternalEmojiPermission ? `${EMOJI_CHANNEL_FORUM} ` : ""}**${localize(slashCommand, 'CHANNEL_TYPE_FORUM')}:** ${forumChannelCount}${unknownChannelCount > 0 ? `\n${ExternalEmojiPermission ? `❓ ` : ""}**${localize(slashCommand, 'CHANNEL_TYPE_UNKNOWN')}:** ${unknownChannelCount}` : ""}${AfkChannelId != null ? `\n${ExternalEmojiPermission ? `${EMOJI_STATUS_IDLE} ` : ""}**${localize(slashCommand, 'CHANNEL_AFK')}:** <#${AfkChannelId}>` : ""}${SystemChannelId != null ? `\n${ExternalEmojiPermission ? `:gear: ` : ""}**${localize(slashCommand, 'CHANNEL_SYSTEM')}:** <#${SystemChannelId}>` : ""}${RulesChannelId != null ? `\n${ExternalEmojiPermission ? `${EMOJI_CHANNEL_RULES} ` : ""}**${localize(slashCommand, 'CHANNEL_RULES')}:** <#${RulesChannelId}>` : ""}`,
                 inline: true
             },
             {
-                name: `>> Security & Moderation`,
-                value: `**Verification Level:** ${readableVerificationLevel(GuildVerificationLevel)}
-**Explicit Content Filter:** ${readableExplicitFilter(GuildContentFilter)}
-**2FA-enabled Moderation:** ${readableMFALevel(GuildMFALevel)}
-**NSFW Level:** ${readableNSFWLevel(GuildNSFWLevel)}
-**Default Notifications:** ${readableDefaultNotification(GuildDefaultNotifications)}`
+                name: localize(slashCommand, 'INFO_COMMAND_SERVER_SECURITY_INFO'),
+                value: `${localize(slashCommand, 'INFO_COMMAND_SERVER_VERIFICATION_LEVEL')} ${readableVerificationLevel(GuildVerificationLevel)}
+${localize(slashCommand, 'INFO_COMMAND_SERVER_EXPLICIT_FILTER')} ${readableExplicitFilter(GuildContentFilter)}
+${localize(slashCommand, 'INFO_COMMAND_SERVER_MFA_MODERATION')} ${readableMFALevel(GuildMFALevel)}
+${localize(slashCommand, 'INFO_COMMAND_SERVER_NSFW_LEVEL')} ${readableNSFWLevel(GuildNSFWLevel)}
+${localize(slashCommand, 'INFO_COMMAND_SERVER_DEFAULT_NOTIFICATIONS')} ${readableDefaultNotification(GuildDefaultNotifications)}`
             }
         );
-        if ( guildFeatures.length > 0 ) { ServerInfoEmbed.addFields({name: `>> Feature Flags`, value: `${guildFeatures.sort().join(', ').slice(0, 1023)}`}); }
+        if ( guildFeatures.length > 0 ) { ServerInfoEmbed.addFields({name: localize(slashCommand, 'INFO_COMMAND_SERVER_FEATURE_FLAG_INFO'), value: `${guildFeatures.sort().join(', ').slice(0, 1023)}`}); }
 
         // Add Asset Buttons
         const ServerInfoActionRow = new ActionRowBuilder();
         if ( HasIcon )
         {
             ServerInfoEmbed.setAuthor({ name: GuildName, iconURL: CurrentGuild.iconURL({ extension: 'png' }) });
-            ServerInfoActionRow.addComponents(new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel("Icon").setURL(CurrentGuild.iconURL()));
+            ServerInfoActionRow.addComponents(new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel(localize(slashCommand, 'INFO_COMMAND_SERVER_BUTTON_ICON')).setURL(CurrentGuild.iconURL()));
         }
-        if ( HasBanner ) { ServerInfoActionRow.addComponents(new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel("Banner").setURL(CurrentGuild.bannerURL())); }
-        if ( HasInviteSplash ) { ServerInfoActionRow.addComponents(new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel("Invite Splash").setURL(CurrentGuild.splashURL())); }
-        if ( HasDiscoverySplash ) { ServerInfoActionRow.addComponents(new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel("Discovery Splash").setURL(CurrentGuild.discoverySplashURL())); }
+        if ( HasBanner ) { ServerInfoActionRow.addComponents(new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel(localize(slashCommand, 'INFO_COMMAND_SERVER_BUTTON_BANNER')).setURL(CurrentGuild.bannerURL())); }
+        if ( HasInviteSplash ) { ServerInfoActionRow.addComponents(new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel(localize(slashCommand, 'INFO_COMMAND_SERVER_BUTTON_INVITE_SPLASH')).setURL(CurrentGuild.splashURL())); }
+        if ( HasDiscoverySplash ) { ServerInfoActionRow.addComponents(new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel(localize(slashCommand, 'INFO_COMMAND_SERVER_BUTTON_DISCOVERY_SPLASH')).setURL(CurrentGuild.discoverySplashURL())); }
 
         if ( ServerInfoActionRow.components.length > 0 ) { return await slashCommand.editReply({ embeds: [ServerInfoEmbed], components: [ServerInfoActionRow] }); }
         else { return await slashCommand.editReply({ embeds: [ServerInfoEmbed] }); }

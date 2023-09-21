@@ -520,7 +520,7 @@ An auto-updating preview of what your new Poll will look like is shown below.`,
     INFO_COMMAND_SERVER_APPROX_ONLINE_MEMBERS: `**Appproximate Online Members:**`,
 
     INFO_COMMAND_SERVER_VERIFICATION_LEVEL: `**Verification Level:**`,
-    INFO_COMMAND_SERVER_EXPLICITY_FILTER: `**Explicit Content Filter:**`,
+    INFO_COMMAND_SERVER_EXPLICIT_FILTER: `**Explicit Content Filter:**`,
     INFO_COMMAND_SERVER_MFA_MODERATION: `**MFA-enabled Moderation:**`,
     INFO_COMMAND_SERVER_NSFW_LEVEL: `**Age-restricted Level:**`,
     INFO_COMMAND_SERVER_DEFAULT_NOTIFICATIONS: `**Default Notifications:**`,
