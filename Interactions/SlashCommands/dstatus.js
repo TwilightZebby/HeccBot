@@ -1,6 +1,7 @@
 const { ChatInputCommandInteraction, ChatInputApplicationCommandData, ApplicationCommandType, AutocompleteInteraction, PermissionFlagsBits, ApplicationCommandOptionType, ChannelType, TextChannel, ThreadChannel, ForumChannel, DMChannel, PartialGroupDMChannel } = require("discord.js");
 const fs = require('fs');
 const { DiscordClient, fetchDisplayName } = require("../../constants.js");
+const { localize } = require("../../BotModules/LocalizationModule.js");
 
 module.exports = {
     // Command's Name
@@ -109,7 +110,7 @@ module.exports = {
         // Just in case
         if ( slashCommand.channel instanceof DMChannel || slashCommand.channel instanceof PartialGroupDMChannel )
         {
-            await slashCommand.reply({ ephemeral: true, content: `Sorry, but this Slash Command can__not__ be used within DMs or Group DMs.` });
+            await slashCommand.reply({ ephemeral: true, content: localize(slashCommand.locale, 'SLASH_COMMAND_ERROR_DMS_UNSUPPORTED') });
             return;
         }
 
@@ -158,14 +159,14 @@ async function subscribeToFeed(slashCommand)
     // Ensure that, if a Thread is selected, only Threads within Forum Channels can be picked, not Threads in Text|Announcement Channels
     if ( InputChannel instanceof ThreadChannel && !(InputChannel.parent instanceof ForumChannel) )
     {
-        return await slashCommand.reply({ ephemeral: true, content: "Sorry, but a Thread cannot be selected if its within a Text or Announcement Channel.\nIf you want to subscribe a Thread to the Discord Outage Feed, please pick a Thread that is within a Forum Channel.\nOtherwise, you can select a standard Text Channel instead." });
+        return await slashCommand.reply({ ephemeral: true, content: localize(slashCommand.locale, 'DSTATUS_COMMAND_ERROR_THREAD_INVALID') });
     }
 
     // Check Bot has permissions to create Webhooks in that Channel
     const BotChannelPermissions = InputChannel.permissionsFor(DiscordClient.user.id);
     if ( !BotChannelPermissions.has(PermissionFlagsBits.ViewChannel) || !BotChannelPermissions.has(PermissionFlagsBits.ManageWebhooks) )
     {
-        return await slashCommand.reply({ ephemeral: true, content: "Sorry, but my Discord Outage Feed cannot be subscribed to Channels (or Forum Posts) in which I do not have both the \"View Channel\" and \"Manage Webhooks\" Permissions!" });
+        return await slashCommand.reply({ ephemeral: true, content: localize(slashCommand.locale, 'DSTATUS_COMMAND_ERROR_MISSING_PERMISSIONS') });
     }
 
     // Check Server isn't already subscribed to feed
@@ -175,26 +176,26 @@ async function subscribeToFeed(slashCommand)
         // Subscribe Server to Feed, by creating a Webhook in that Channel
         let feedWebhook;
         let threadId = null;
-        if ( InputChannel instanceof TextChannel ) { feedWebhook = await InputChannel.createWebhook({ name: "Dis-Outage Feed", avatar: "https://i.imgur.com/gXWXIpr.png", reason: `${fetchDisplayName(slashCommand.user, true)} subscribed to the Discord Outage Feed` }); }
+        if ( InputChannel instanceof TextChannel ) { feedWebhook = await InputChannel.createWebhook({ name: "Dis-Outage Feed", avatar: "https://i.imgur.com/gXWXIpr.png", reason: localize(slashCommand.guildLocale, 'DSTATUS_COMMAND_SUBSCRIPTION_SUCCESS_AUDIT_LOG', fetchDisplayName(slashCommand.user, true)) }); }
         else 
         { 
-            feedWebhook = await InputChannel.parent.createWebhook({ name: "Dis-Outage Feed", avatar: "https://i.imgur.com/gXWXIpr.png", reason: `${fetchDisplayName(slashCommand.user, true)} subscribed to the Discord Outage Feed` });
+            feedWebhook = await InputChannel.parent.createWebhook({ name: "Dis-Outage Feed", avatar: "https://i.imgur.com/gXWXIpr.png", reason: localize(slashCommand.guildLocale, 'DSTATUS_COMMAND_SUBSCRIPTION_SUCCESS_AUDIT_LOG', fetchDisplayName(slashCommand.user, true)) });
             threadId = InputChannel.id;
         }
 
         DiscordOutageFeedJson[`${slashCommand.guildId}`] = { "DISCORD_FEED_WEBHOOK_ID": feedWebhook.id, "DISCORD_FEED_THREAD_ID": threadId };
 
         fs.writeFile('./JsonFiles/Hidden/StatusSubscriptions.json', JSON.stringify(DiscordOutageFeedJson, null, 4), async (err) => {
-            if ( err ) { return await slashCommand.reply({ ephemeral: true, content: "Sorry, something went wrong while trying to subscribe to the Discord Outage Feed..." }); }
+            if ( err ) { return await slashCommand.reply({ ephemeral: true, content: localize(slashCommand.locale, 'DSTATUS_COMMAND_ERROR_SUBSCRIPTION_GENERIC') }); }
         });
 
         // ACK to User
-        await slashCommand.reply({ ephemeral: true, content: `Successfully subscribed this Server to the Discord Outage Feed!\nAny Discord Outages will be notified about in the <#${InputChannel.id}> Channel.` });
+        await slashCommand.reply({ ephemeral: true, content: localize(slashCommand.locale, 'DSTATUS_COMMAND_SUBSCRIPTION_SUCCESS', `<#${InputChannel.id}>`) });
         return;
     }
     else
     {
-        return await slashCommand.reply({ ephemeral: true, content: `This Server is already subscribed to the Discord Outage Feed!\nIf you want to remove the existing Feed in this Server, please use the </dstatus unsubscribe:${slashCommand.commandId}> Command.` });
+        return await slashCommand.reply({ ephemeral: true, content: localize(slashCommand.locale, 'DSTATUS_COMMAND_ERROR_ALREADY_SUBSCRIBED', `</dstatus unsubscribe:${slashCommand.commandId}>`) });
     }
 }
 
@@ -211,7 +212,7 @@ async function unsubscribeFromFeed(slashCommand)
     const DiscordOutageFeedJson = require("../../JsonFiles/Hidden/StatusSubscriptions.json");
     if ( !DiscordOutageFeedJson[`${slashCommand.guildId}`] || !DiscordOutageFeedJson[`${slashCommand.guildId}`]["DISCORD_FEED_WEBHOOK_ID"] )
     {
-        return await slashCommand.reply({ ephemeral: true, content: "You cannot unsubscribe this Server from the Discord Outage Feed when it is *not currently* subscribed!" });
+        return await slashCommand.reply({ ephemeral: true, content: localize(slashCommand.locale, 'DSTATUS_COMMAND_ERROR_NOT_CURRENTLY_SUBSCRIBED') });
     }
 
     // Unsubscribe!
@@ -219,21 +220,21 @@ async function unsubscribeFromFeed(slashCommand)
     const FeedWebhook = await DiscordClient.fetchWebhook(DiscordOutageFeedJson[`${slashCommand.guildId}`]["DISCORD_FEED_WEBHOOK_ID"]);
     let webhookDeletionErrorMessage = null;
     try {
-        await FeedWebhook.delete(`${fetchDisplayName(slashCommand.user, true)} unsubscribed from the Discord Outage Feed`);
+        await FeedWebhook.delete(localize(slashCommand.guildLocale, 'DSTATUS_COMMAND_UNSUBSCRIPTION_SUCCESS_AUDIT_LOG', fetchDisplayName(slashCommand.user, true)));
     } 
     catch (err) {
         //console.error(err);
-        webhookDeletionErrorMessage = ":warning: An error occurred while I was trying to delete the Webhook for this Feed. You will have to delete the Webhook manually in Server Settings > Integrations!";
+        webhookDeletionErrorMessage = `:warning: ${localize(slashCommand.locale, 'DSTATUS_COMMAND_ERROR_WEBHOOK_DELETION_FAILED')}`;
     }    
 
     delete DiscordOutageFeedJson[`${slashCommand.guildId}`];
 
     fs.writeFile('./JsonFiles/Hidden/StatusSubscriptions.json', JSON.stringify(DiscordOutageFeedJson, null, 4), async (err) => {
-        if ( err ) { return await slashCommand.reply({ ephemeral: true, content: "Sorry, something went wrong while trying to unsubscribe from the Discord Outage Feed..." }); }
+        if ( err ) { return await slashCommand.reply({ ephemeral: true, content: localize(slashCommand.locale, 'DSTATUS_COMMAND_ERROR_UNSUBSCRIPTION_GENERIC') }); }
     });
 
     // ACK to User
-    await slashCommand.reply({ ephemeral: true, content: `Successfully unsubscribed from the Discord Outage Feed.\nThis Server will no longer receive notifications from this Bot about Discord's Outages.${webhookDeletionErrorMessage != null ? `\n\n${webhookDeletionErrorMessage}` : ""}` });
+    await slashCommand.reply({ ephemeral: true, content: localize(slashCommand.locale, 'DSTATUS_COMMAND_UNSUBSCRIPTION_SUCCESS', `${webhookDeletionErrorMessage != null ? `\n\n${webhookDeletionErrorMessage}` : ""}`) });
     delete FeedWebhook;
     return;
 }

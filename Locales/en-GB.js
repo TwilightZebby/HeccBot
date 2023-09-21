@@ -361,7 +361,7 @@ An auto-updating preview of what your new Poll will look like is shown below.`,
 
 
 
-    // ******* INFO COMMAND STUFF - THERE'S A LOT HERE TO PREPARE THYSELF
+    // ******* INFO COMMAND STUFF - THERE'S A LOT HERE SO PREPARE THYSELF
     INFO_COMMAND_GUILD_VERIFICATION_NONE: `Unrestricted`,
     INFO_COMMAND_GUILD_VERIFICATION_LOW: `Low (Verified Email)`,
     INFO_COMMAND_GUILD_VERIFICATION_MEDIUM: `Medium (Account age >5 minutes)`,
@@ -450,6 +450,8 @@ An auto-updating preview of what your new Poll will look like is shown below.`,
     INFO_COMMAND_CHANNEL_AUDIO_BITRATE: `**Audio Bitrate:**`,
     INFO_COMMAND_CHANNEL_CONNECTED_MEMBERS: `**Cached Connected Members:**`,
     INFO_COMMAND_CHANNEL_VIDEO_QUALITY_MODE: `**Video Quality Mode:**`,
+    INFO_COMMAND_CHANNEL_VIDEO_QUALITY_AUTOMATIC: `Automatic`,
+    INFO_COMMAND_CHANNEL_VIDEO_QUALITY_720: `720p`,
 
     INFO_COMMAND_CHANNEL_FORUM_DEFAULT_REACTION: `**Has Set Default Reaction:**`,
     INFO_COMMAND_CHANNEL_FORUM_DEFAULT_SORT_ORDER: `**Default Sort Order:**`,
