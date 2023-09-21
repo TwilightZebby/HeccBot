@@ -1172,7 +1172,7 @@ ${localize(slashCommand, 'INFO_COMMAND_SERVER_DEFAULT_NOTIFICATIONS')} ${readabl
         // If atEveryone is selected, reject!
         if ( RoleOption.id === slashCommand.guildId )
         {
-            await slashCommand.editReply({ content: `Sorry, I am not programmed to bring up information about @everyone!`, allowedMentions: { parse: [] } });
+            await slashCommand.editReply({ content: localize(slashCommand, 'INFO_COMMAND_ROLE_ERROR_ATEVERYONE_UNSUPPORTED'), allowedMentions: { parse: [] } });
             return;
         }
 
@@ -1180,12 +1180,12 @@ ${localize(slashCommand, 'INFO_COMMAND_SERVER_DEFAULT_NOTIFICATIONS')} ${readabl
         const RoleInfoEmbed = new EmbedBuilder().setAuthor({ name: RoleOption.name }).setColor(RoleOption.hexColor)
         .addFields(
             {
-                name: `>> General`,
-                value: `**Role Created:** <t:${Math.floor(RoleOption.createdAt.getTime() / 1000)}:R>
-**Colour:** ${RoleOption.hexColor}
-**Hoisted:** ${RoleOption.hoist}
-**Managed by Integration:** ${RoleOption.managed}
-**Cached Members with Role:** ${RoleOption.members.size}${RoleOption.unicodeEmoji != null ? `\n**Role's Emoji Icon:** ${RoleOption.unicodeEmoji}` : ""}`
+                name: localize(slashCommand, 'INFO_COMMAND_ROLE_GENERAL_INFO'),
+                value: `${localize(slashCommand, 'INFO_COMMAND_ROLE_CREATED')} <t:${Math.floor(RoleOption.createdAt.getTime() / 1000)}:R>
+${localize(slashCommand, 'INFO_COMMAND_ROLE_COLOR')} ${RoleOption.hexColor}
+${localize(slashCommand, 'INFO_COMMAND_ROLE_HOISTED')} ${RoleOption.hoist ? localize(slashCommand, 'TRUE_LOWERCASE') : localize(slashCommand, 'FALSE_LOWERCASE')}
+${localize(slashCommand, 'INFO_COMMAND_ROLE_MANAGED')} ${RoleOption.managed ? localize(slashCommand, 'TRUE_LOWERCASE') : localize(slashCommand, 'FALSE_LOWERCASE')}
+${localize(slashCommand, 'INFO_COMMAND_ROLE_MEMBERS')} ${RoleOption.members.size}${RoleOption.unicodeEmoji != null ? `\n${localize(slashCommand, 'INFO_COMMAND_ROLE_ICON')} ${RoleOption.unicodeEmoji}` : ""}`
             }
         );
 
@@ -1199,29 +1199,29 @@ ${localize(slashCommand, 'INFO_COMMAND_SERVER_DEFAULT_NOTIFICATIONS')} ${readabl
         if ( RoleOption.tags != null )
         {
             let roleTagString = ``;
-            if ( RoleOption.tags.botId != undefined ) { roleTagString += `**Role for Bot:** <@${RoleOption.tags.botId}>`; }
+            if ( RoleOption.tags.botId != undefined ) { roleTagString += `${localize(slashCommand, 'INFO_COMMAND_ROLE_BOT')} <@${RoleOption.tags.botId}>`; }
             if ( RoleOption.tags.integrationId != undefined )
             {
                 // Fetch Integrations so we can name it since they aren't mentionable
                 await slashCommand.guild.fetchIntegrations()
                 .then(async Integrations => {
-                    roleTagString += `${roleTagString.length > 4 ? `\n` : ""}**Role for Integration:** ${Integrations.get(RoleOption.tags.integrationId).name}`;
+                    roleTagString += `${roleTagString.length > 4 ? `\n` : ""}${localize(slashCommand, 'INFO_COMMAND_ROLE_INTEGRATION')} ${Integrations.get(RoleOption.tags.integrationId).name}`;
                 });
             }
-            if ( RoleOption.tags.premiumSubscriberRole != undefined ) { roleTagString += `${roleTagString.length > 4 ? `\n` : ""}**Is Server Booster Role:** ${RoleOption.tags.premiumSubscriberRole}`; }
-            if ( RoleOption.tags.subscriptionListingId != undefined ) { roleTagString += `${roleTagString.length > 4 ? `\n` : ""}**Is a Server Subscription Role:** true`; }
-            if ( RoleOption.tags.availableForPurchase != undefined ) { roleTagString += `${roleTagString.length > 4 ? `\n` : ""}**Is Purchasable:** true`; }
-            if ( RoleOption.tags.guildConnections != undefined ) { roleTagString += `${roleTagString.length > 4 ? `\n` : ""}**Is Linked Role:** true`; }
+            if ( RoleOption.tags.premiumSubscriberRole != undefined ) { roleTagString += `${roleTagString.length > 4 ? `\n` : ""}${localize(slashCommand, 'INFO_COMMAND_ROLE_SERVER_BOOST')} ${RoleOption.tags.premiumSubscriberRole === true ? localize(slashCommand, 'TRUE_LOWERCASE') : localize(slashCommand, 'FALSE_LOWERCASE')}`; }
+            if ( RoleOption.tags.subscriptionListingId != undefined ) { roleTagString += `${roleTagString.length > 4 ? `\n` : ""}${localize(slashCommand, 'INFO_COMMAND_ROLE_MONETIZATION')} ${localize(slashCommand, 'TRUE_LOWERCASE')}`; }
+            if ( RoleOption.tags.availableForPurchase != undefined ) { roleTagString += `${roleTagString.length > 4 ? `\n` : ""}${localize(slashCommand, 'INFO_COMMAND_ROLE_PURCHASABLE')} ${localize(slashCommand, 'TRUE_LOWERCASE')}`; }
+            if ( RoleOption.tags.guildConnections != undefined ) { roleTagString += `${roleTagString.length > 4 ? `\n` : ""}${localize(slashCommand, 'INFO_COMMAND_ROLE_LINKED_CONNECTION')} ${localize(slashCommand, 'TRUE_LOWERCASE')}`; }
 
-            if ( roleTagString.length > 4 ) { RoleInfoEmbed.addFields({ name: `>> Role Tags`, value: roleTagString }); }
+            if ( roleTagString.length > 4 ) { RoleInfoEmbed.addFields({ name: `${localize(slashCommand, 'INFO_COMMAND_ROLE_TAG_INFO')}`, value: roleTagString }); }
         }
 
 
         // Role Flags (if any)
         let roleFlagString = "";
-        if ( RoleOption.flags.has(RoleFlags.InPrompt) ) { roleFlagString += `In Onboarding Prompt`; }
+        if ( RoleOption.flags.has(RoleFlags.InPrompt) ) { roleFlagString += `${localize(slashCommand, 'INFO_COMMAND_ROLE_FLAG_PROMPT')}`; }
 
-        if ( roleFlagString.length > 4 ) { RoleInfoEmbed.addFields({ name: `>> Role Flags`, value: roleFlagString }); }
+        if ( roleFlagString.length > 4 ) { RoleInfoEmbed.addFields({ name: localize(slashCommand, 'INFO_COMMAND_ROLE_FLAG_INFO'), value: roleFlagString }); }
 
 
         // ACK to User
