@@ -1,4 +1,5 @@
 const { ChatInputCommandInteraction, ChatInputApplicationCommandData, ApplicationCommandType, ApplicationCommandOptionType, AutocompleteInteraction } = require("discord.js");
+const { localize } = require("../../BotModules/LocalizationModule");
 
 module.exports = {
     // Command's Name
@@ -130,28 +131,28 @@ module.exports = {
             case "c":
                 const CToF = (ValueOption * 9/5) + 32;
                 const CToK = ValueOption + 273.15;
-                if ( CToK < 0 ) { return await slashCommand.reply({ ephemeral: true, content: `:warning: ${ValueOption}C is a temperature that cannot exist! (It is below Absolute Zero!)` }); }
-                await slashCommand.reply({ ephemeral: true, content: `${ValueOption}C is about ${CToF.toFixed(0)}F or ${CToK.toFixed(0)}K` });
+                if ( CToK < 0 ) { return await slashCommand.reply({ ephemeral: true, content: localize(slashCommand.locale, 'TEMPERATURE_COMMAND_ERROR_INVALID_TEMPERATURE', `${ValueOption}`, 'C') }); }
+                await slashCommand.reply({ ephemeral: true, content: localize(slashCommand.locale, 'TEMPERATURE_COMMAND_CONVERTED', `${ValueOption}`, 'C', `${CToF.toFixed(0)}`, 'F', `${CToK.toFixed(0)}`, 'K') });
                 break;
 
             // F TO C/K
             case "f":
                 const FToC = (ValueOption - 32) * 5/9;
                 const FToK = (ValueOption - 32) * 5/9 + 273.15;
-                if ( FToK < 0 ) { return await slashCommand.reply({ ephemeral: true, content: `:warning: ${ValueOption}F is a temperature that cannot exist! (It is below Absolute Zero!)` }); }
-                await slashCommand.reply({ ephemeral: true, content: `${ValueOption}F is about ${FToC.toFixed(0)}C or ${FToK.toFixed(0)}K` });
+                if ( FToK < 0 ) { return await slashCommand.reply({ ephemeral: true, content: localize(slashCommand.locale, 'TEMPERATURE_COMMAND_ERROR_INVALID_TEMPERATURE', `${ValueOption}`, 'F') }); }
+                await slashCommand.reply({ ephemeral: true, content: localize(slashCommand.locale, 'TEMPERATURE_COMMAND_CONVERTED', `${ValueOption}`, 'F', `${FToC.toFixed(0)}`, 'C', `${FToK.toFixed(0)}`, 'K') });
                 break;
 
             // K TO C/F
             case "k":
                 const KToC = ValueOption - 273.15;
                 const KToF = (ValueOption - 273.15) * 9/5 + 32;
-                if ( ValueOption < 0 ) { return await slashCommand.reply({ ephemeral: true, content: `:warning: ${ValueOption}K is a temperature that cannot exist! (It is below Absolute Zero!)` }); }
-                await slashCommand.reply({ ephemeral: true, content: `${ValueOption}K is about ${KToC.toFixed(0)}C or ${KToF.toFixed(0)}F` });
+                if ( ValueOption < 0 ) { return await slashCommand.reply({ ephemeral: true, content: localize(slashCommand.locale, 'TEMPERATURE_COMMAND_ERROR_INVALID_TEMPERATURE', `${ValueOption}`, 'K') }); }
+                await slashCommand.reply({ ephemeral: true, content: localize(slashCommand.locale, 'TEMPERATURE_COMMAND_CONVERTED', `${ValueOption}`, 'K', `${KToC.toFixed(0)}`, 'C', `${KToF.toFixed(0)}`, 'F') });
                 break;
 
             default:
-                return await slashCommand.reply({ ephemeral: true, content: "Sorry, but there was a problem trying to run this Slash Command." });
+                return await slashCommand.reply({ ephemeral: true, content: localize(slashCommand.locale, 'SLASH_COMMAND_ERROR_GENERIC') });
         }
 
         return;
