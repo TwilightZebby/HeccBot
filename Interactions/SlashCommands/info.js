@@ -1493,11 +1493,11 @@ ${ExternalEmojiPermission && InviteGuild.verified ? `${EMOJI_VERIFIED} ` : ""}${
         const ApproxServerCount = (await DiscordClient.application.fetch()).approximateGuildCount;
 
         // Create Link Buttons
-        const PrivacyButton = new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel("Privacy Policy").setURL("https://github.com/TwilightZebby/HeccBot/blob/main/PRIVACY_POLICY.md");
-        const LicenseButton = new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel("License").setURL("https://github.com/TwilightZebby/license/blob/main/license.md");
-        const GitHubButton = new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel("GitHub").setURL("https://github.com/TwilightZebby/HeccBot");
-        const ChangelogButton = new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel("Changelog").setURL("https://github.com/TwilightZebby/HeccBot/releases");
-        const BotInfoActionRow = new ActionRowBuilder().addComponents([PrivacyButton, LicenseButton, GitHubButton, ChangelogButton]);
+        const ChangelogButton = new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel(localize(slashCommand, 'INFO_COMMAND_BOT_BUTTON_CHANGELOG')).setURL("https://github.com/TwilightZebby/HeccBot/releases");
+        const PrivacyButton = new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel(localize(slashCommand, 'INFO_COMMAND_BOT_BUTTON_PRIVACY')).setURL("https://github.com/TwilightZebby/HeccBot/blob/main/PRIVACY_POLICY.md");
+        const LicenseButton = new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel(localize(slashCommand, 'INFO_COMMAND_BOT_BUTTON_LICENSE')).setURL("https://github.com/TwilightZebby/license/blob/main/license.md");
+        const GitHubButton = new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel(localize(slashCommand, 'INFO_COMMAND_BOT_BUTTON_GITHUB')).setURL("https://github.com/TwilightZebby/HeccBot");
+        const BotInfoActionRow = new ActionRowBuilder().addComponents([ChangelogButton, PrivacyButton, LicenseButton, GitHubButton]);
 
         // Fetch App Commands
         const RegisteredGlobalCommands = await DiscordClient.application.commands.fetch();
@@ -1506,20 +1506,18 @@ ${ExternalEmojiPermission && InviteGuild.verified ? `${EMOJI_VERIFIED} ` : ""}${
 
         // Construct Embed
         const BotInfoEmbed = new EmbedBuilder()
-        .setAuthor({ name: `${DiscordClient.user.username} Information`, iconURL: `${DiscordClient.user.avatarURL({ extension: 'png' })}` })
-        .setDescription(`A private general purpose Bot. Has features such as \`/bonk\`, Button Role Menus, and more.`)
+        .setAuthor({ name: localize(slashCommand, 'INFO_COMMAND_BOT_INFO'), iconURL: `${DiscordClient.user.avatarURL({ extension: 'png' })}` })
+        .setDescription(localize(slashCommand, 'HECCBOT_DESCRIPTION_SHORT', `</bonk:${RegisteredGlobalCommands.find(cmd => cmd.name === "bonk").id}>`))
         .addFields(
-            { name: `Developer`, value: `TwilightZebby`, inline: true },
-            { name: `Bot Version`, value: `${Package.version}`, inline: true },
-            { name: `Discord.JS Version`, value: `${Package.dependencies['discord.js']}`, inline: true },
+            { name: localize(slashCommand, 'INFO_COMMAND_BOT_DEVELOPER'), value: `TwilightZebby`, inline: true },
+            { name: localize(slashCommand, 'INFO_COMMAND_BOT_BOT_VERSION'), value: `${Package.version}`, inline: true },
+            { name: localize(slashCommand, 'INFO_COMMAND_BOT_DISCORDJS_VERSION'), value: `${Package.dependencies['discord.js']}`, inline: true },
 
-            { name: `Global Commands`, value: `${RegisteredGlobalCommands.size}`, inline: true },
-            { name: `Server Commands`, value: `${RegisteredGuildCommands.size}`, inline: true },
-            { name: `Total App Commands`, value: `${TotalRegisteredCommands}`, inline: true },
+            { name: localize(slashCommand, 'INFO_COMMAND_BOT_GLOBAL_COMMANDS'), value: `${RegisteredGlobalCommands.size}`, inline: true },
+            { name: localize(slashCommand, 'INFO_COMMAND_BOT_SERVER_COMMANDS'), value: `${RegisteredGuildCommands.size}`, inline: true },
+            { name: localize(slashCommand, 'INFO_COMMAND_BOT_TOTAL_COMMANDS'), value: `${TotalRegisteredCommands}`, inline: true },
 
-            { name: `\u200B`, value: `\u200B`, inline: true },
-            { name: `Approx. Server Count`, value: `${ApproxServerCount}`, inline: true },
-            { name: `\u200B`, value: `\u200B`, inline: true }
+            { name: localize(slashCommand, 'INFO_COMMAND_BOT_SERVER_COUNT'), value: `${ApproxServerCount}`}
         );
 
         return await slashCommand.editReply({ embeds: [BotInfoEmbed], components: [BotInfoActionRow] });
