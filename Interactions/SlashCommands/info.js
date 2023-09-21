@@ -855,7 +855,7 @@ module.exports = {
 
         EmbedChannel.addFields({
             name: localize(slashCommand.locale, 'INFO_COMMAND_CHANNEL_GENERAL'),
-            value: `${localize(slashCommand.locale, 'INFO_COMMAND_CHANNEL_TYPE')} ${readableChannelType(fetchedChannel.type)}
+            value: `${localize(slashCommand.locale, 'INFO_COMMAND_CHANNEL_TYPE')} ${readableChannelType(fetchedChannel.type, slashCommand.locale)}
 ${localize(slashCommand.locale, 'INFO_COMMAND_CHANNEL_MENTION')} <#${fetchedChannel.id}>
 ${fetchedChannel.parentId != null ? `${localize(slashCommand.locale, 'INFO_COMMAND_CHANNEL_PARENT')} <#${fetchedChannel.parentId}>` : ""}`
         });
@@ -1110,7 +1110,7 @@ ${fetchedChannel.parentId != null ? `${localize(slashCommand.locale, 'INFO_COMMA
             {
                 name: localize(slashCommand, 'INFO_COMMAND_SERVER_GENERAL_INFO'),
                 value: `${ExternalEmojiPermission ? `${EMOJI_OWNER_CROWN} ` : ""}${localize(slashCommand, 'INFO_COMMAND_SERVER_OWNER')} ${fetchDisplayName(GuildOwner.user, true)}
-${ExternalEmojiPermission ? `${readableGuildPremiumTierEmoji(GuildBoostTier)} ` : ""}${INFO_COMMAND_SERVER_BOOST_TIER} ${readableGuildPremiumTier(GuildBoostTier)}
+${ExternalEmojiPermission ? `${readableGuildPremiumTierEmoji(GuildBoostTier)} ` : ""}${INFO_COMMAND_SERVER_BOOST_TIER} ${readableGuildPremiumTier(GuildBoostTier, slashCommand.locale)}
 ${ExternalEmojiPermission ? `${EMOJI_BOOST} ` : ""}${localize(slashCommand, 'INFO_COMMAND_SERVER_BOOST_COUNT')} ${GuildBoostCount}
 ${ExternalEmojiPermission ? `${EMOJI_EMOJI} ` : ""}${localize(slashCommand, 'INFO_COMMAND_SERVER_EMOJIS')} ${TotalEmojiCount}
 ${ExternalEmojiPermission ? `${EMOJI_STICKER} ` : ""}${localize(slashCommand, 'INFO_COMMAND_SERVER_STICKERS')} ${TotalStickerCount}
@@ -1129,11 +1129,11 @@ ${ExternalEmojiPermission ? `${EMOJI_CHANNEL_FORUM} ` : ""}**${localize(slashCom
             },
             {
                 name: localize(slashCommand, 'INFO_COMMAND_SERVER_SECURITY_INFO'),
-                value: `${localize(slashCommand, 'INFO_COMMAND_SERVER_VERIFICATION_LEVEL')} ${readableVerificationLevel(GuildVerificationLevel)}
-${localize(slashCommand, 'INFO_COMMAND_SERVER_EXPLICIT_FILTER')} ${readableExplicitFilter(GuildContentFilter)}
-${localize(slashCommand, 'INFO_COMMAND_SERVER_MFA_MODERATION')} ${readableMFALevel(GuildMFALevel)}
-${localize(slashCommand, 'INFO_COMMAND_SERVER_NSFW_LEVEL')} ${readableNSFWLevel(GuildNSFWLevel)}
-${localize(slashCommand, 'INFO_COMMAND_SERVER_DEFAULT_NOTIFICATIONS')} ${readableDefaultNotification(GuildDefaultNotifications)}`
+                value: `${localize(slashCommand, 'INFO_COMMAND_SERVER_VERIFICATION_LEVEL')} ${readableVerificationLevel(GuildVerificationLevel, slashCommand.locale)}
+${localize(slashCommand, 'INFO_COMMAND_SERVER_EXPLICIT_FILTER')} ${readableExplicitFilter(GuildContentFilter, slashCommand.locale)}
+${localize(slashCommand, 'INFO_COMMAND_SERVER_MFA_MODERATION')} ${readableMFALevel(GuildMFALevel, slashCommand.locale)}
+${localize(slashCommand, 'INFO_COMMAND_SERVER_NSFW_LEVEL')} ${readableNSFWLevel(GuildNSFWLevel, slashCommand.locale)}
+${localize(slashCommand, 'INFO_COMMAND_SERVER_DEFAULT_NOTIFICATIONS')} ${readableDefaultNotification(GuildDefaultNotifications, slashCommand.locale)}`
             }
         );
         if ( guildFeatures.length > 0 ) { ServerInfoEmbed.addFields({name: localize(slashCommand, 'INFO_COMMAND_SERVER_FEATURE_FLAG_INFO'), value: `${guildFeatures.sort().join(', ').slice(0, 1023)}`}); }
@@ -1274,7 +1274,7 @@ ${localize(slashCommand, 'INFO_COMMAND_SERVER_DEFAULT_NOTIFICATIONS')} ${readabl
         const RawUserFlags = await MemberUser.fetchFlags(true);
         const UserFlagStrings = [];
         let userFlagEmojis = [];
-        RawUserFlags.toArray().forEach(flag => UserFlagStrings.push(readableUserFlags(flag)));
+        RawUserFlags.toArray().forEach(flag => UserFlagStrings.push(readableUserFlags(flag, slashCommand.locale)));
         RawUserFlags.toArray().forEach(flag => userFlagEmojis.push(readableUserFlagsEmoji(flag)));
         // Filter out badgeless flags
         userFlagEmojis = userFlagEmojis.filter(emojiString => emojiString !== "NULL");
@@ -1347,8 +1347,8 @@ ${localize(slashCommand, 'INFO_COMMAND_SERVER_DEFAULT_NOTIFICATIONS')} ${readabl
             let botApplicationFlagStrings = [];
             let botIntentFlagStrings = [];
             BotApplicationFlags.forEach(flag => {
-                if ( BotIntentFlags.includes(flag) ) { botIntentFlagStrings.push(readableApplicationFlags(flag)); }
-                else { botApplicationFlagStrings.push(readableApplicationFlags(flag)); }
+                if ( BotIntentFlags.includes(flag) ) { botIntentFlagStrings.push(readableApplicationFlags(flag, slashCommand.locale)); }
+                else { botApplicationFlagStrings.push(readableApplicationFlags(flag, slashCommand.locale)); }
             });
             const BotRequiresCodeGrant = ( MemberUser.client.application.botRequireCodeGrant || null );
             const BotPubliclyInvitable = ( MemberUser.client.application.botPublic || null );
@@ -1448,7 +1448,7 @@ ${localize(slashCommand, 'INFO_COMMAND_SERVER_DEFAULT_NOTIFICATIONS')} ${readabl
         
         // Invite Target Info
         let targetInviteInfo = "";
-        if ( InviteChannel != null ) { targetInviteInfo += `**Channel Type:** ${readableChannelType(InviteChannel.type)}\n**Channel Name:** ${InviteChannel.name}`; }
+        if ( InviteChannel != null ) { targetInviteInfo += `**Channel Type:** ${readableChannelType(InviteChannel.type, slashCommand.locale)}\n**Channel Name:** ${InviteChannel.name}`; }
         if ( TargetType != null && TargetType === InviteTargetType.Stream ) { targetInviteInfo += `${targetInviteInfo.length > 1 ? `\n` : ""}**Target Type:** Screenshare`; }
         if ( TargetType != null && TargetType === InviteTargetType.EmbeddedApplication ) { targetInviteInfo += `${targetInviteInfo.length > 1 ? `\n` : ""}**Target Type:** Voice Activity${(TargetApplication != null) && (TargetApplication.name != null) ? `\n**Activity Name:** ${TargetApplication.name}` : ""}`; }
         if ( targetInviteInfo.length > 1 ) { InviteInfoEmbed.addFields({ name: `>> Target Info`, value: targetInviteInfo }); }
