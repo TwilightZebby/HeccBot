@@ -1415,7 +1415,7 @@ ${localize(slashCommand, 'INFO_COMMAND_USER_BOT')} ${MemberUser.bot ? localize(s
         /** @type {Invite} */
         let fetchedInvite = null;
         try { fetchedInvite = await DiscordClient.fetchInvite(InputInviteLink); }
-        catch (err) { return await slashCommand.editReply({ content: "Sorry, either that isn't a valid Server Invite, or the Invite doesn't exist on Discord!" }); }
+        catch (err) { return await slashCommand.editReply({ content: localize(slashCommand, 'INFO_COMMAND_INVITE_ERROR_INVALID_INVITE') }); }
 
         // Check for External Emoji Permission
         const ExternalEmojiPermission = checkEmojiPermission(slashCommand);
@@ -1434,45 +1434,45 @@ ${localize(slashCommand, 'INFO_COMMAND_USER_BOT')} ${MemberUser.bot ? localize(s
 
 
         // Construct Embed
-        const InviteInfoEmbed = new EmbedBuilder().setAuthor({ name: `Data for Invite Code: ${InviteCode}` });
+        const InviteInfoEmbed = new EmbedBuilder().setAuthor({ name: `${localize(slashCommand, 'INFO_COMMAND_INVITE_DATA')} ${InviteCode}` });
         
         // General Invite Info
         let generalInviteInfo = "";
-        if ( InviteCreatorUser != null ) { generalInviteInfo += `**Inviter:** ${fetchDisplayName(InviteCreatorUser, true)}\n**Bot User:** ${InviteCreatorUser.bot}`; }
-        if ( InviteCreatedTime != null ) { generalInviteInfo += `${generalInviteInfo.length > 1 ? `\n` : ""}**Created:** <t:${Math.floor(InviteCreatedTime / 1000)}:R>`; }
-        if ( InviteExpireTime != null ) { generalInviteInfo += `${generalInviteInfo.length > 1 ? `\n` : ""}**Expires:** <t:${Math.floor(InviteExpireTime / 1000)}:R>`; }
-        if ( generalInviteInfo.length > 1 ) { InviteInfoEmbed.addFields({ name: `>> General Info`, value: generalInviteInfo }); }
+        if ( InviteCreatorUser != null ) { generalInviteInfo += `${localize(slashCommand, 'INFO_COMMAND_INVITE_CREATOR')} ${fetchDisplayName(InviteCreatorUser, true)}\n${localize(slashCommand, 'INFO_COMMAND_INVITE_CREATOR_IS_BOT')} ${InviteCreatorUser.bot ? localize(slashCommand, 'TRUE_LOWERCASE') : localize(slashCommand, 'FALSE_LOWERCASE')}`; }
+        if ( InviteCreatedTime != null ) { generalInviteInfo += `${generalInviteInfo.length > 1 ? `\n` : ""}${localize(slashCommand, 'INFO_COMMAND_INVITE_CREATED')} <t:${Math.floor(InviteCreatedTime / 1000)}:R>`; }
+        if ( InviteExpireTime != null ) { generalInviteInfo += `${generalInviteInfo.length > 1 ? `\n` : ""}${localize(slashCommand, 'INFO_COMMAND_INVITE_EXPIRES')} <t:${Math.floor(InviteExpireTime / 1000)}:R>`; }
+        if ( generalInviteInfo.length > 1 ) { InviteInfoEmbed.addFields({ name: localize(slashCommand, 'INFO_COMMAND_INVITE_GENERAL_INFO'), value: generalInviteInfo }); }
         
         // Invite Target Info
         let targetInviteInfo = "";
-        if ( InviteChannel != null ) { targetInviteInfo += `**Channel Type:** ${readableChannelType(InviteChannel.type, slashCommand.locale)}\n**Channel Name:** ${InviteChannel.name}`; }
-        if ( TargetType != null && TargetType === InviteTargetType.Stream ) { targetInviteInfo += `${targetInviteInfo.length > 1 ? `\n` : ""}**Target Type:** Screenshare`; }
-        if ( TargetType != null && TargetType === InviteTargetType.EmbeddedApplication ) { targetInviteInfo += `${targetInviteInfo.length > 1 ? `\n` : ""}**Target Type:** Voice Activity${(TargetApplication != null) && (TargetApplication.name != null) ? `\n**Activity Name:** ${TargetApplication.name}` : ""}`; }
-        if ( targetInviteInfo.length > 1 ) { InviteInfoEmbed.addFields({ name: `>> Target Info`, value: targetInviteInfo }); }
+        if ( InviteChannel != null ) { targetInviteInfo += `${localize(slashCommand, 'INFO_COMMAND_INVITE_CHANNEL_TYPE')} ${readableChannelType(InviteChannel.type, slashCommand.locale)}\n${localize(slashCommand, 'INFO_COMMAND_INVITE_CHANNEL_NAME')} ${InviteChannel.name}`; }
+        if ( TargetType != null && TargetType === InviteTargetType.Stream ) { targetInviteInfo += `${targetInviteInfo.length > 1 ? `\n` : ""}${localize(slashCommand, 'INFO_COMMAND_INVITE_TARGET_TYPE')} ${localize(slashCommand, 'INFO_COMMAND_INVITE_TARGET_STREAM')}`; }
+        if ( TargetType != null && TargetType === InviteTargetType.EmbeddedApplication ) { targetInviteInfo += `${targetInviteInfo.length > 1 ? `\n` : ""}${localize(slashCommand, 'INFO_COMMAND_INVITE_TARGET_TYPE')} ${localize(slashCommand, 'INFO_COMMAND_INVITE_TARGET_ACTIVITY')}${(TargetApplication != null) && (TargetApplication.name != null) ? `\n${localize(slashCommand, 'INFO_COMMAND_INVITE_TARGET_ACTIVITY_NAME')} ${TargetApplication.name}` : ""}`; }
+        if ( targetInviteInfo.length > 1 ) { InviteInfoEmbed.addFields({ name: localize(slashCommand, 'INFO_COMMAND_INVITE_TARGET_INFO'), value: targetInviteInfo }); }
         
         // Guild Info
         if ( InviteGuild != null )
         {
             if ( InviteGuild.description != null ) { InviteInfoEmbed.setDescription(InviteGuild.description); }
-            if ( InviteGuild.icon != null ) { InviteInfoEmbed.setAuthor({ iconURL: InviteGuild.iconURL({ extension: 'png' }), name: `Data for Invite Code: ${InviteCode}` }); }
-            let guildInviteInfo = `**Name:** ${InviteGuild.name}
-${ExternalEmojiPermission && InviteGuild.partnered ? `${EMOJI_PARTNER} ` : ""}**Partnered:** ${InviteGuild.partnered}
-${ExternalEmojiPermission && InviteGuild.verified ? `${EMOJI_VERIFIED} ` : ""}**Verified:** ${InviteGuild.verified}`;
-            if ( InviteGuild.premiumSubscriptionCount != null ) { guildInviteInfo += `\n**Boosts:** ${InviteGuild.premiumSubscriptionCount}` }
-            if ( fetchedInvite.memberCount ) { guildInviteInfo += `\n**Approx. Total Members:** ${fetchedInvite.memberCount}`; }
-            if ( fetchedInvite.presenceCount ) { guildInviteInfo += `\n**Approx. Online Members:** ${fetchedInvite.presenceCount}`; }
-            InviteInfoEmbed.addFields({ name: `>> Server Info`, value: guildInviteInfo });
+            if ( InviteGuild.icon != null ) { InviteInfoEmbed.setAuthor({ iconURL: InviteGuild.iconURL({ extension: 'png' }), name: `${localize(slashCommand, 'INFO_COMMAND_INVITE_DATA')} ${InviteCode}` }); }
+            let guildInviteInfo = `${localize(slashCommand, 'INFO_COMMAND_INVITE_SERVER_NAME')} ${InviteGuild.name}
+${ExternalEmojiPermission && InviteGuild.partnered ? `${EMOJI_PARTNER} ` : ""}${localize(slashCommand, 'INFO_COMMAND_INVITE_SERVER_PARTNERED')} ${InviteGuild.partnered ? localize(slashCommand, 'TRUE_LOWERCASE') : localize(slashCommand, 'FALSE_LOWERCASE')}
+${ExternalEmojiPermission && InviteGuild.verified ? `${EMOJI_VERIFIED} ` : ""}${localize(slashCommand, 'INFO_COMMAND_INVITE_SERVER_VERIFIED')} ${InviteGuild.verified ? localize(slashCommand, 'TRUE_LOWERCASE') : localize(slashCommand, 'FALSE_LOWERCASE')}`;
+            if ( InviteGuild.premiumSubscriptionCount != null ) { guildInviteInfo += `\n${localize(slashCommand, 'INFO_COMMAND_INVITE_SERVER_BOOST_COUNT')} ${InviteGuild.premiumSubscriptionCount}` }
+            if ( fetchedInvite.memberCount ) { guildInviteInfo += `\n${localize(slashCommand, 'INFO_COMMAND_INVITE_SERVER_TOTAL_MEMBERS')} ${fetchedInvite.memberCount}`; }
+            if ( fetchedInvite.presenceCount ) { guildInviteInfo += `\n${localize(slashCommand, 'INFO_COMMAND_INVITE_SERVER_ONLINE_MEMBERS')} ${fetchedInvite.presenceCount}`; }
+            InviteInfoEmbed.addFields({ name: localize(slashCommand, 'INFO_COMMAND_INVITE_SERVER_INFO'), value: guildInviteInfo });
 
             // Server Feature Flags, grabbing from raw API to ensure up-to-date data
             let rawData = await DiscordClient.rest.get(Routes.invite(InviteCode));
             const RawFeatures = rawData["guild"]["features"];
             let guildFeatures = [];
             RawFeatures.forEach(feature => guildFeatures.push(titleCaseGuildFeature(feature)));
-            if ( guildFeatures.length > 0 ) { InviteInfoEmbed.addFields({ name: `>> Server's Feature Flags`, value: `${guildFeatures.sort().join(', ').slice(0, 1023)}` }); }
+            if ( guildFeatures.length > 0 ) { InviteInfoEmbed.addFields({ name: localize(slashCommand, 'INFO_COMMAND_INVITE_SERVER_FLAG_INFO'), value: `${guildFeatures.sort().join(', ').slice(0, 1023)}` }); }
         }
 
         // Construct Invite Button
-        const InviteLinkButton = new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel("Join Server").setURL(`https://discord.gg/${InviteCode}`);
+        const InviteLinkButton = new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel(localize(slashCommand, 'INFO_COMMAND_INVITE_BUTTON_JOIN')).setURL(`https://discord.gg/${InviteCode}`);
         const InviteInfoActionRow = new ActionRowBuilder().addComponents(InviteLinkButton);
 
         return await slashCommand.editReply({ embeds: [InviteInfoEmbed], components: [InviteInfoActionRow] });
