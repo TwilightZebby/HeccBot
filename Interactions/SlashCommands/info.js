@@ -1200,9 +1200,10 @@ ${localize(slashCommand, 'INFO_COMMAND_ROLE_MEMBERS')} ${RoleOption.members.size
         {
             let roleTagString = ``;
             if ( RoleOption.tags.botId != undefined ) { roleTagString += `${localize(slashCommand, 'INFO_COMMAND_ROLE_BOT')} <@${RoleOption.tags.botId}>`; }
-            if ( RoleOption.tags.integrationId != undefined )
+            if ( RoleOption.tags.integrationId != undefined && slashCommand.appPermissions.has(PermissionFlagsBits.ManageGuild) )
             {
                 // Fetch Integrations so we can name it since they aren't mentionable
+                // But only if we have MANAGE_GUILD Permission to be able to fetch Integrations!
                 await slashCommand.guild.fetchIntegrations()
                 .then(async Integrations => {
                     roleTagString += `${roleTagString.length > 4 ? `\n` : ""}${localize(slashCommand, 'INFO_COMMAND_ROLE_INTEGRATION')} ${Integrations.get(RoleOption.tags.integrationId).name}`;
