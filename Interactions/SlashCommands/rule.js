@@ -1,5 +1,6 @@
 const { ChatInputCommandInteraction, ChatInputApplicationCommandData, ApplicationCommandType, AutocompleteInteraction, ApplicationCommandOptionType, DMChannel, PartialGroupDMChannel } = require("discord.js");
 const RulesJson = require("../../JsonFiles/Hidden/serverRules.json");
+const { localize } = require("../../BotModules/LocalizationModule");
 
 
 module.exports = {
@@ -83,7 +84,7 @@ module.exports = {
         // Just in case
         if ( slashCommand.channel instanceof DMChannel || slashCommand.channel instanceof PartialGroupDMChannel )
         {
-            await slashCommand.reply({ ephemeral: true, content: `Sorry, but this Slash Command can__not__ be used within DMs or Group DMs.` });
+            await slashCommand.reply({ ephemeral: true, content: localize(slashCommand.locale, 'SLASH_COMMAND_ERROR_DMS_UNSUPPORTED') });
             return;
         }
 
