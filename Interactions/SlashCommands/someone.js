@@ -1,5 +1,6 @@
 const { ChatInputCommandInteraction, ChatInputApplicationCommandData, ApplicationCommandType, AutocompleteInteraction, PermissionFlagsBits, ThreadChannel, GuildMember, ThreadMember, DMChannel, PartialGroupDMChannel } = require("discord.js");
 const { fetchDisplayName } = require("../../constants");
+const { localize } = require("../../BotModules/LocalizationModule");
 
 module.exports = {
     // Command's Name
@@ -7,7 +8,13 @@ module.exports = {
     Name: "someone",
 
     // Command's Description
-    Description: `Simulates an @someone mention, just like the April Fools feature of old!`,
+    Description: `Simulates an @someone mention, just like Discord's old April Fools feature!`,
+
+    // Command's Localised Descriptions
+    LocalisedDescriptions: {
+        'en-GB': `Simulates an @someone mention, just like Discord's old April Fools feature!`,
+        'en-US': `Simulates an @someone mention, just like Discord's old April Fools feature!`
+    },
 
     // Command's Category
     Category: "APRIL_FOOLS",
@@ -48,6 +55,7 @@ module.exports = {
 
         Data.name = this.Name;
         Data.description = this.Description;
+        Data.descriptionLocalizations = this.LocalisedDescriptions;
         Data.type = ApplicationCommandType.ChatInput;
         Data.dmPermission = false;
         Data.defaultMemberPermissions = PermissionFlagsBits.MentionEveryone;
@@ -66,7 +74,7 @@ module.exports = {
         // Just in case
         if ( slashCommand.channel instanceof DMChannel || slashCommand.channel instanceof PartialGroupDMChannel )
         {
-            await slashCommand.reply({ ephemeral: true, content: `Sorry, but this Slash Command can__not__ be used within DMs or Group DMs.` });
+            await slashCommand.reply({ ephemeral: true, content: localize(slashCommand.locale, 'SLASH_COMMAND_ERROR_DMS_UNSUPPORTED') });
             return;
         }
 
@@ -88,7 +96,7 @@ module.exports = {
         }
 
         // Send in chat
-        await slashCommand.reply({ allowedMentions: { parse: [] }, content: `\`@someone\` *(${fetchDisplayName(RandomMember.user, true)})*` });
+        await slashCommand.reply({ allowedMentions: { parse: [] }, content: localize(slashCommand.guildLocale, 'SOMEONE_COMMAND_RESPONSE', `${fetchDisplayName(RandomMember.user, true)}`) });
         return;
     },
 

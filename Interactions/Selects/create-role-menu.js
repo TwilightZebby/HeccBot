@@ -1,22 +1,8 @@
 const { StringSelectMenuInteraction, ModalBuilder, ActionRowBuilder, TextInputBuilder, TextInputStyle, RoleSelectMenuBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder } = require("discord.js");
 const fs = require("fs");
 const { Collections } = require("../../constants.js");
+const { localize } = require("../../BotModules/LocalizationModule.js");
 
-const AddRoleSelect = new ActionRowBuilder().addComponents([
-    new RoleSelectMenuBuilder().setCustomId(`create-menu-add-role`).setMinValues(1).setMaxValues(1).setPlaceholder("Search for a Role to add")
-]);
-
-const RemoveRoleSelect = new ActionRowBuilder().addComponents([
-    new RoleSelectMenuBuilder().setCustomId(`create-menu-remove-role`).setMinValues(1).setMaxValues(1).setPlaceholder("Search for a Role to remove")
-]);
-
-const SetTypeSelect = new ActionRowBuilder().addComponents([
-    new StringSelectMenuBuilder().setCustomId(`create-set-menu-type`).setMinValues(1).setMaxValues(1).setPlaceholder(`Select a Menu Type`).setOptions([
-        new StringSelectMenuOptionBuilder().setValue(`TOGGLE`).setLabel(`Toggle`),
-        new StringSelectMenuOptionBuilder().setValue(`SWAP`).setLabel(`Swappable`),
-        new StringSelectMenuOptionBuilder().setValue(`SINGLE`).setLabel(`Single-use`)
-    ])
-]);
 
 module.exports = {
     // Select's Name
@@ -38,6 +24,24 @@ module.exports = {
      */
     async execute(selectInteraction)
     {
+        const AddRoleSelect = new ActionRowBuilder().addComponents([
+            new RoleSelectMenuBuilder().setCustomId(`create-menu-add-role`).setMinValues(1).setMaxValues(1).setPlaceholder(localize(selectInteraction.locale, 'ROLE_MENU_ROLE_ADD_SEARCH'))
+        ]);
+        
+        const RemoveRoleSelect = new ActionRowBuilder().addComponents([
+            new RoleSelectMenuBuilder().setCustomId(`create-menu-remove-role`).setMinValues(1).setMaxValues(1).setPlaceholder(localize(selectInteraction.locale, 'ROLE_MENU_ROLE_REMOVE_SEARCH'))
+        ]);
+        
+        const SetTypeSelect = new ActionRowBuilder().addComponents([
+            new StringSelectMenuBuilder().setCustomId(`create-set-menu-type`).setMinValues(1).setMaxValues(1).setPlaceholder(localize(selectInteraction.locale, 'ROLE_MENU_SELECT_MENU_TYPE')).setOptions([
+                new StringSelectMenuOptionBuilder().setValue(`TOGGLE`).setLabel(localize(selectInteraction.locale, 'ROLE_MENU_MENU_TYPE_TOGGLE')),
+                new StringSelectMenuOptionBuilder().setValue(`SWAP`).setLabel(localize(selectInteraction.locale, 'ROLE_MENU_MENU_TYPE_SWAPPABLE')),
+                new StringSelectMenuOptionBuilder().setValue(`SINGLE`).setLabel(localize(selectInteraction.locale, 'ROLE_MENU_MENU_TYPE_SINGLE'))
+            ])
+        ]);
+
+
+
         // Grab value
         const SelectedOption = selectInteraction.values.shift();
 
@@ -46,11 +50,7 @@ module.exports = {
             // Set Menu Type
             case "set-type":
                 await selectInteraction.deferUpdate();
-                await selectInteraction.followUp({ ephemeral: true, components: [SetTypeSelect], content: `Please use the Select Menu below to pick which type of Role Menu you want.
-
-• **TOGGLE** - Your standard Role Menu Type. Behaves like a classic Reaction Role Menu, but with Buttons instead.
-• **SWAP** - Users can only have 1 Role per SWAP Menu. Attempting to select another Role on the same SWAP Menu would swap the two Roles instead. Useful for Colour Role Menus!
-• **SINGLE-USE** - Users can only use a SINGLE-USE Menu once, and are unable to revoke the selected Role from themselves. Useful for Team Roles in Events.` });
+                await selectInteraction.followUp({ ephemeral: true, components: [SetTypeSelect], content: localize(selectInteraction.locale, 'ROLE_MENU_SET_MENU_TYPE_INSTRUCTIONS') });
 
                 // Temp-store interaction so we can return to it
                 let tempData = Collections.RoleMenuCreation.get(selectInteraction.guildId);
@@ -63,10 +63,10 @@ module.exports = {
             case "configure-embed":
                 let embedData = Collections.RoleMenuCreation.get(selectInteraction.guildId)?.embed;
 
-                let embedModal = new ModalBuilder().setCustomId(`create-menu-embed`).setTitle(`Configure Menu Embed`).addComponents([
-                    new ActionRowBuilder().addComponents([ new TextInputBuilder().setCustomId(`title`).setLabel("Embed Title").setMaxLength(256).setStyle(TextInputStyle.Short).setRequired(true).setValue(!embedData?.data.title ? "" : embedData.data.title) ]),
-                    new ActionRowBuilder().addComponents([ new TextInputBuilder().setCustomId(`description`).setLabel("Embed Description").setMaxLength(2000).setStyle(TextInputStyle.Paragraph).setRequired(false).setValue(!embedData?.data.description ? "" : embedData.data.description) ]),
-                    new ActionRowBuilder().addComponents([ new TextInputBuilder().setCustomId(`hex-colour`).setLabel("Embed Colour (In Hex Format)").setMaxLength(7).setPlaceholder("#ab44ff").setStyle(TextInputStyle.Short).setRequired(false).setValue(!embedData?.data.color ? "" : `${typeof embedData.data.color === 'number' ? `#${embedData.data.color.toString(16).padStart(6, '0')}` : embedData.data.color}`) ])
+                let embedModal = new ModalBuilder().setCustomId(`create-menu-embed`).setTitle(localize(selectInteraction.locale, 'ROLE_MENU_CONFIGURE_MENU_EMBED')).addComponents([
+                    new ActionRowBuilder().addComponents([ new TextInputBuilder().setCustomId(`title`).setLabel(localize(selectInteraction.locale, 'ROLE_MENU_EMBED_TITLE')).setMaxLength(256).setStyle(TextInputStyle.Short).setRequired(true).setValue(!embedData?.data.title ? "" : embedData.data.title) ]),
+                    new ActionRowBuilder().addComponents([ new TextInputBuilder().setCustomId(`description`).setLabel(localize(selectInteraction.locale, 'ROLE_MENU_EMBED_DESCRIPTION')).setMaxLength(2000).setStyle(TextInputStyle.Paragraph).setRequired(false).setValue(!embedData?.data.description ? "" : embedData.data.description) ]),
+                    new ActionRowBuilder().addComponents([ new TextInputBuilder().setCustomId(`hex-colour`).setLabel(localize(selectInteraction.locale, 'ROLE_MENU_EMBED_COLOR')).setMaxLength(7).setPlaceholder("#ab44ff").setStyle(TextInputStyle.Short).setRequired(false).setValue(!embedData?.data.color ? "" : `${typeof embedData.data.color === 'number' ? `#${embedData.data.color.toString(16).padStart(6, '0')}` : embedData.data.color}`) ])
                 ]);
 
                 await selectInteraction.showModal(embedModal);
@@ -79,13 +79,13 @@ module.exports = {
                 let fetchedButtons = Collections.RoleMenuCreation.get(selectInteraction.guildId).roles;
                 if ( fetchedButtons?.length === 10 )
                 {
-                    await selectInteraction.reply({ ephemeral: true, content: `Sorry, but you cannot add more than 10 (ten) Role Buttons to a single Menu.` });
+                    await selectInteraction.reply({ ephemeral: true, content: localize(selectInteraction.locale, 'ROLE_MENU_ERROR_BUTTON_LIMIT_EXCEEDED') });
                     break;
                 }
 
                 // Ask for which Role to add
                 await selectInteraction.deferUpdate(); // Just so the original is editable later
-                await selectInteraction.followUp({ ephemeral: true, components: [AddRoleSelect], content: `Please use the Role Select Menu below to pick which Role from this Server you would like to add to your new Role Menu.` });
+                await selectInteraction.followUp({ ephemeral: true, components: [AddRoleSelect], content: localize(selectInteraction.locale, 'ROLE_MENU_ROLE_ADD_INSTRUCTIONS') });
 
                 // Temp-store interaction so we can return to it
                 let menuData = Collections.RoleMenuCreation.get(selectInteraction.guildId);
@@ -98,7 +98,7 @@ module.exports = {
             case "remove-role":
                 // ACK to User to choose which Role to remove from Menu
                 await selectInteraction.deferUpdate(); // So original is editable later
-                await selectInteraction.followUp({ ephemeral: true, components: [RemoveRoleSelect], content: `Please use the Role Select Menu below to pick which Role you want to *remove* from your Role Menu.` });
+                await selectInteraction.followUp({ ephemeral: true, components: [RemoveRoleSelect], content: localize(selectInteraction.locale, 'ROLE_MENU_ROLE_REMOVE_INSTRUCTIONS') });
 
                 // Temp-store interaction so we can return to it
                 let menuDataRemove = Collections.RoleMenuCreation.get(selectInteraction.guildId);
@@ -119,12 +119,12 @@ module.exports = {
                 let timeoutCache = Collections.RoleMenuCreation.get(selectInteraction.guildId).timeout;
                 clearTimeout(timeoutCache);
                 Collections.RoleMenuCreation.delete(selectInteraction.guildId);
-                await selectInteraction.update({ embeds: [], components: [], content: `Creation of new Role Menu has been cancelled. You may now dismiss or delete this message.` });
+                await selectInteraction.update({ embeds: [], components: [], content: localize(selectInteraction.locale, 'ROLE_MENU_CONFIGURATION_CANCELLED') });
                 break;
                 
 
             default:
-                await selectInteraction.reply({ ephemeral: true, content: `An error occurred` });
+                await selectInteraction.reply({ ephemeral: true, content: localize(selectInteraction.locale, 'ERROR_GENERIC') });
                 break;
         }
 
@@ -150,7 +150,7 @@ module.exports = {
         // Fetch data
         const MenuDataCache = Collections.RoleMenuCreation.get(selectInteraction.guildId);
         const RoleDataCache = MenuDataCache.roles;
-        const EmbedDataCache = MenuDataCache.embed.setFooter({ text: `Menu Type: ${MenuDataCache.type}` });
+        const EmbedDataCache = MenuDataCache.embed.setFooter({ text: localize(selectInteraction.guildLocale, 'ROLE_MENU_TYPE_FOOTER', `${MenuDataCache.type}`) });
         const ButtonDataCache = MenuDataCache.buttons;
         const MenuType = MenuDataCache.type;
 
@@ -223,7 +223,7 @@ module.exports = {
             fs.writeFile('./JsonFiles/Hidden/RoleMenus.json', JSON.stringify(RoleMenuJson, null, 4), async (err) => {
                 if ( err )
                 { 
-                    await selectInteraction.followUp({ content: `An error occurred while trying to save your new Role Menu...`, ephemeral: true });
+                    await selectInteraction.followUp({ content: localize(selectInteraction.locale, 'ROLE_MENU_ERROR_CREATION_GENERIC'), ephemeral: true });
                     return;
                 }
             });
@@ -232,7 +232,7 @@ module.exports = {
             // Clean up
             clearTimeout(MenuDataCache.timeout);
             Collections.RoleMenuCreation.delete(selectInteraction.guildId);
-            await selectInteraction.followUp({ ephemeral: true, content: `Successfully created & posted your new Role Menu!\n\nIf you need to, you can edit or delete your Role Menus by using my [Message Context Commands](https://i.imgur.com/m1uBo5J.png).` });
+            await selectInteraction.followUp({ ephemeral: true, content: localize(selectInteraction.locale, 'ROLE_MENU_CREATION_SUCCESS', `https://i.imgur.com/m1uBo5J.png`) });
             return;
         })
         .catch(err => {

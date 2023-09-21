@@ -1,5 +1,6 @@
 const { ButtonInteraction, EmbedBuilder } = require("discord.js");
 const fs = require("fs");
+const { localize } = require("../../BotModules/LocalizationModule");
 
 module.exports = {
     // Button's Name
@@ -30,7 +31,7 @@ module.exports = {
         // Check if Member has already voted on this poll
         if ( pollJson[SourceMessage.id]["MEMBERS_VOTED"].includes(MemberVoting.id) )
         {
-            await buttonInteraction.reply({ ephemeral: true, content: `You have already voted on this Poll!\nIt is not possible to vote multiple times or to change your vote on Polls made with this Bot.` });
+            await buttonInteraction.reply({ ephemeral: true, content: `${localize(buttonInteraction.locale, 'POLL_BUTTON_ERROR_ALREADY_VOTED')}` });
             return;
         }
 
@@ -43,7 +44,7 @@ module.exports = {
         fs.writeFile('./JsonFiles/Hidden/ActivePolls.json', JSON.stringify(pollJson, null, 4), async (err) => {
             if ( err )
             {
-                await buttonInteraction.reply({ ephemeral: true, content: `Sorry, an error has occurred while trying to process your Poll Vote...` });
+                await buttonInteraction.reply({ ephemeral: true, content: `${localize(buttonInteraction.locale, 'POLL_BUTTON_ERROR_GENERIC')}` });
                 return;
             }
         });
@@ -51,7 +52,7 @@ module.exports = {
 
         // Edit total votes into Embed
         const UpdatePollEmbed = EmbedBuilder.from(SourceMessage.embeds.pop());
-        UpdatePollEmbed.setFooter({ text: `Current Total Votes: ${pollJson[SourceMessage.id]["MEMBERS_VOTED"].length}` });
+        UpdatePollEmbed.setFooter({ text: `${localize(buttonInteraction.locale, 'POLL_BUTTON_CURRENT_TOTAL_VOTES', pollJson[SourceMessage.id]["MEMBERS_VOTED"].length)}` });
 
 
         // Calculate current results
@@ -73,7 +74,7 @@ module.exports = {
                 // Choice Name (For UX)
                 temp += `• **${ChoiceString}** `;
                 // Number of Votes for Choice
-                temp += `- ${FinalChoiceVotes[choiceValue]} Vote${FinalChoiceVotes[choiceValue] === 1 ? "" : "s"} `;
+                temp += `- ${FinalChoiceVotes[choiceValue]} ${FinalChoiceVotes[choiceValue] === 1 ? `${localize(buttonInteraction.locale, 'POLL_SINGLE_VOTE')}` : `${localize(buttonInteraction.locale, 'POLL_MULTIPLE_VOTES')}`} `;
                 // Percentage of Total Votes
                 temp += `(~${((FinalChoiceVotes[choiceValue] / TotalVotes) * 100).toFixed(1)}%)`
 
@@ -81,16 +82,16 @@ module.exports = {
             }
         });
 
-        let currentResultsEmbed = new EmbedBuilder().setTitle("Current Results")
+        let currentResultsEmbed = new EmbedBuilder().setTitle(`${localize(buttonInteraction.locale, 'POLL_CURRENT_RESULTS')}`)
         .setColor(UpdatePollEmbed.data.color)
-        .addFields({ name: `Choices:`, value: mappedResults })
-        .setFooter({ text: `Current Total Votes: ${TotalVotes}` });
+        .addFields({ name: `${localize(buttonInteraction.locale, 'POLL_BUTTON_CHOICES')}`, value: mappedResults })
+        .setFooter({ text: `${localize(buttonInteraction.locale, 'POLL_BUTTON_CURRENT_TOTAL_VOTES', TotalVotes)}` });
 
         
         // ACK        
         await buttonInteraction.update({ embeds: [UpdatePollEmbed] }).then(async updatedMessage => {
             // ACK to Member that their vote has been submitted
-            await buttonInteraction.followUp({ ephemeral: true, embeds: [currentResultsEmbed], content: `✅ Successfully voted for **${ChoiceVoted.replace("-", " ")}**` });
+            await buttonInteraction.followUp({ ephemeral: true, embeds: [currentResultsEmbed], content: `${localize(buttonInteraction.locale, 'POLL_BUTTON_VOTE_SUCCESS', `**${ChoiceVoted.replace("-", " ")}**`)}` });
             return;
         });
 

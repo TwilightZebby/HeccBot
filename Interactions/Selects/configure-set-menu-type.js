@@ -1,13 +1,7 @@
 const { StringSelectMenuInteraction, ActionRowBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder } = require("discord.js");
-const { DiscordClient, Collections } = require("../../constants.js");
+const { Collections } = require("../../constants.js");
+const { localize } = require("../../BotModules/LocalizationModule.js");
 
-const EmbedSelectMenu = new ActionRowBuilder().addComponents([
-    new StringSelectMenuBuilder().setCustomId(`configure-role-menu`).setMinValues(1).setMaxValues(1).setPlaceholder("Please select an action").setOptions([
-        new StringSelectMenuOptionBuilder().setLabel("Set Menu Type").setValue("set-type").setDescription("Change how the Menu will behave once saved").setEmoji(`🔧`),
-        new StringSelectMenuOptionBuilder().setLabel("Configure Embed").setValue("configure-embed").setDescription("Set the Title, Description, and Colour of the Embed").setEmoji(`<:StatusRichPresence:842328614883295232>`),
-        new StringSelectMenuOptionBuilder().setLabel("Cancel Creation").setValue("cancel").setDescription("Cancels creation of this Role Menu").setEmoji(`❌`)
-    ])
-]);
 
 module.exports = {
     // Select's Name
@@ -29,6 +23,16 @@ module.exports = {
      */
     async execute(selectInteraction)
     {
+        const EmbedSelectMenu = new ActionRowBuilder().addComponents([
+            new StringSelectMenuBuilder().setCustomId(`configure-role-menu`).setMinValues(1).setMaxValues(1).setPlaceholder(localize(selectInteraction.locale, 'PLEASE_SELECT_AN_ACTION')).setOptions([
+                new StringSelectMenuOptionBuilder().setLabel(localize(selectInteraction.locale, 'ROLE_MENU_SET_MENU_TYPE')).setValue("set-type").setDescription(localize(selectInteraction.locale, 'ROLE_MENU_SET_MENU_TYPE_DESCRIPTION')).setEmoji(`🔧`),
+                new StringSelectMenuOptionBuilder().setLabel(localize(selectInteraction.locale, 'ROLE_MENU_CONFIGURE_EMBED')).setValue("configure-embed").setDescription(localize(selectInteraction.locale, 'ROLE_MENU_CONFIGURE_EMBED_DESCRIPTION')).setEmoji(`<:StatusRichPresence:842328614883295232>`),
+                new StringSelectMenuOptionBuilder().setLabel(localize(selectInteraction.locale, 'ROLE_MENU_CANCEL_CONFIGURATION')).setValue("cancel").setDescription(localize(selectInteraction.locale, 'ROLE_MENU_CANCEL_CONFIGURATION_DESCRIPTION')).setEmoji(`❌`)
+            ])
+        ]);
+
+
+
         // Grab stuff
         const MenuDataCache = Collections.RoleMenuConfiguration.get(selectInteraction.guildId);
         const EmbedCache = MenuDataCache.embed;
@@ -36,7 +40,7 @@ module.exports = {
         let originalComponents = MenuDataCache.interaction.message.components;
 
         // Set the Type
-        EmbedCache.setFooter({ text: `Menu Type: ${SelectedTypeChoice}` });
+        EmbedCache.setFooter({ text: localize(selectInteraction.guildLocale, 'ROLE_MENU_TYPE_FOOTER', `${SelectedTypeChoice}`) });
         MenuDataCache.type = SelectedTypeChoice;
         MenuDataCache.embed = EmbedCache;
 

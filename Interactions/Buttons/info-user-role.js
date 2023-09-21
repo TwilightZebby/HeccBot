@@ -1,5 +1,5 @@
 const { ButtonInteraction, EmbedBuilder } = require("discord.js");
-const { DiscordClient, Collections } = require("../../constants.js");
+const { localize } = require("../../BotModules/LocalizationModule.js");
 
 module.exports = {
     // Button's Name
@@ -35,7 +35,7 @@ module.exports = {
 
         // Construct Embed
         const RoleInfoEmbed = new EmbedBuilder().setColor(FetchedMember.displayHexColor)
-        .setAuthor({ name: `${FetchedMember.displayName}'s Roles`, iconURL: FetchedMember.displayAvatarURL({ extension: 'png' }) })
+        .setAuthor({ name: `${localize(buttonInteraction.locale, 'INFO_COMMAND_USER_ROLES', FetchedMember.displayName)}`, iconURL: FetchedMember.displayAvatarURL({ extension: 'png' }) })
         .setDescription(roleStrings.join(', '));
 
         // Send

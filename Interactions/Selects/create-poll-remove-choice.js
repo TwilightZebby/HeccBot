@@ -1,25 +1,7 @@
 const { StringSelectMenuInteraction, ActionRowBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder } = require("discord.js");
 const { Collections } = require("../../constants.js");
+const { localize } = require("../../BotModules/LocalizationModule.js");
 
-const MenuSelect = new ActionRowBuilder().addComponents([
-    new StringSelectMenuBuilder().setCustomId(`create-poll`).setMinValues(1).setMaxValues(1).setPlaceholder("Please select an action").setOptions([
-        //new StringSelectMenuOptionBuilder().setLabel("Set Poll Type").setValue("set-type").setDescription("Change how the Poll will behave once saved").setEmoji(`🔧`),
-        new StringSelectMenuOptionBuilder().setLabel("Configure Embed").setValue("configure-embed").setDescription("Set the Question, Description, and Colour of the Poll").setEmoji(`<:StatusRichPresence:842328614883295232>`),
-        new StringSelectMenuOptionBuilder().setLabel("Add Choice").setValue("add-choice").setDescription("Add a Choice to the Poll").setEmoji(`<:plusGrey:997752068439818280>`),
-        new StringSelectMenuOptionBuilder().setLabel("Remove Choice").setValue("remove-choice").setDescription("Remove a Choice from the Poll").setEmoji(`<:IconDeleteTrashcan:750152850310561853>`),
-        new StringSelectMenuOptionBuilder().setLabel("Save & Display").setValue("save").setDescription("Saves the new Poll, and displays it for Members to use").setEmoji(`<:IconActivity:815246970457161738>`),
-        new StringSelectMenuOptionBuilder().setLabel("Cancel Creation").setValue("cancel").setDescription("Cancels creation of this Poll").setEmoji(`❌`)
-    ])
-]);
-
-const NoChoicesMenuSelect = new ActionRowBuilder().addComponents([
-    new StringSelectMenuBuilder().setCustomId(`create-poll`).setMinValues(1).setMaxValues(1).setPlaceholder("Please select an action").setOptions([
-        //new StringSelectMenuOptionBuilder().setLabel("Set Poll Type").setValue("set-type").setDescription("Change how the Poll will behave once saved").setEmoji(`🔧`),
-        new StringSelectMenuOptionBuilder().setLabel("Configure Embed").setValue("configure-embed").setDescription("Set the Question, Description, and Colour of the Poll").setEmoji(`<:StatusRichPresence:842328614883295232>`),
-        new StringSelectMenuOptionBuilder().setLabel("Add Choice").setValue("add-choice").setDescription("Add a Choice to the Poll").setEmoji(`<:plusGrey:997752068439818280>`),
-        new StringSelectMenuOptionBuilder().setLabel("Cancel Creation").setValue("cancel").setDescription("Cancels creation of this Poll").setEmoji(`❌`)
-    ])
-]);
 
 
 module.exports = {
@@ -42,6 +24,26 @@ module.exports = {
      */
     async execute(selectInteraction)
     {
+        const MenuSelect = new ActionRowBuilder().addComponents([
+            new StringSelectMenuBuilder().setCustomId(`create-poll`).setMinValues(1).setMaxValues(1).setPlaceholder(localize(selectInteraction.locale, 'PLEASE_SELECT_AN_ACTION')).setOptions([
+                new StringSelectMenuOptionBuilder().setLabel(localize(selectInteraction.locale, 'POLL_CONFIGURE_EMBED')).setValue("configure-embed").setDescription(localize(selectInteraction.locale, 'POLL_CONFIGURE_EMBED_DESCRIPTION')).setEmoji(`<:StatusRichPresence:842328614883295232>`),
+                new StringSelectMenuOptionBuilder().setLabel(localize(selectInteraction.locale, 'POLL_ADD_CHOICE')).setValue("add-choice").setDescription(localize(selectInteraction.locale, 'POLL_ADD_CHOICE_DESCRIPTION')).setEmoji(`<:plusGrey:997752068439818280>`),
+                new StringSelectMenuOptionBuilder().setLabel(localize(selectInteraction.locale, 'POLL_REMOVE_CHOICE')).setValue("remove-choice").setDescription(localize(selectInteraction.locale, 'POLL_REMOVE_CHOICE_DESCRIPTION')).setEmoji(`<:IconDeleteTrashcan:750152850310561853>`),
+                new StringSelectMenuOptionBuilder().setLabel(localize(selectInteraction.locale, 'POLL_SAVE_AND_POST')).setValue("save").setDescription(localize(selectInteraction.locale, 'POLL_SAVE_AND_POST_DESCRIPTION')).setEmoji(`<:IconActivity:815246970457161738>`),
+                new StringSelectMenuOptionBuilder().setLabel(localize(selectInteraction.locale, 'POLL_CANCEL_CREATION')).setValue("cancel").setDescription(localize(selectInteraction.locale, 'POLL_CANCEL_CREATION_DESCRIPTION')).setEmoji(`❌`)
+            ])
+        ]);
+        
+        const NoChoicesMenuSelect = new ActionRowBuilder().addComponents([
+            new StringSelectMenuBuilder().setCustomId(`create-poll`).setMinValues(1).setMaxValues(1).setPlaceholder(localize(selectInteraction.locale, 'PLEASE_SELECT_AN_ACTION')).setOptions([
+                new StringSelectMenuOptionBuilder().setLabel(localize(selectInteraction.locale, 'POLL_CONFIGURE_EMBED')).setValue("configure-embed").setDescription(localize(selectInteraction.locale, 'POLL_CONFIGURE_EMBED_DESCRIPTION')).setEmoji(`<:StatusRichPresence:842328614883295232>`),
+                new StringSelectMenuOptionBuilder().setLabel(localize(selectInteraction.locale, 'POLL_ADD_CHOICE')).setValue("add-choice").setDescription(localize(selectInteraction.locale, 'POLL_ADD_CHOICE_DESCRIPTION')).setEmoji(`<:plusGrey:997752068439818280>`),
+                new StringSelectMenuOptionBuilder().setLabel(localize(selectInteraction.locale, 'POLL_CANCEL_CREATION')).setValue("cancel").setDescription(localize(selectInteraction.locale, 'POLL_CANCEL_CREATION_DESCRIPTION')).setEmoji(`❌`)
+            ])
+        ]);
+
+
+
         await selectInteraction.deferUpdate();
 
 
@@ -91,7 +93,7 @@ module.exports = {
             }
         }
 
-        cachedEmbed.addFields({ name: `Poll Choices:`, value: choicesTextFieldOne }, { name: `\u200B`, value: `*Results will be shown once Poll ends*` });
+        cachedEmbed.addFields({ name: `Poll Choices:`, value: choicesTextFieldOne }, { name: `\u200B`, value: localize(selectInteraction.guildLocale, 'POLL_RESULTS_SHOWN_WHEN_ENDED') });
 
         // Add Select Menu, depending on number of choices left
         if ( cachedChoices.length < 1 ) { updatedButtonsArray.push(NoChoicesMenuSelect); }

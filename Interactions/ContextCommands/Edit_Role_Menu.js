@@ -1,16 +1,6 @@
 const { ApplicationCommandType, ApplicationCommandData, ContextMenuCommandInteraction, PermissionFlagsBits, EmbedBuilder, ActionRowBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, ButtonBuilder, ButtonStyle, DMChannel, PartialGroupDMChannel } = require("discord.js");
 const { Collections } = require("../../constants.js");
-
-const MenuSelect = new ActionRowBuilder().addComponents([
-    new StringSelectMenuBuilder().setCustomId(`configure-role-menu`).setMinValues(1).setMaxValues(1).setPlaceholder("Please select an action").setOptions([
-        new StringSelectMenuOptionBuilder().setLabel("Set Menu Type").setValue("set-type").setDescription("Change how the Menu will behave once saved").setEmoji(`🔧`),
-        new StringSelectMenuOptionBuilder().setLabel("Configure Embed").setValue("configure-embed").setDescription("Set the Title, Description, and Colour of the Embed").setEmoji(`<:StatusRichPresence:842328614883295232>`),
-        new StringSelectMenuOptionBuilder().setLabel("Add Role").setValue("add-role").setDescription("Add a Role to the Menu").setEmoji(`<:plusGrey:997752068439818280>`),
-        new StringSelectMenuOptionBuilder().setLabel("Remove Role").setValue("remove-role").setDescription("Remove a Role from the Menu").setEmoji(`<:IconDeleteTrashcan:750152850310561853>`),
-        new StringSelectMenuOptionBuilder().setLabel("Save & Update").setValue("save").setDescription("Saves the Menu, and updates it for Members to use").setEmoji(`<:IconActivity:815246970457161738>`),
-        new StringSelectMenuOptionBuilder().setLabel("Cancel Configuration").setValue("cancel").setDescription("Cancels configuration of this Role Menu").setEmoji(`❌`)
-    ])
-]);
+const { localize } = require("../../BotModules/LocalizationModule.js");
 
 module.exports = {
     // Command's Name
@@ -63,10 +53,21 @@ module.exports = {
      */
     async execute(contextCommand)
     {
+        const MenuSelect = new ActionRowBuilder().addComponents([
+            new StringSelectMenuBuilder().setCustomId(`configure-role-menu`).setMinValues(1).setMaxValues(1).setPlaceholder(localize(contextCommand.locale, 'PLEASE_SELECT_AN_ACTION')).setOptions([
+                new StringSelectMenuOptionBuilder().setLabel(localize(contextCommand.locale, 'ROLE_MENU_SET_MENU_TYPE')).setValue("set-type").setDescription(localize(contextCommand.locale, 'ROLE_MENU_SET_MENU_TYPE_DESCRIPTION')).setEmoji(`🔧`),
+                new StringSelectMenuOptionBuilder().setLabel(localize(contextCommand.locale, 'ROLE_MENU_CONFIGURE_EMBED')).setValue("configure-embed").setDescription(localize(contextCommand.locale, 'ROLE_MENU_CONFIGURE_EMBED_DESCRIPTION')).setEmoji(`<:StatusRichPresence:842328614883295232>`),
+                new StringSelectMenuOptionBuilder().setLabel(localize(contextCommand.locale, 'ROLE_MENU_ADD_ROLE')).setValue("add-role").setDescription(localize(contextCommand.locale, 'ROLE_MENU_ADD_ROLE_DESCRIPTION')).setEmoji(`<:plusGrey:997752068439818280>`),
+                new StringSelectMenuOptionBuilder().setLabel(localize(contextCommand.locale, 'ROLE_MENU_REMOVE_ROLE')).setValue("remove-role").setDescription(localize(contextCommand.locale, 'ROLE_MENU_REMOVE_ROLE_DESCRIPTION')).setEmoji(`<:IconDeleteTrashcan:750152850310561853>`),
+                new StringSelectMenuOptionBuilder().setLabel(localize(contextCommand.locale, 'ROLE_MENU_SAVE_AND_UPDATE')).setValue("save").setDescription(localize(contextCommand.locale, 'ROLE_MENU_SAVE_AND_UPDATE_DESCRIPTION')).setEmoji(`<:IconActivity:815246970457161738>`),
+                new StringSelectMenuOptionBuilder().setLabel(localize(contextCommand.locale, 'ROLE_MENU_CANCEL_CONFIGURATION')).setValue("cancel").setDescription(localize(contextCommand.locale, 'ROLE_MENU_CANCEL_CONFIGURATION_DESCRIPTION')).setEmoji(`❌`)
+            ])
+        ]);
+
         // Just in case
         if ( contextCommand.channel instanceof DMChannel || contextCommand.channel instanceof PartialGroupDMChannel )
         {
-            await contextCommand.reply({ ephemeral: true, content: `Sorry, but this Context Command can__not__ be used within DMs or Group DMs.` });
+            await contextCommand.reply({ ephemeral: true, content: localize(contextCommand.locale, 'CONTEXT_COMMAND_ERROR_DMS_UNSUPPORTED') });
             return;
         }
 
@@ -77,28 +78,28 @@ module.exports = {
         const SourceMessage = contextCommand.options.getMessage('message', true);
         if ( !RoleMenuJson[SourceMessage.id] )
         {
-            await contextCommand.editReply({ content: `That Message doesn't contain any of my Role Menus!` });
+            await contextCommand.editReply({ content: localize(contextCommand.locale, 'EDIT_ROLE_MENU_COMMAND_ERROR_MESSAGE_INVALID') });
             return;
         }
 
         // Ensure Bot has MANAGE_ROLES Permission
         if ( !contextCommand.appPermissions.has(PermissionFlagsBits.ManageRoles) )
         {
-            await contextCommand.editReply({ context: `:warning: I do not seem to have the \`MANAGE_ROLES\` Permission! Please ensure I have been granted it in order for my Self-Assignable Role Module to work.` });
+            await contextCommand.editReply({ context: localize(contextCommand.locale, 'EDIT_ROLE_MENU_COMMAND_ERROR_MISSING_MANAGE_ROLE_PERMISSION') });
             return;
         }
 
         // Ensure Bot has READ_MESSAGE_HISTORY Permission to be able to edit the existing Role Menu
         if ( !contextCommand.appPermissions.has(PermissionFlagsBits.ReadMessageHistory) )
         {
-            await contextCommand.editReply({ content: `Sorry, but I cannot edit an existing Role menu in this Channel without having the \`Read Message History\` Permission!` });
+            await contextCommand.editReply({ content: localize(contextCommand.locale, 'EDIT_ROLE_MENU_COMMAND_ERROR_MISSING_MESSAGE_HISTORY_PERMISSION') });
             return;
         }
 
         // Ensure there isn't already an active Role Menu Configuration happening in that Guild
         if ( Collections.RoleMenuConfiguration.has(contextCommand.guildId) )
         {
-            await contextCommand.editReply({ content: `Sorry, but there seems to already be an active Role Menu Configuration happening on this Server right now; either by yourself or someone else.\nPlease either wait for the User to finish configuring their Role Menu, or for the inactive Configuration timer to expire (which is about one hour from initial use of Command).` });
+            await contextCommand.editReply({ content: localize(contextCommand.locale, 'ROLE_MENU_ERROR_ACTIVE_CONFIGURATION') });
             return;
         }
 
@@ -198,14 +199,7 @@ module.exports = {
         Collections.RoleMenuConfiguration.set(contextCommand.guildId, newDataObject);
 
         // Ack to User to begin Configuration Process
-        await contextCommand.editReply({ components: componentsArray, embeds: [ConfigEmbed],
-            content: `__**Self-Assignable Role Menu Configuration**__
-Use the Select Menu to configure the Embed and Role Buttons. Press an existing Role Button to edit its label and/or emoji.
-If including in Buttons, please make sure to have the relevant Emoji IDs ready (such as in a notepad program); as you won't be able to copy from a Discord Message while an Input Form is open.
-Additionally, both Custom Discord Emojis, and standard Unicode Emojis, are supported.
-
-An auto-updating preview of what your new Self-Assignable Role Menu will look like is shown below.`
-        });
+        await contextCommand.editReply({ components: componentsArray, embeds: [ConfigEmbed], content: localize(contextCommand.locale, 'ROLE_MENU_CONFIGURATION_INTRUCTIONS') });
 
         return;
     }

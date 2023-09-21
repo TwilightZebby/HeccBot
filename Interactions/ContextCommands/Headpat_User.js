@@ -1,10 +1,6 @@
 const { ApplicationCommandType, ApplicationCommandData, ContextMenuCommandInteraction } = require("discord.js");
 const { DiscordClient } = require("../../constants.js");
-const ActionStrings = require('../../JsonFiles/actionMessages.json');
-
-// REGEXS
-const AuthorRegEx = new RegExp(/{AUTHOR}/g);
-const ReceiverRegEx = new RegExp(/{RECEIVER}/g);
+const { localize } = require("../../BotModules/LocalizationModule.js");
 
 
 module.exports = {
@@ -65,27 +61,27 @@ module.exports = {
         // @user (self)
         if ( PersonOption.id === contextCommand.user.id )
         {
-            displayMessage = ActionStrings['SELF_USER'][`headpat`];
-            displayMessage = displayMessage.replace(AuthorRegEx, `${contextCommand.member.displayName}`);
+            displayMessage = localize(contextCommand.guildLocale, `ACTION_COMMAND_SELF_USER_HEADPAT`, contextCommand.member.displayName);
         }
         // @user (this bot)
         else if ( PersonOption.id === DiscordClient.user.id )
         {
-            displayMessage = ActionStrings['HECCBOT'][`headpat`];
-            displayMessage = displayMessage.replace(AuthorRegEx, `${contextCommand.member.displayName}`).replace(ReceiverRegEx, `${PersonOption.displayName}`);
+            displayMessage = localize(contextCommand.guildLocale, `ACTION_COMMAND_HECCBOT_HEADPAT`, contextCommand.member.displayName);
+        }
+        // @user (MeeYuck)
+        else if ( PersonOption.id === '159985870458322944' )
+        {
+            displayMessage = localize(contextCommand.guildLocale, `ACTION_COMMAND_MEE6_HEADPAT`, contextCommand.member.displayName, `<@159985870458322944>`);
         }
         // @user (literally any bot that isn't this one)
         else if ( PersonOption.user.bot )
         {
-            displayMessage = ActionStrings['OTHER_BOT'][`headpat`];
-            displayMessage = displayMessage.replace(AuthorRegEx, `${contextCommand.member.displayName}`).replace(ReceiverRegEx, `${PersonOption.displayName}`);
+            displayMessage = localize(contextCommand.guildLocale, `ACTION_COMMAND_OTHER_BOTS_HEADPAT`, contextCommand.member.displayName, `${PersonOption.displayName}`);
         }
         // @user (literally any other User that doesn't meet the above)
         else
         {
-            displayButton = true;
-            displayMessage = ActionStrings['OTHER_USER'][`headpat`];
-            displayMessage = displayMessage.replace(AuthorRegEx, `${contextCommand.member.displayName}`).replace(ReceiverRegEx, `${PersonOption.displayName}`);
+            displayMessage = localize(contextCommand.guildLocale, `ACTION_COMMAND_OTHER_USER_HEADPAT`, contextCommand.member.displayName, `${PersonOption.displayName}`);
         }
 
 

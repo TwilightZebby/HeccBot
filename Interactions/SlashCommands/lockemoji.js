@@ -1,5 +1,6 @@
 const { ChatInputCommandInteraction, ChatInputApplicationCommandData, ApplicationCommandType, AutocompleteInteraction, PermissionFlagsBits, ApplicationCommandOptionType, DMChannel, PartialGroupDMChannel } = require("discord.js");
 const { fetchDisplayName } = require("../../constants");
+const { localize } = require("../../BotModules/LocalizationModule");
 
 module.exports = {
     // Command's Name
@@ -8,6 +9,12 @@ module.exports = {
 
     // Command's Description
     Description: `Upload a Custom Emoji to this Server, that can be locked behind a Role`,
+
+    // Command's Localised Descriptions
+    LocalisedDescriptions: {
+        'en-GB': `Upload a Custom Emoji to this Server, that can be locked behind a Role`,
+        'en-US': `Upload a Custom Emoji to this Server, that can be locked behind a Role`
+    },
 
     // Command's Category
     Category: "MANAGEMENT",
@@ -48,6 +55,7 @@ module.exports = {
 
         Data.name = this.Name;
         Data.description = this.Description;
+        Data.descriptionLocalizations = this.LocalisedDescriptions;
         Data.type = ApplicationCommandType.ChatInput;
         Data.defaultMemberPermissions = PermissionFlagsBits.ManageRoles;
         Data.dmPermission = false;
@@ -56,12 +64,20 @@ module.exports = {
                 type: ApplicationCommandOptionType.Attachment,
                 name: "emoji",
                 description: "PNG or GIF of your Custom Emoji",
+                descriptionLocalizations: {
+                    'en-GB': `PNG or GIF of your Custom Emoji`,
+                    'en-US': `PNG or GIF of your Custom Emoji`
+                },
                 required: true
             },
             {
                 type: ApplicationCommandOptionType.Role,
                 name: "role",
                 description: "Role to lock your Custom Emoji behind",
+                descriptionLocalizations: {
+                    'en-GB': `Role to lock your Custom Emoji behind`,
+                    'en-US': `Role to lock your Custom Emoji behind`
+                },
                 required: true
             }
         ];
@@ -80,21 +96,21 @@ module.exports = {
         // Just in case
         if ( slashCommand.channel instanceof DMChannel || slashCommand.channel instanceof PartialGroupDMChannel )
         {
-            await slashCommand.reply({ ephemeral: true, content: `Sorry, but this Slash Command can__not__ be used within DMs or Group DMs.` });
+            await slashCommand.reply({ ephemeral: true, content: localize(slashCommand.locale, 'SLASH_COMMAND_ERROR_DMS_UNSUPPORTED') });
             return;
         }
 
         // Ensure Bot has CREATE_EXPRESSIONS Permission
         if ( !slashCommand.appPermissions.has(BigInt(1 << 43)) )
         {
-            await slashCommand.reply({ ephemeral: true, content: `Sorry, but I cannot upload a Custom Emoji to this Server without having the __**Create Expressions**__ Permission.\nPlease try again, once I have been granted that Permission!` });
+            await slashCommand.reply({ ephemeral: true, content: localize(slashCommand.locale, 'LOCKEMOJI_COMMAND_ERROR_MISSING_CREATE_EXPRESSIONS_PERMISSION') });
             return;
         }
 
         // Ensure no outages
         if ( !slashCommand.guild.available )
         {
-            await slashCommand.reply({ ephemeral: true, content: `Sorry, but this Command is unusable while there's a Discord Outage affecting your Server. You can check [Discord's Outage Page](https://discordstatus.com) for extra details.` });
+            await slashCommand.reply({ ephemeral: true, content: localize(slashCommand.locale, 'SLASH_COMMAND_ERROR_DISCORD_OUTAGE') });
             return;
         }
 
@@ -105,14 +121,14 @@ module.exports = {
         // Ensure Attachment is PNG or GIF
         if ( InputAttachment.contentType !== "image/png" && InputAttachment.contentType !== "image/gif" )
         {
-            await slashCommand.reply({ ephemeral: true, content: `Sorry, but that Emoji File wasn't a **PNG** or **GIF** file type.\nPlease try again, ensuring you use either a \`.png\` or \`.gif\` file for your Custom Emoji.` });
+            await slashCommand.reply({ ephemeral: true, content: localize(slashCommand.locale, 'LOCKEMOJI_COMMAND_ERROR_INVALID_FILE_TYPE') });
             return;
         }
 
         // Ensure Attachment is small enough to be uploaded as a Discord Custom Emoji
         if ( InputAttachment.size >= 256000 )
         {
-            await slashCommand.reply({ ephemeral: true, content: `Sorry, but that Emoji File is too large to be uploaded as a Custom Emoji.\nDiscord requires Custom Emojis to be smaller than 256kb in file size. Please try again once you have a smaller file size for your Custom Emoji.` });
+            await slashCommand.reply({ ephemeral: true, content: localize(slashCommand.locale, 'LOCKEMOJI_COMMAND_ERROR_FILE_TOO_LARGE') });
             return;
         }
 
@@ -120,19 +136,14 @@ module.exports = {
         await slashCommand.deferReply({ ephemeral: true });
 
         // Upload to Server        
-        await slashCommand.guild.emojis.create({ attachment: InputAttachment.url, name: "UnnamedEmoji", roles: [InputRole.id], reason: `Role-locked Custom Emoji uploaded by ${fetchDisplayName(slashCommand.user, true)}` })
+        await slashCommand.guild.emojis.create({ attachment: InputAttachment.url, name: "UnnamedEmoji", roles: [InputRole.id], reason: localize(slashCommand.guildLocale, 'LOCKEMOJI_COMMAND_AUDIT_LOG_EMOJI_UPLOADED', fetchDisplayName(slashCommand.user, true)) })
         .then(async newEmoji => {
-            slashCommand.editReply({ content: `Successfully uploaded your new Role-locked Custom Emoji to this Server. You can rename and/or delete your Emoji, much like others, in Server Settings > Emojis, providing you have the __**Manage Expressions**__ Permission.` });
+            slashCommand.editReply({ content: localize(slashCommand.locale, 'LOCKEMOJI_COMMAND_UPLOAD_SUCCESS') });
             return;
         })
         .catch(async err => {
             //console.error(err);
-            await slashCommand.editReply({ content: `Sorry, but there was an error trying to upload your Custom Emoji to this Server.
-Preview of the raw error:
-\`\`\`
-${err}
-\`\`\`` 
-            });
+            await slashCommand.editReply({ content: localize(slashCommand.locale, 'LOCKEMOJI_COMMAND_ERROR_FAILED_UPLOAD', `${err}`) });
             return;
         });
 

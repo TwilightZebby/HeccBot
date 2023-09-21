@@ -1,5 +1,6 @@
 const { ContextMenuCommandInteraction, DMChannel, Collection } = require("discord.js");
 const { Collections } = require("../../constants.js");
+const { localize } = require("../LocalizationModule.js");
 
 module.exports = {
     /**
@@ -19,19 +20,19 @@ module.exports = {
         if ( !ContextCommand )
         {
             // Couldn't find the file for this Context Command
-            return await contextInteraction.reply({ ephemeral: true, content: "Sorry, but there was a problem trying to run this Context Command." });
+            return await contextInteraction.reply({ ephemeral: true, content: `${localize(contextInteraction.locale, 'CONTEXT_COMMAND_ERROR_GENERIC')}` });
         }
 
         // DM Check
         if ( ContextCommand.Scope === 'DM' && !(contextInteraction.channel instanceof DMChannel) )
         {
-            return await contextInteraction.reply({ ephemeral: true, content: "Sorry, but this Context Command can only be used in DMs with me." });
+            return await contextInteraction.reply({ ephemeral: true, content: `${localize(contextInteraction.locale, 'CONTEXT_COMMAND_ERROR_GUILDS_UNSUPPORTED')}` });
         }
 
         // Guild Check
         if ( ContextCommand.Scope === 'GUILD' && (contextInteraction.channel instanceof DMChannel) )
         {
-            return await contextInteraction.reply({ ephemeral: true, content: "Sorry, but this Context Command can only be used in Servers, not in DMs with me." });
+            return await contextInteraction.reply({ ephemeral: true, content: `${localize(contextInteraction.locale, 'CONTEXT_COMMAND_ERROR_DMS_UNSUPPORTED')}` });
         }
 
 
@@ -64,30 +65,30 @@ module.exports = {
                     // MINUTES
                     case timeLeft >= 60 && timeLeft < 3600:
                         timeLeft = timeLeft / 60; // For UX
-                        let cooldownMinutesMessage = `Please wait ${timeLeft.toFixed(1)} more minutes before using this Context Command again.`;
+                        let cooldownMinutesMessage = `${localize(contextInteraction.locale, 'CONTEXT_COMMAND_ERROR_COOLDOWN_MINUTES', timeLeft.toFixed(1))}`;
                         return await contextInteraction.reply({ ephemeral: true, content: cooldownMinutesMessage });
 
                     // HOURS
                     case timeLeft >= 3600 && timeLeft < 86400:
                         timeLeft = timeLeft / 3600; // For UX
-                        let cooldownHoursMessage = `Please wait ${timeLeft.toFixed(1)} more hours before using this Context Command again.`;
+                        let cooldownHoursMessage = `${localize(contextInteraction.locale, 'CONTEXT_COMMAND_ERROR_COOLDOWN_HOURS', timeLeft.toFixed(1))}`;
                         return await contextInteraction.reply({ ephemeral: true, content: cooldownHoursMessage });
 
                     // DAYS
                     case timeLeft >= 86400 && timeLeft < 2.628e+6:
                         timeLeft = timeLeft / 86400; // For UX
-                        let cooldownDaysMessage = `Please wait ${timeLeft.toFixed(1)} more days before using this Context Command again.`;
+                        let cooldownDaysMessage = `${localize(contextInteraction.locale, 'CONTEXT_COMMAND_ERROR_COOLDOWN_DAYS', timeLeft.toFixed(1))}`;
                         return await contextInteraction.reply({ ephemeral: true, content: cooldownDaysMessage });
 
                     // MONTHS
                     case timeLeft >= 2.628e+6:
                         timeLeft = timeLeft / 2.628e+6; // For UX
-                        let cooldownMonthsMessage = `Please wait ${timeLeft.toFixed(1)} more months before using this Context Command again.`;
+                        let cooldownMonthsMessage = `${localize(contextInteraction.locale, 'CONTEXT_COMMAND_ERROR_COOLDOWN_MONTHS', timeLeft.toFixed(1))}`;
                         return await contextInteraction.reply({ ephemeral: true, content: cooldownMonthsMessage });
 
                     // SECONDS
                     default:
-                        let cooldownSecondsMessage = `Please wait ${timeLeft.toFixed(1)} more seconds before using this Context Command again.`;
+                        let cooldownSecondsMessage = `${localize(contextInteraction.locale, 'CONTEXT_COMMAND_ERROR_COOLDOWN_SECONDS', timeLeft.toFixed(1))}`;
                         return await contextInteraction.reply({ ephemeral: true, content: cooldownSecondsMessage });
                 }
             }
@@ -108,11 +109,11 @@ module.exports = {
             //console.error(err);
             if ( contextInteraction.deferred )
             {
-                await contextInteraction.editReply({ content: "Sorry, but there was a problem trying to run this Context Command." });
+                await contextInteraction.editReply({ content: `${localize(contextInteraction.locale, 'CONTEXT_COMMAND_ERROR_GENERIC')}` });
             }
             else
             {
-                await contextInteraction.reply({ ephemeral: true, content: "Sorry, but there was a problem trying to run this Context Command." });
+                await contextInteraction.reply({ ephemeral: true, content: `${localize(contextInteraction.locale, 'CONTEXT_COMMAND_ERROR_GENERIC')}` });
             }
         }
 

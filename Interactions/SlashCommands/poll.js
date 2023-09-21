@@ -1,5 +1,6 @@
 const { ChatInputCommandInteraction, ChatInputApplicationCommandData, ApplicationCommandType, AutocompleteInteraction, PermissionFlagsBits, ApplicationCommandOptionType, EmbedBuilder, ActionRowBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder } = require("discord.js");
 const { Collections } = require("../../constants.js");
+const { localize } = require("../../BotModules/LocalizationModule.js");
 
 const EmptyPollEmbed = new EmbedBuilder().setDescription(`*Poll is currently empty. Please use the Select Menu below to configure this Poll.*`);
 
@@ -17,7 +18,13 @@ module.exports = {
     Name: "poll",
 
     // Command's Description
-    Description: `Create Polls that Users can vote on!`,
+    Description: `Create a Poll that Users can vote on`,
+
+    // Command's Localised Descriptions
+    LocalisedDescriptions: {
+        'en-GB': `Create a Poll that Users can vote on`,
+        'en-US': `Create a Poll that Users can vote on`
+    },
 
     // Command's Category
     Category: "MANAGEMENT",
@@ -58,6 +65,7 @@ module.exports = {
 
         Data.name = this.Name;
         Data.description = this.Description;
+        Data.descriptionLocalizations = this.LocalisedDescriptions;
         Data.type = ApplicationCommandType.ChatInput;
         Data.dmPermission = false;
         Data.defaultMemberPermissions = PermissionFlagsBits.ManageChannels;
@@ -65,7 +73,11 @@ module.exports = {
             {
                 type: ApplicationCommandOptionType.Subcommand,
                 name: "create",
-                description: "Create a new Poll for Users to vote in"
+                description: "Create a new Poll for Users to vote in",
+                descriptionLocalizations: {
+                    'en-GB': `Create a new Poll for Users to vote in`,
+                    'en-US': `Create a new Poll for Users to vote in`
+                },
             }
         ];
 
@@ -89,17 +101,12 @@ module.exports = {
                 // Ensure there isn't already an active Poll Creation happening in that Guild
                 if ( Collections.PollCreation.has(slashCommand.guildId) )
                 {
-                    await slashCommand.reply({ ephemeral: true, content: `Sorry, but there seems to already be an active Poll Creation happening on this Server right now; either by yourself or someone else.\nPlease either wait for the User to finish creating their Poll, or for the inactive Creation timer to expire (which is about one hour from initial use of Command).` });
+                    await slashCommand.reply({ ephemeral: true, content: localize(slashCommand.locale, 'POLL_ERROR_ACTIVE_CREATION') });
                     break;
                 }
 
                 // Send initial Message
-                await slashCommand.reply({ ephemeral: true, components: [InitialSelectMenu], embeds: [EmptyPollEmbed],
-                    content: `__**Poll Creation**__
-Use the Select Menu to configure the Poll's Embed and Buttons. Press an existing Button to edit its label and/or emoji.
-
-An auto-updating preview of what your new Poll will look like is shown below.`
-                });
+                await slashCommand.reply({ ephemeral: true, components: [InitialSelectMenu], embeds: [EmptyPollEmbed], content: localize(slashCommand.locale, 'POLL_CREATE_INTRUCTIONS') });
 
                 // Create Collection Cache
                 // Auto-expire cache after one hour
@@ -119,7 +126,7 @@ An auto-updating preview of what your new Poll will look like is shown below.`
 
 
             default:
-                await slashCommand.reply({ ephemeral: true, content: `Sorry, an error occurred while trying to run this Command...` });
+                await slashCommand.reply({ ephemeral: true, content: localize(slashCommand.locale, 'SLASH_COMMAND_ERROR_GENERIC') });
                 break;
         }
 

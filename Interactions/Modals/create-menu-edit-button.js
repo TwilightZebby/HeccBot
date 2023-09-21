@@ -1,19 +1,10 @@
 const { ModalMessageModalSubmitInteraction, ActionRowBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder } = require("discord.js");
 const EmojiRegex = require("emoji-regex")();
 const { Collections } = require("../../constants.js");
+const { localize } = require("../../BotModules/LocalizationModule.js");
 
 const DiscordEmojiRegex = new RegExp(/<a?:(?<name>[a-zA-Z0-9\_]+):(?<id>\d{15,21})>/);
 
-const MenuSelect = new ActionRowBuilder().addComponents([
-    new StringSelectMenuBuilder().setCustomId(`create-role-menu`).setMinValues(1).setMaxValues(1).setPlaceholder("Please select an action").setOptions([
-        new StringSelectMenuOptionBuilder().setLabel("Set Menu Type").setValue("set-type").setDescription("Change how the Menu will behave once saved").setEmoji(`🔧`),
-        new StringSelectMenuOptionBuilder().setLabel("Configure Embed").setValue("configure-embed").setDescription("Set the Title, Description, and Colour of the Embed").setEmoji(`<:StatusRichPresence:842328614883295232>`),
-        new StringSelectMenuOptionBuilder().setLabel("Add Role").setValue("add-role").setDescription("Add a Role to the Menu").setEmoji(`<:plusGrey:997752068439818280>`),
-        new StringSelectMenuOptionBuilder().setLabel("Remove Role").setValue("remove-role").setDescription("Remove a Role from the Menu").setEmoji(`<:IconDeleteTrashcan:750152850310561853>`),
-        new StringSelectMenuOptionBuilder().setLabel("Save & Display").setValue("save").setDescription("Saves the new Menu, and displays it for Members to use").setEmoji(`<:IconActivity:815246970457161738>`),
-        new StringSelectMenuOptionBuilder().setLabel("Cancel Creation").setValue("cancel").setDescription("Cancels creation of this Role Menu").setEmoji(`❌`)
-    ])
-]);
 
 module.exports = {
     // Modal's Name
@@ -31,6 +22,17 @@ module.exports = {
      */
     async execute(modalInteraction)
     {
+        const MenuSelect = new ActionRowBuilder().addComponents([
+            new StringSelectMenuBuilder().setCustomId(`create-role-menu`).setMinValues(1).setMaxValues(1).setPlaceholder(localize(modalInteraction.locale, 'PLEASE_SELECT_AN_ACTION')).setOptions([
+                new StringSelectMenuOptionBuilder().setLabel(localize(modalInteraction.locale, 'ROLE_MENU_SET_MENU_TYPE')).setValue("set-type").setDescription(localize(modalInteraction.locale, 'ROLE_MENU_SET_MENU_TYPE_DESCRIPTION')).setEmoji(`🔧`),
+                new StringSelectMenuOptionBuilder().setLabel(localize(modalInteraction.locale, 'ROLE_MENU_CONFIGURE_EMBED')).setValue("configure-embed").setDescription(localize(modalInteraction.locale, 'ROLE_MENU_CONFIGURE_EMBED_DESCRIPTION')).setEmoji(`<:StatusRichPresence:842328614883295232>`),
+                new StringSelectMenuOptionBuilder().setLabel(localize(modalInteraction.locale, 'ROLE_MENU_ADD_ROLE')).setValue("add-role").setDescription(localize(modalInteraction.locale, 'ROLE_MENU_ADD_ROLE_DESCRIPTION')).setEmoji(`<:plusGrey:997752068439818280>`),
+                new StringSelectMenuOptionBuilder().setLabel(localize(modalInteraction.locale, 'ROLE_MENU_REMOVE_ROLE')).setValue("remove-role").setDescription(localize(modalInteraction.locale, 'ROLE_MENU_REMOVE_ROLE_DESCRIPTION')).setEmoji(`<:IconDeleteTrashcan:750152850310561853>`),
+                new StringSelectMenuOptionBuilder().setLabel(localize(modalInteraction.locale, 'ROLE_MENU_SAVE_AND_POST')).setValue("save").setDescription(localize(modalInteraction.locale, 'ROLE_MENU_SAVE_AND_POST_DESCRIPTION')).setEmoji(`<:IconActivity:815246970457161738>`),
+                new StringSelectMenuOptionBuilder().setLabel(localize(modalInteraction.locale, 'ROLE_MENU_CANCEL_CREATION')).setValue("cancel").setDescription(localize(modalInteraction.locale, 'ROLE_MENU_CANCEL_CREATION_DESCRIPTION')).setEmoji(`❌`)
+            ])
+        ]);
+
         // Grab inputs, Role ID, and Cache
         const MenuDataCache = Collections.RoleMenuCreation.get(modalInteraction.guildId);
         const RoleDataCache = MenuDataCache.roles;
@@ -43,7 +45,7 @@ module.exports = {
         // Validate existence of Label/Emoji
         if ( (InputLabel == null && InputLabel !== "") && (InputEmoji == null && InputEmoji !== "") )
         {
-            await modalInteraction.reply({ ephemeral: true, content: `Sorry, but you cannot leave both the Label and the Emoji fields blank. Please try again, ensuring you include at least one of either Label or Emoji (or both).` });
+            await modalInteraction.update({ content: `${localize(modalInteraction.locale, 'ROLE_MENU_BUTTON_SET_INSTRUCTIONS', `<@&${InputRole.id}>`)}\n\n${localize(modalInteraction.locale, 'ROLE_MENU_ERROR_CANNOT_HAVE_BLANK_BUTTON')}` });
             return;
         }
 
@@ -52,7 +54,7 @@ module.exports = {
         {
             if ( !DiscordEmojiRegex.text(InputEmoji) && !EmojiRegex.test(InputEmoji) )
             {
-                await modalInteraction.reply({ ephemeral: true, content: `Sorry, but there was an error trying to validate your included Emoji.\nPlease try again, ensuring you use either an [Unicode Emoji](<https://emojipedia.org>), or a raw Discord Custom Emoji string (example: \`<:grass_block:601353406577246208>\`)` });
+                await modalInteraction.update({ content: `${localize(modalInteraction.locale, 'ROLE_MENU_BUTTON_SET_INSTRUCTIONS', `<@&${InputRole.id}>`)}\n\n${localize(modalInteraction.locale, 'ROLE_MENU_ERROR_INVALID_EMOJI', '<https://emojipedia.org>')}` });
                 return;
             }
         }

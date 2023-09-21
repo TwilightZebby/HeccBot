@@ -1,4 +1,5 @@
 const { ButtonInteraction } = require("discord.js");
+const { localize } = require("../../BotModules/LocalizationModule");
 
 module.exports = {
     // Button's Name
@@ -51,7 +52,7 @@ module.exports = {
 
 
             default:
-                buttonInteraction.editReply({ content: `An error occurred while trying to process that Button press...` });
+                buttonInteraction.editReply({ content: `${localize(buttonInteraction.locale, 'BUTTON_ERROR_GENERIC')}` });
                 break;
         }
 
@@ -80,16 +81,16 @@ async function toggleRole(buttonInteraction, RoleID)
         // Member DOES already have this Role, so REVOKE it instead
         try
         {
-            await Member.roles.remove(RoleID, `Role Menu in #${buttonInteraction.channel.name}`)
+            await Member.roles.remove(RoleID, `${localize(buttonInteraction.guildLocale, 'ROLE_BUTTON_AUDIT_LOG_ENTRY', `#${buttonInteraction.channel.name}`)}`)
             .then(async Member => {
-                await buttonInteraction.editReply({ content: `Successfully __revoked__ the <@&${RoleID}> Role from you.` });
+                await buttonInteraction.editReply({ content: `${localize(buttonInteraction.locale, 'ROLE_BUTTON_REVOKE_SUCCESS', `<@&${RoleID}>`)}` });
                 return;
             });
         }
         catch (err)
         {
             //console.error(err);
-            await buttonInteraction.editReply({ content: `Sorry, something went wrong while trying to __revoke__ the <@&${RoleID}> Role from you...` });
+            await buttonInteraction.editReply({ content: `${localize(buttonInteraction.locale, 'ROLE_BUTTON_ERROR_REVOKE_FAILED', `<@&${RoleID}>`)}` });
         }
 
         return;
@@ -99,16 +100,16 @@ async function toggleRole(buttonInteraction, RoleID)
         // Member does NOT have Role, so GRANT it
         try
         {
-            await Member.roles.add(RoleID, `Role Menu in #${buttonInteraction.channel.name}`)
+            await Member.roles.add(RoleID, `${localize(buttonInteraction.guildLocale, 'ROLE_BUTTON_AUDIT_LOG_ENTRY', `#${buttonInteraction.channel.name}`)}`)
             .then(async Member => {
-                await buttonInteraction.editReply({ content: `Successfully __granted__ the <@&${RoleID}> Role to you.` });
+                await buttonInteraction.editReply({ content: `${localize(buttonInteraction.locale, 'ROLE_BUTTON_GRANT_SUCCESS', `<@&${RoleID}>`)}` });
                 return;
             });
         }
         catch (err)
         {
             //console.error(err);
-            await buttonInteraction.editReply({ content: `Sorry, something went wrong while trying to __grant__ the <@&${RoleID}> Role to you...` });
+            await buttonInteraction.editReply({ content: `${localize(buttonInteraction.locale, 'ROLE_BUTTON_ERROR_GRANT_FAILED', `<@&${RoleID}>`)}` });
         }
 
         return;
@@ -156,16 +157,16 @@ async function swapRole(buttonInteraction, RoleID)
     {
         try
         {
-            await Member.roles.add(RoleID, `Role Menu in #${buttonInteraction.channel.name}`)
+            await Member.roles.add(RoleID, `${localize(buttonInteraction.guildLocale, 'ROLE_BUTTON_AUDIT_LOG_ENTRY', `#${buttonInteraction.channel.name}`)}`)
             .then(async Member => {
-                await buttonInteraction.editReply({ content: `Successfully __granted__ the <@&${RoleID}> Role to you.` });
+                await buttonInteraction.editReply({ content: `${localize(buttonInteraction.locale, 'ROLE_BUTTON_GRANT_SUCCESS', `<@&${RoleID}>`)}` });
                 return;
             });
         }
         catch (err)
         {
             //console.error(err);
-            await buttonInteraction.editReply({ content: `Sorry, something went wrong while trying to __grant__ the <@&${RoleID}> Role to you...` });
+            await buttonInteraction.editReply({ content: `${localize(buttonInteraction.locale, 'ROLE_BUTTON_ERROR_GRANT_FAILED', `<@&${RoleID}>`)}` });
         }
     }
     // Member DOES have a Role from this Menu already
@@ -176,16 +177,16 @@ async function swapRole(buttonInteraction, RoleID)
         {
             try
             {
-                await Member.roles.remove(RoleID, `Role Menu in #${buttonInteraction.channel.name}`)
+                await Member.roles.remove(RoleID, `${localize(buttonInteraction.guildLocale, 'ROLE_BUTTON_AUDIT_LOG_ENTRY', `#${buttonInteraction.channel.name}`)}`)
                 .then(async Member => {
-                    await buttonInteraction.editReply({ content: `Successfully __revoked__ the <@&${RoleID}> Role from you.` });
+                    await buttonInteraction.editReply({ content: `${localize(buttonInteraction.locale, 'ROLE_BUTTON_REVOKE_SUCCESS', `<@&${RoleID}>`)}` });
                     return;
                 });
             }
             catch (err)
             {
                 //console.error(err);
-                await buttonInteraction.editReply({ content: `Sorry, something went wrong while trying to __revoke__ the <@&${RoleID}> Role from you...` });
+                await buttonInteraction.editReply({ content: `${localize(buttonInteraction.locale, 'ROLE_BUTTON_ERROR_REVOKE_FAILED', `<@&${RoleID}>`)}` });
             }
         }
         // Otherwise, swap the two Roles
@@ -193,11 +194,11 @@ async function swapRole(buttonInteraction, RoleID)
         {
             try
             {
-                await Member.roles.remove(roleAlreadyHave, `Role Menu in ${buttonInteraction.channel.name} - Swapping Roles (Revoking current Role)`)
+                await Member.roles.remove(roleAlreadyHave, `${localize(buttonInteraction.guildLocale, 'ROLE_BUTTON_AUDIT_LOG_ENTRY', `#${buttonInteraction.channel.name}`)}`)
                 .then(async TempMember => {
-                    await Member.roles.add(RoleID, `Role Menu in ${buttonInteraction.channel.name} - Swapping Roles (Granting new Role)`)
+                    await Member.roles.add(RoleID, `${localize(buttonInteraction.guildLocale, 'ROLE_BUTTON_AUDIT_LOG_ENTRY', `#${buttonInteraction.channel.name}`)}`)
                     .then(async TempMemberTheSecond => {
-                        await buttonInteraction.editReply({ content: `Successfully swapped the <@&${roleAlreadyHave}> Role for the <@&${RoleID}> Role for you.` });
+                        await buttonInteraction.editReply({ content: `${localize(buttonInteraction.locale, 'ROLE_BUTTON_SWAP_SUCCESS', `<@&${roleAlreadyHave}>`, `<@&${RoleID}>`)}` });
                         return;
                     });
                 });
@@ -205,7 +206,7 @@ async function swapRole(buttonInteraction, RoleID)
             catch (err)
             {
                 //console.error(err);
-                await buttonInteraction.editReply({ content: `Sorry, something went wrong while trying to __swap__ between the <@&${roleAlreadyHave}> and <@&${RoleID}> Roles for you...` });
+                await buttonInteraction.editReply({ content: `${localize(buttonInteraction.locale, 'ROLE_BUTTON_ERROR_SWAP_FAILED', `<@&${roleAlreadyHave}>`, `<@&${RoleID}>`)}` });
             }
         }
     }
@@ -254,23 +255,23 @@ async function singleRole(buttonInteraction, RoleID)
     {
         try
         {
-            await Member.roles.add(RoleID, `Role Menu in #${buttonInteraction.channel.name}`)
+            await Member.roles.add(RoleID, `${localize(buttonInteraction.guildLocale, 'ROLE_BUTTON_AUDIT_LOG_ENTRY', `#${buttonInteraction.channel.name}`)}`)
             .then(async Member => {
-                await buttonInteraction.editReply({ content: `Successfully __granted__ the <@&${RoleID}> Role to you.` });
+                await buttonInteraction.editReply({ content: `${localize(buttonInteraction.locale, 'ROLE_BUTTON_GRANT_SUCCESS', `<@&${RoleID}>`)}` });
                 return;
             });
         }
         catch (err)
         {
             //console.error(err);
-            await buttonInteraction.editReply({ content: `Sorry, something went wrong while trying to __grant__ the <@&${RoleID}> Role to you...` });
+            await buttonInteraction.editReply({ content: `${localize(buttonInteraction.locale, 'ROLE_BUTTON_ERROR_GRANT_FAILED', `<@&${RoleID}>`)}` });
         }
     }
     // Member DOES have a Role from this Menu already
     else
     {
         // Reject because this is a single-use Menu and Members can't even self-revoke Roles from this type of Menu
-        await buttonInteraction.editReply({ content: `Sorry! You cannot swap or revoke Roles from yourself using Single-use Role Menus.\nThese Single-use Role Menus are designed to only be usable once per User per Menu.\n\n*You already have the <@&${roleAlreadyHave}> Role from this Menu!*` });
+        await buttonInteraction.editReply({ content: `${localize(buttonInteraction.locale, 'ROLE_BUTTON_ERROR_SINGLE_USE_ONLY', `<@&${roleAlreadyHave}>`)}` });
         return;
     }
 }

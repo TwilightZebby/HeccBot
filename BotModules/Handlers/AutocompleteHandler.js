@@ -1,5 +1,6 @@
 const { AutocompleteInteraction } = require("discord.js");
 const { Collections } = require("../../constants.js");
+const { localize } = require("../LocalizationModule.js");
 
 module.exports = {
     /**
@@ -10,7 +11,7 @@ module.exports = {
     {
         // Find Slash Command with matching name
         const SlashCommand = Collections.SlashCommands.get(autocompleteInteraction.commandName);
-        if ( !SlashCommand ) { return await autocompleteInteraction.respond([{name: "ERROR: Unable to process, please contact this Bot's developer.", value: "ERROR_FAILED"}]); }
+        if ( !SlashCommand ) { await autocompleteInteraction.respond([{name: `${localize(autocompleteInteraction.locale, 'AUTOCOMPLETE_ERROR_GENERIC')}`, value: "ERROR_FAILED"}]); return; }
 
         // Pass to Command's Autocomplete Method
         return await SlashCommand.autocomplete(autocompleteInteraction);

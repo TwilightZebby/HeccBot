@@ -1,5 +1,6 @@
 const { ButtonInteraction, ModalBuilder, ActionRowBuilder, TextInputBuilder, TextInputStyle } = require("discord.js");
 const { Collections } = require("../../constants.js");
+const { localize } = require("../../BotModules/LocalizationModule.js");
 
 module.exports = {
     // Button's Name
@@ -39,9 +40,9 @@ module.exports = {
         }
 
         // Construct & Display Modal for editing Button Label/Emoji
-        const EditButtonModal = new ModalBuilder().setCustomId(`create-menu-edit-button_${RoleID}`).setTitle("Edit Role Button").addComponents([
-            new ActionRowBuilder().addComponents([ new TextInputBuilder().setCustomId(`label`).setLabel(`Button Label (Required if no Emoji)`).setMaxLength(80).setStyle(TextInputStyle.Short).setRequired(false).setValue(currentLabel != null ? currentLabel : "") ]),
-            new ActionRowBuilder().addComponents([ new TextInputBuilder().setCustomId(`emoji`).setLabel(`Button Emoji (Required if no Label)`).setMaxLength(200).setPlaceholder(`<:grass_block:601353406577246208> or ✨`).setStyle(TextInputStyle.Short).setRequired(false).setValue(currentEmoji != null ? currentEmoji : "") ])
+        const EditButtonModal = new ModalBuilder().setCustomId(`create-menu-edit-button_${RoleID}`).setTitle(`${localize(buttonInteraction.locale, 'ROLE_MENU_EDIT_BUTTON_LABEL')}`).addComponents([
+            new ActionRowBuilder().addComponents([ new TextInputBuilder().setCustomId(`label`).setLabel(`${localize(buttonInteraction.locale, 'ROLE_MENU_BUTTON_LABEL')}`).setMaxLength(80).setStyle(TextInputStyle.Short).setRequired(false).setValue(currentLabel != null ? currentLabel : "") ]),
+            new ActionRowBuilder().addComponents([ new TextInputBuilder().setCustomId(`emoji`).setLabel(`${localize(buttonInteraction.locale, 'ROLE_MENU_BUTTON_EMOJI')}`).setMaxLength(200).setPlaceholder(`<:grass_block:601353406577246208>, ✨`).setStyle(TextInputStyle.Short).setRequired(false).setValue(currentEmoji != null ? currentEmoji : "") ])
         ]);
 
         await buttonInteraction.showModal(EditButtonModal);

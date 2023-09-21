@@ -1,5 +1,6 @@
 const { ApplicationCommandType, ApplicationCommandData, ContextMenuCommandInteraction, PermissionFlagsBits, EmbedBuilder } = require("discord.js");
 const fs = require("fs");
+const { localize } = require("../../BotModules/LocalizationModule");
 
 module.exports = {
     // Command's Name
@@ -59,7 +60,7 @@ module.exports = {
         // Validate Message does contain a Poll made with this Bot
         if ( !pollJson[SourceMessage.id] )
         {
-            await contextCommand.reply({ ephemeral: true, content: `Sorry, but this Command can only be used on Messages containing active Polls!` });
+            await contextCommand.reply({ ephemeral: true, content: localize(contextCommand.locale, 'END_POLL_COMMAND_ERROR_MESSAGE_INVALID') });
             return;
         }
 
@@ -106,12 +107,12 @@ module.exports = {
             fs.writeFile('./JsonFiles/Hidden/ActivePolls.json', JSON.stringify(pollJson, null, 4), async (err) => {
                 if ( err )
                 {
-                    await contextCommand.reply({ ephemeral: true, content: `An error occurred while trying to end your Poll...` });
+                    await contextCommand.reply({ ephemeral: true, content: localize(contextCommand.locale, 'END_POLL_COMMAND_ERROR_GENERIC') });
                     return;
                 }
             });
 
-            await contextCommand.reply({ ephemeral: true, content: `Successfully ended your Poll.\nNew votes cannot be submitted for this Poll any more.` });
+            await contextCommand.reply({ ephemeral: true, content: localize(contextCommand.locale, 'END_POLL_COMMAND_SUCCESS') });
             return;
         });
 

@@ -1,5 +1,6 @@
 const { ChatInputCommandInteraction, ChatInputApplicationCommandData, ApplicationCommandType, AutocompleteInteraction, ApplicationCommandOptionType, DMChannel, PartialGroupDMChannel } = require("discord.js");
 const RulesJson = require("../../JsonFiles/Hidden/serverRules.json");
+const { localize } = require("../../BotModules/LocalizationModule");
 
 
 module.exports = {
@@ -9,6 +10,12 @@ module.exports = {
 
     // Command's Description
     Description: `Display a specific rule for this Server`,
+
+    // Command's Localised Descriptions
+    LocalisedDescriptions: {
+        'en-GB': `Display a specific rule for this Server`,
+        'en-US': `Display a specific rule for this Server`
+    },
 
     // Command's Category
     Category: "INFORMATIONAL",
@@ -49,11 +56,16 @@ module.exports = {
 
         Data.name = this.Name;
         Data.description = this.Description;
+        Data.descriptionLocalizations = this.LocalisedDescriptions;
         Data.type = ApplicationCommandType.ChatInput;
         Data.options = [{
             type: ApplicationCommandOptionType.String,
             name: "rule",
-            description: "The Server Rule to fetch",
+            description: "The Server Rule to display",
+            descriptionLocalizations: {
+                'en-GB': `The Server Rule to display`,
+                'en-US': `The Server Rule to display`
+            },
             autocomplete: true,
             required: true
         }];
@@ -72,7 +84,7 @@ module.exports = {
         // Just in case
         if ( slashCommand.channel instanceof DMChannel || slashCommand.channel instanceof PartialGroupDMChannel )
         {
-            await slashCommand.reply({ ephemeral: true, content: `Sorry, but this Slash Command can__not__ be used within DMs or Group DMs.` });
+            await slashCommand.reply({ ephemeral: true, content: localize(slashCommand.locale, 'SLASH_COMMAND_ERROR_DMS_UNSUPPORTED') });
             return;
         }
 

@@ -1,5 +1,6 @@
 const { ChatInputCommandInteraction, ChatInputApplicationCommandData, ApplicationCommandType, AutocompleteInteraction, PermissionFlagsBits, ApplicationCommandOptionType, TextChannel, EmbedBuilder, ActionRowBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder } = require("discord.js");
 const { Collections } = require("../../constants");
+const { localize } = require("../../BotModules/LocalizationModule");
 
 const CHANNEL_TYPE_TO_STRING = {
     0: "a Text",
@@ -31,7 +32,13 @@ module.exports = {
     Name: "rolemenu",
 
     // Command's Description
-    Description: `Use to create Self-Assignable Role Menus`,
+    Description: `Use to create Button Role Menus`,
+
+    // Command's Localised Descriptions
+    LocalisedDescriptions: {
+        'en-GB': `Use to create Button Role Menus`,
+        'en-US': `Use to create Button Role Menus`
+    },
 
     // Command's Category
     Category: "GENERAL",
@@ -72,6 +79,7 @@ module.exports = {
 
         Data.name = this.Name;
         Data.description = this.Description;
+        Data.descriptionLocalizations = this.LocalisedDescriptions;
         Data.type = ApplicationCommandType.ChatInput;
         Data.dmPermission = false;
         Data.defaultMemberPermissions = PermissionFlagsBits.ManageRoles;
@@ -79,7 +87,11 @@ module.exports = {
             {
                 type: ApplicationCommandOptionType.Subcommand,
                 name: "create",
-                description: "Create a new Self-Assignable Role Menu"
+                description: "Create a new Button Role Menu",
+                descriptionLocalizations: {
+                    'en-GB': `Create a new Button Role Menu`,
+                    'en-US': `Create a new Button Role Menu`
+                },
             }
         ];
 
@@ -97,14 +109,14 @@ module.exports = {
         // Prevent usage in non-Text Channels
         if ( !(slashCommand.channel instanceof TextChannel) )
         {
-            await slashCommand.reply({ ephemeral: true, content: `Sorry, but this Command can only be used inside of Server Text Channels. (You used it in ${CHANNEL_TYPE_TO_STRING[slashCommand.channel.type]} Channel)` });
+            await slashCommand.reply({ ephemeral: true, content: localize(slashCommand.locale, 'SLASH_COMMAND_ERROR_ONLY_TEXT_CHANNELS') });
             return;
         }
 
         // Ensure Bot has MANAGE_ROLES Permission
         if ( !slashCommand.appPermissions.has(PermissionFlagsBits.ManageRoles) )
         {
-            await slashCommand.reply({ ephemeral: true, content: `:warning: I do not seem to have the \`MANAGE_ROLES\` Permission! Please ensure I have been granted it in order for my Self-Assignable Role Module to work.` });
+            await slashCommand.reply({ ephemeral: true, content: localize(slashCommand.locale, 'ROLE_MENU_ERROR_MISSING_MANAGE_ROLES_PERMISSION') });
             return;
         }
 
@@ -117,26 +129,19 @@ module.exports = {
             // Ensure SEND_MESSAGES Perm for Bot
             if ( !slashCommand.appPermissions.has(PermissionFlagsBits.SendMessages) )
             {
-                await slashCommand.reply({ ephemeral: true, content: `Sorry, but I cannot create a Role Menu in this Channel without having the \`Send Messages\` Permission!` });
+                await slashCommand.reply({ ephemeral: true, content: localize(slashCommand.locale, 'ROLE_MENU_ERROR_MISSING_SEND_MESSAGES_PERMISSION') });
                 return;
             }
 
             // Ensure there isn't already an active Role Menu Creation happening in that Guild
             if ( Collections.RoleMenuCreation.has(slashCommand.guildId) )
             {
-                await slashCommand.reply({ ephemeral: true, content: `Sorry, but there seems to already be an active Role Menu Creation happening on this Server right now; either by yourself or someone else.\nPlease either wait for the User to finish creating their Role Menu, or for the inactive Creation timer to expire (which is about one hour from initial use of Command).` });
+                await slashCommand.reply({ ephemeral: true, content: localize(slashCommand.locale, 'ROLE_MENU_ERROR_ACTIVE_CREATION') });
                 return;
             }
 
             // ACK to User
-            await slashCommand.reply({ ephemeral: true, components: [InitialSelectMenu], embeds: [EmptyMenuEmbed], 
-                content: `__**Self-Assignable Role Menu Creation**__
-Use the Select Menu to configure the Menu's Type, Embed and Role Buttons. Press an existing Role Button to edit its label and/or emoji.
-If including in Buttons, please make sure to have the relevant Emoji IDs ready (such as in a notepad program); as you won't be able to copy from a Discord Message while an Input Form is open.
-Additionally, both Custom Discord Emojis, and standard Unicode Emojis, are supported.
-
-An auto-updating preview of what your new Self-Assignable Role Menu will look like is shown below.`
-            });
+            await slashCommand.reply({ ephemeral: true, components: [InitialSelectMenu], embeds: [EmptyMenuEmbed], content: localize(slashCommand.locale, 'ROLE_MENU_CREATE_INTRUCTIONS') });
 
             // Auto-expire cache after one hour
             let timeoutExpiry = setTimeout(() => { Collections.RoleMenuCreation.delete(slashCommand.guildId); }, 3.6e+6);
