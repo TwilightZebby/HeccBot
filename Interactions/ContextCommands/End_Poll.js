@@ -86,7 +86,7 @@ module.exports = {
                 // Number of Votes for Choice
                 temp += `- ${FinalChoiceVotes[choiceValue]} Vote${FinalChoiceVotes[choiceValue] === 1 ? "" : "s"} `;
                 // Percentage of Total Votes
-                temp += `(~${((FinalChoiceVotes[choiceValue] / TotalVotes) * 100).toFixed(1)}%)`
+                temp += `(${FinalChoiceVotes[choiceValue] < 1 ? "0" : `~${((FinalChoiceVotes[choiceValue] / TotalVotes) * 100).toFixed(1)}`}%)`
 
                 mappedResults.push(temp);
             }

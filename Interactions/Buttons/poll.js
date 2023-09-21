@@ -76,7 +76,7 @@ module.exports = {
                 // Number of Votes for Choice
                 temp += `- ${FinalChoiceVotes[choiceValue]} ${FinalChoiceVotes[choiceValue] === 1 ? `${localize(buttonInteraction.locale, 'POLL_SINGLE_VOTE')}` : `${localize(buttonInteraction.locale, 'POLL_MULTIPLE_VOTES')}`} `;
                 // Percentage of Total Votes
-                temp += `(~${((FinalChoiceVotes[choiceValue] / TotalVotes) * 100).toFixed(1)}%)`
+                temp += `(${FinalChoiceVotes[choiceValue] < 1 ? "0" : `~${((FinalChoiceVotes[choiceValue] / TotalVotes) * 100).toFixed(1)}`}%)`
 
                 mappedResults.push(temp);
             }
