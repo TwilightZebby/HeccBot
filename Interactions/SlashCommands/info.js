@@ -1245,7 +1245,7 @@ ${localize(slashCommand, 'INFO_COMMAND_ROLE_MEMBERS')} ${RoleOption.members.size
         let fetchedMember;
         const MemberOption = slashCommand.options.getMember("user");
         if ( !MemberOption || MemberOption == null ) { fetchedMember = await slashCommand.guild.members.fetch(slashCommand.user.id); }
-        else { fetchedMember = await slashCommand.guild.members.fetch(MemberOption.id).catch(async err => { return await slashCommand.editReply({ content: "Sorry, but that User isn't a part of this Server!" }); }); }
+        else { fetchedMember = await slashCommand.guild.members.fetch(MemberOption.id).catch(async err => { return await slashCommand.editReply({ content: localize(slashCommand, 'INFO_COMMAND_USER_ERROR_NOT_IN_GUILD') }); }); }
 
         // Check for External Emoji Permission
         const ExternalEmojiPermission = checkEmojiPermission(slashCommand);
@@ -1283,14 +1283,13 @@ ${localize(slashCommand, 'INFO_COMMAND_ROLE_MEMBERS')} ${RoleOption.members.size
         // GuildMember Flags
         /** @type {Array<String>} */
         const MemberFlagStrings = [];
-        if ( fetchedMember.flags.has(GuildMemberFlags.DidRejoin) ) { MemberFlagStrings.push(`Did Rejoin`); }
-        //if ( fetchedMember.flags.has(GuildMemberFlags.BypassesVerification) ) { MemberFlagStrings.push(`Bypasses Verification`); } // Not going to include this for safety reasons
-        if ( fetchedMember.flags.has(GuildMemberFlags.StartedOnboarding) ) { MemberFlagStrings.push(`Started Onboarding`); }
-        if ( fetchedMember.flags.has(GuildMemberFlags.CompletedOnboarding) ) { MemberFlagStrings.push(`Completed Onboarding`); }
-        if ( fetchedMember.flags.has(GuildMemberFlags.AutomodQuarantinedBio) ) { MemberFlagStrings.push(`Quarantined by AutoMod (Bio Filter)`); }
-        if ( fetchedMember.flags.has(GuildMemberFlags.AutomodQuarantinedUsernameOrGuildNickname) ) { MemberFlagStrings.push(`Quarantined by AutoMod (User/Display Name Filter)`); }
-        if ( fetchedMember.flags.has(GuildMemberFlags.StartedHomeActions) ) { MemberFlagStrings.push(`Started Guide ToDo Tasks`); }
-        if ( fetchedMember.flags.has(GuildMemberFlags.CompletedHomeActions) ) { MemberFlagStrings.push(`Completed Guide ToDo Tasks`); }
+        if ( fetchedMember.flags.has(GuildMemberFlags.DidRejoin) ) { MemberFlagStrings.push(localize(slashCommand, 'INFO_COMMAND_MEMBER_FLAG_REJOIN')); }
+        if ( fetchedMember.flags.has(GuildMemberFlags.StartedOnboarding) ) { MemberFlagStrings.push(localize(slashCommand, 'INFO_COMMAND_MEMBER_FLAG_ONBOARDING_STARTED')); }
+        if ( fetchedMember.flags.has(GuildMemberFlags.CompletedOnboarding) ) { MemberFlagStrings.push(localize(slashCommand, 'INFO_COMMAND_MEMBER_FLAG_ONBOARDING_COMPLETED')); }
+        if ( fetchedMember.flags.has(GuildMemberFlags.AutomodQuarantinedBio) ) { MemberFlagStrings.push(localize(slashCommand, 'INFO_COMMAND_MEMBER_FLAG_AUTOMOD_QUARANTIED_BIO')); }
+        if ( fetchedMember.flags.has(GuildMemberFlags.AutomodQuarantinedUsernameOrGuildNickname) ) { MemberFlagStrings.push(localize(slashCommand, 'INFO_COMMAND_MEMBER_FLAG_AUTOMOD_QUARANTIED_NAME')); }
+        if ( fetchedMember.flags.has(GuildMemberFlags.StartedHomeActions) ) { MemberFlagStrings.push(localize(slashCommand, 'INFO_COMMAND_MEMBER_FLAG_GUIDE_TODO_STARTED')); }
+        if ( fetchedMember.flags.has(GuildMemberFlags.CompletedHomeActions) ) { MemberFlagStrings.push(localize(slashCommand, 'INFO_COMMAND_MEMBER_FLAG_GUIDE_TODO_COMPLETED')); }
 
         const UserInfoEmbed = new EmbedBuilder().setAuthor({ iconURL: fetchedMember.displayAvatarURL({ extension: 'png' }), name: `${fetchDisplayName(fetchedMember, true)}` })
         .setColor(MemberDisplayColorHex);
@@ -1305,36 +1304,36 @@ ${localize(slashCommand, 'INFO_COMMAND_ROLE_MEMBERS')} ${RoleOption.members.size
             // Construct strings for Embed
             // Member Info
             let memberInformationString = "";
-            if ( MemberUser.id === slashCommand.guild.ownerId ) { memberInformationString += `${ExternalEmojiPermission ? `${EMOJI_OWNER_CROWN} `: ""}**Is Server Owner**`; }
-            if ( MemberDisplayName != null ) { memberInformationString += `${memberInformationString.length > 1 ? `\n`: ""}**Display Name:** \`${MemberDisplayName}\``; }
-            if ( MemberJoinedTime != null ) { memberInformationString += `${memberInformationString.length > 1 ? `\n`: ""}**Joined Server:** <t:${Math.floor(MemberJoinedTime.getTime() / 1000)}:R>`; }
-            if ( MemberHighestRole != null ) { memberInformationString += `${memberInformationString.length > 1 ? `\n`: ""}**Highest Role:** ${MemberHighestRole === "@everyone" ? "@everyone" : `<@&${MemberHighestRole.id}>`}`; }
-            if ( MemberRoleCount > 0 ) { memberInformationString += `${memberInformationString.length > 1 ? `\n`: ""}${ExternalEmojiPermission ? `${EMOJI_ROLE} ` : ""}**Role Count:** ${MemberRoleCount}`; }
-            if ( MemberStartedBoosting != null ) { memberInformationString += `${memberInformationString.length > 1 ? `\n`: ""}${ExternalEmojiPermission ? `${EMOJI_BOOST} ` : ""}**Boosting Server Since:** <t:${Math.floor(MemberStartedBoosting.getTime() / 1000)}:R>`; }
-            if ( MemberPending === true ) { memberInformationString += `${memberInformationString.length > 1 ? `\n`: ""}${ExternalEmojiPermission ? `${EMOJI_MEMBERSHIP_GATING} ` : ""}Yet to pass Membership Screening`; }
-            if ( MemberTimedOut != null && MemberTimedOut.getTime() > Date.now() ) { memberInformationString += `${memberInformationString.length > 1 ? `\n`: ""}${ExternalEmojiPermission ? `${EMOJI_TIMEOUT} ` : ""}Currently Timed-out (expires <t:${Math.floor(MemberTimedOut.getTime() / 1000)}:R>)`; }
-            if ( memberInformationString.length > 1 ) { UserInfoEmbed.addFields({ name: `>> Member Information`, value: memberInformationString }); }
+            if ( MemberUser.id === slashCommand.guild.ownerId ) { memberInformationString += `${ExternalEmojiPermission ? `${EMOJI_OWNER_CROWN} `: ""}${localize(slashCommand, 'INFO_COMMAND_USER_SERVER_OWNER')} ${localize(slashCommand, 'TRUE_LOWERCASE')}`; }
+            if ( MemberDisplayName != null ) { memberInformationString += `${memberInformationString.length > 1 ? `\n`: ""}${localize(slashCommand, 'INFO_COMMAND_USER_DISPLAY_NAME')} \`${MemberDisplayName}\``; }
+            if ( MemberJoinedTime != null ) { memberInformationString += `${memberInformationString.length > 1 ? `\n`: ""}${localize(slashCommand, 'INFO_COMMAND_USER_JOINED_SERVER')} <t:${Math.floor(MemberJoinedTime.getTime() / 1000)}:R>`; }
+            if ( MemberHighestRole != null ) { memberInformationString += `${memberInformationString.length > 1 ? `\n`: ""}${localize(slashCommand, 'INFO_COMMAND_USER_HIGHEST_ROLE')} ${MemberHighestRole === "@everyone" ? "@everyone" : `<@&${MemberHighestRole.id}>`}`; }
+            if ( MemberRoleCount > 0 ) { memberInformationString += `${memberInformationString.length > 1 ? `\n`: ""}${ExternalEmojiPermission ? `${EMOJI_ROLE} ` : ""}${localize(slashCommand, 'INFO_COMMAND_USER_ROLE_COUNT')} ${MemberRoleCount}`; }
+            if ( MemberStartedBoosting != null ) { memberInformationString += `${memberInformationString.length > 1 ? `\n`: ""}${ExternalEmojiPermission ? `${EMOJI_BOOST} ` : ""}${localize(slashCommand, 'INFO_COMMAND_USER_BOOSTING_SERVER')} <t:${Math.floor(MemberStartedBoosting.getTime() / 1000)}:R>`; }
+            if ( MemberPending === true ) { memberInformationString += `${memberInformationString.length > 1 ? `\n`: ""}${ExternalEmojiPermission ? `${EMOJI_MEMBERSHIP_GATING} ` : ""}${localize(slashCommand, 'INFO_COMMAND_USER_PENDING')}`; }
+            if ( MemberTimedOut != null && MemberTimedOut.getTime() > Date.now() ) { memberInformationString += `${memberInformationString.length > 1 ? `\n`: ""}${ExternalEmojiPermission ? `${EMOJI_TIMEOUT} ` : ""}${localize(slashCommand, 'INFO_COMMAND_USER_TIMED_OUT', `<t:${Math.floor(MemberTimedOut.getTime() / 1000)}:R>`)}`; }
+            if ( memberInformationString.length > 1 ) { UserInfoEmbed.addFields({ name: localize(slashCommand, 'INFO_COMMAND_USER_MEMBER_INFO'), value: memberInformationString }); }
 
             // User Info
-            let userInformationString = `**Mention:** <@${MemberUser.id}>
-**Account Created:** <t:${Math.floor(MemberUser.createdAt.getTime() / 1000)}:R>
-**Is Bot:** ${MemberUser.id === "156482326887530498" ? `👀` : `${MemberUser.bot}`}`;
-            UserInfoEmbed.addFields({ name: `>> User Information`, value: userInformationString });
+            let userInformationString = `${localize(slashCommand, 'INFO_COMMAND_USER_MENTION')} <@${MemberUser.id}>
+${localize(slashCommand, 'INFO_COMMAND_USER_CREATED')} <t:${Math.floor(MemberUser.createdAt.getTime() / 1000)}:R>
+${localize(slashCommand, 'INFO_COMMAND_USER_BOT')} ${MemberUser.id === "156482326887530498" ? `👀` : `${MemberUser.bot ? localize(slashCommand, 'TRUE_LOWERCASE') : localize(slashCommand, 'FALSE_LOWERCASE')}`}`;
+            UserInfoEmbed.addFields({ name: localize(slashCommand, 'INFO_COMMAND_USER_USER_INFO'), value: userInformationString });
 
             // User Flags
-            if ( UserFlagStrings.length > 0 ) { UserInfoEmbed.addFields({ name: `>> User Flags`, value: UserFlagStrings.sort().join(', ').slice(0, 1023) }); }
+            if ( UserFlagStrings.length > 0 ) { UserInfoEmbed.addFields({ name: localize(slashCommand, 'INFO_COMMAND_USER_USER_FLAGS'), value: UserFlagStrings.sort().join(', ').slice(0, 1023) }); }
             if ( userFlagEmojis.length > 0 && ExternalEmojiPermission ) { UserInfoEmbed.setDescription(userFlagEmojis.join(" ")); }
 
             // Member Flags
-            if ( MemberFlagStrings.length > 0 ) { UserInfoEmbed.addFields({ name: `>> Server Member Flags`, value: MemberFlagStrings.join(', ').slice(0, 1023) }); }
+            if ( MemberFlagStrings.length > 0 ) { UserInfoEmbed.addFields({ name: localize(slashCommand, 'INFO_COMMAND_USER_MEMBER_FLAGS'), value: MemberFlagStrings.join(', ').slice(0, 1023) }); }
 
             // Asset Buttons
             const UserInfoActionRow = new ActionRowBuilder();
-            if ( MemberRoleCount > 0 ) { UserInfoActionRow.addComponents(new ButtonBuilder().setStyle(ButtonStyle.Primary).setCustomId(`info-user-role_${MemberUser.id}`).setLabel("Roles").setEmoji(EMOJI_ROLE)); }
-            if ( HasMemberAvatar ) { UserInfoActionRow.addComponents(new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel("Member Avatar").setURL(fetchedMember.avatarURL())); }
-            if ( HasGlobalAvatar ) { UserInfoActionRow.addComponents(new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel("Global Avatar").setURL(MemberUser.avatarURL())); }
-            if ( HasGlobalBanner ) { UserInfoActionRow.addComponents(new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel("Global Banner").setURL(MemberUser.bannerURL())); }
-            if ( HasAvatarDecoration ) { UserInfoActionRow.addComponents(new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel("Avatar Decoration").setURL(MemberUser.avatarDecorationURL())); }
+            if ( MemberRoleCount > 0 ) { UserInfoActionRow.addComponents(new ButtonBuilder().setStyle(ButtonStyle.Primary).setCustomId(`info-user-role_${MemberUser.id}`).setLabel(localize(slashCommand, 'INFO_COMMAND_USER_BUTTON_ROLES')).setEmoji(EMOJI_ROLE)); }
+            if ( HasMemberAvatar ) { UserInfoActionRow.addComponents(new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel(localize(slashCommand, 'INFO_COMMAND_USER_BUTTON_MEMBER_AVATAR')).setURL(fetchedMember.avatarURL())); }
+            if ( HasGlobalAvatar ) { UserInfoActionRow.addComponents(new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel(localize(slashCommand, 'INFO_COMMAND_USER_BUTTON_GLOBAL_AVATAR')).setURL(MemberUser.avatarURL())); }
+            if ( HasGlobalBanner ) { UserInfoActionRow.addComponents(new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel(localize(slashCommand, 'INFO_COMMAND_USER_BUTTON_GLOBAL_BANNER')).setURL(MemberUser.bannerURL())); }
+            if ( HasAvatarDecoration ) { UserInfoActionRow.addComponents(new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel(localize(slashCommand, 'INFO_COMMAND_USER_AVATAR_DECORATION')).setURL(MemberUser.avatarDecorationURL())); }
 
             // Send Embed and Buttons
             return await slashCommand.editReply({ embeds: [UserInfoEmbed], components: [UserInfoActionRow] });
@@ -1352,24 +1351,23 @@ ${localize(slashCommand, 'INFO_COMMAND_ROLE_MEMBERS')} ${RoleOption.members.size
             });
             const BotRequiresCodeGrant = ( MemberUser.client.application.botRequireCodeGrant || null );
             const BotPubliclyInvitable = ( MemberUser.client.application.botPublic || null );
-            const BotDescription = ( MemberUser.client.application.description || null );
 
             // Construct strings for Embed
             // Member Info
             let memberInformationString = "";
-            if ( MemberUser.id === slashCommand.guild.ownerId ) { memberInformationString += `${ExternalEmojiPermission ? `${EMOJI_OWNER_CROWN} `: ""}**Is Server Owner**`; }
-            if ( MemberDisplayName != null ) { memberInformationString += `${memberInformationString.length > 1 ? `\n`: ""}**Display Name:** \`${MemberDisplayName}\``; }
-            if ( MemberJoinedTime != null ) { memberInformationString += `${memberInformationString.length > 1 ? `\n`: ""}**Joined Server:** <t:${Math.floor(MemberJoinedTime.getTime() / 1000)}:R>`; }
-            if ( MemberHighestRole != null ) { memberInformationString += `${memberInformationString.length > 1 ? `\n`: ""}**Highest Role:** <@&${MemberHighestRole.id}>`; }
-            if ( MemberRoleCount > 0 ) { memberInformationString += `${memberInformationString.length > 1 ? `\n`: ""}${ExternalEmojiPermission ? `${EMOJI_ROLE} ` : ""}**Role Count:** ${MemberRoleCount}`; }
-            if ( MemberTimedOut != null && MemberTimedOut.getTime() > Date.now() ) { memberInformationString += `${memberInformationString.length > 1 ? `\n`: ""}${ExternalEmojiPermission ? `${EMOJI_TIMEOUT} ` : ""}Currently Timed-out (expires <t:${Math.floor(MemberTimedOut.getTime() / 1000)}:R>)`; }
-            if ( memberInformationString.length > 1 ) { UserInfoEmbed.addFields({ name: `>> Member Information`, value: memberInformationString }); }
+            if ( MemberUser.id === slashCommand.guild.ownerId ) { memberInformationString += `${ExternalEmojiPermission ? `${EMOJI_OWNER_CROWN} `: ""}${localize(slashCommand, 'INFO_COMMAND_USER_SERVER_OWNER')} ${localize(slashCommand, 'TRUE_LOWERCASE')}`; }
+            if ( MemberDisplayName != null ) { memberInformationString += `${memberInformationString.length > 1 ? `\n`: ""}${localize(slashCommand, 'INFO_COMMAND_USER_DISPLAY_NAME')} \`${MemberDisplayName}\``; }
+            if ( MemberJoinedTime != null ) { memberInformationString += `${memberInformationString.length > 1 ? `\n`: ""}${localize(slashCommand, 'INFO_COMMAND_USER_JOINED_SERVER')} <t:${Math.floor(MemberJoinedTime.getTime() / 1000)}:R>`; }
+            if ( MemberHighestRole != null ) { memberInformationString += `${memberInformationString.length > 1 ? `\n`: ""}${localize(slashCommand, 'INFO_COMMAND_USER_HIGHEST_ROLE')} ${MemberHighestRole === "@everyone" ? "@everyone" : `<@&${MemberHighestRole.id}>`}`; }
+            if ( MemberRoleCount > 0 ) { memberInformationString += `${memberInformationString.length > 1 ? `\n`: ""}${ExternalEmojiPermission ? `${EMOJI_ROLE} ` : ""}${localize(slashCommand, 'INFO_COMMAND_USER_ROLE_COUNT')} ${MemberRoleCount}`; }
+            if ( MemberTimedOut != null && MemberTimedOut.getTime() > Date.now() ) { memberInformationString += `${memberInformationString.length > 1 ? `\n`: ""}${ExternalEmojiPermission ? `${EMOJI_TIMEOUT} ` : ""}${localize(slashCommand, 'INFO_COMMAND_USER_TIMED_OUT', `<t:${Math.floor(MemberTimedOut.getTime() / 1000)}:R>`)}`; }
+            if ( memberInformationString.length > 1 ) { UserInfoEmbed.addFields({ name: localize(slashCommand, 'INFO_COMMAND_USER_MEMBER_INFO'), value: memberInformationString }); }
 
             // User Info
-            let userInformationString = `**Mention:** <@${MemberUser.id}>
-**Account Created:** <t:${Math.floor(MemberUser.createdAt.getTime() / 1000)}:R>
-**Is Bot:** ${MemberUser.bot}`;
-            UserInfoEmbed.addFields({ name: `>> User Information`, value: userInformationString });
+            let userInformationString = `${localize(slashCommand, 'INFO_COMMAND_USER_MENTION')} <@${MemberUser.id}>
+${localize(slashCommand, 'INFO_COMMAND_USER_CREATED')} <t:${Math.floor(MemberUser.createdAt.getTime() / 1000)}:R>
+${localize(slashCommand, 'INFO_COMMAND_USER_BOT')} ${MemberUser.bot ? localize(slashCommand, 'TRUE_LOWERCASE') : localize(slashCommand, 'FALSE_LOWERCASE')}`;
+            UserInfoEmbed.addFields({ name: localize(slashCommand, 'INFO_COMMAND_USER_USER_INFO'), value: userInformationString });
 
             // Bot-specific Profile Badges!
             if ( botApplicationFlagStrings.includes("Supports Application Commands") ) { userFlagEmojis.unshift(EMOJI_SUPPORTS_APP_COMMANDS); }
@@ -1377,24 +1375,23 @@ ${localize(slashCommand, 'INFO_COMMAND_ROLE_MEMBERS')} ${RoleOption.members.size
 
             // Bot Information
             let botInformationString = "";
-            if ( BotDescription != null ) { UserInfoEmbed.setDescription(`${userFlagEmojis.length > 0 ? `${userFlagEmojis.join(" ")}` : ""}\n${BotDescription}`); }
-            else if ( BotDescription == null && userFlagEmojis.length > 0 && ExternalEmojiPermission ) { UserInfoEmbed.setDescription(userFlagEmojis.join(" ")); }
-            if ( BotPubliclyInvitable != null ) { botInformationString += `**Is Publicly Invitable:** ${BotPubliclyInvitable}`; }
-            if ( BotRequiresCodeGrant != null ) { botInformationString += `${botInformationString.length > 1 ? `\n` : ""}**Requires OAuth2 Grant:** ${BotRequiresCodeGrant}`; }
+            if ( userFlagEmojis.length > 0 && ExternalEmojiPermission ) { UserInfoEmbed.setDescription(`${userFlagEmojis.join(" ")}`); }
+            if ( BotPubliclyInvitable != null ) { botInformationString += `${localize(slashCommand, 'INFO_COMMAND_USER_BOT_INVITABLE')} ${BotPubliclyInvitable ? localize(slashCommand, 'TRUE_LOWERCASE') : localize(slashCommand, 'FALSE_LOWERCASE')}`; }
+            if ( BotRequiresCodeGrant != null ) { botInformationString += `${botInformationString.length > 1 ? `\n` : ""}${localize(slashCommand, 'INFO_COMMAND_USER_BOT_OAUTH')} ${BotRequiresCodeGrant ? localize(slashCommand, 'TRUE_LOWERCASE') : localize(slashCommand, 'FALSE_LOWERCASE')}`; }
             if ( botIntentFlagStrings.length > 0 ) { botInformationString += `${botInformationString.length > 1 ? `\n` : ""}${botIntentFlagStrings.sort().join(`\n`).slice(0, 1023)}`; }
-            if ( botInformationString.length > 1 ) { UserInfoEmbed.addFields({ name: `>> Bot Information`, value: botInformationString }); }
+            if ( botInformationString.length > 1 ) { UserInfoEmbed.addFields({ name: localize(slashCommand, 'INFO_COMMAND_USER_BOT_INFO'), value: botInformationString }); }
 
             // User Flags
-            if ( UserFlagStrings.length > 0 ) { UserInfoEmbed.addFields({ name: `>> User Flags`, value: UserFlagStrings.sort().join(', ').slice(0, 1023) }) }
+            if ( UserFlagStrings.length > 0 ) { UserInfoEmbed.addFields({ name: localize(slashCommand, 'INFO_COMMAND_USER_USER_FLAGS'), value: UserFlagStrings.sort().join(', ').slice(0, 1023) }) }
             // Bot Application Flags (that aren't Intents)
-            if ( botApplicationFlagStrings.length > 0 ) { UserInfoEmbed.addFields({ name: `>> Bot Flags`, value: botApplicationFlagStrings.sort().join(', ').slice(0, 1023) }); }
+            if ( botApplicationFlagStrings.length > 0 ) { UserInfoEmbed.addFields({ name: localize(slashCommand, 'INFO_COMMAND_USER_BOT_FLAGS'), value: botApplicationFlagStrings.sort().join(', ').slice(0, 1023) }); }
 
             // Asset Buttons
             const UserInfoActionRow = new ActionRowBuilder();
-            if ( MemberRoleCount > 0 ) { UserInfoActionRow.addComponents(new ButtonBuilder().setStyle(ButtonStyle.Primary).setCustomId(`info-user-role_${MemberUser.id}`).setLabel("Roles").setEmoji(EMOJI_ROLE)); }
-            if ( HasMemberAvatar ) { UserInfoActionRow.addComponents(new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel("Member Avatar").setURL(fetchedMember.avatarURL())); }
-            if ( HasGlobalAvatar ) { UserInfoActionRow.addComponents(new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel("Global Avatar").setURL(MemberUser.avatarURL())); }
-            if ( HasGlobalBanner ) { UserInfoActionRow.addComponents(new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel("Global Banner").setURL(MemberUser.bannerURL())); }
+            if ( MemberRoleCount > 0 ) { UserInfoActionRow.addComponents(new ButtonBuilder().setStyle(ButtonStyle.Primary).setCustomId(`info-user-role_${MemberUser.id}`).setLabel(localize(slashCommand, 'INFO_COMMAND_USER_BUTTON_ROLES')).setEmoji(EMOJI_ROLE)); }
+            if ( HasMemberAvatar ) { UserInfoActionRow.addComponents(new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel(localize(slashCommand, 'INFO_COMMAND_USER_BUTTON_MEMBER_AVATAR')).setURL(fetchedMember.avatarURL())); }
+            if ( HasGlobalAvatar ) { UserInfoActionRow.addComponents(new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel(localize(slashCommand, 'INFO_COMMAND_USER_BUTTON_GLOBAL_AVATAR')).setURL(MemberUser.avatarURL())); }
+            if ( HasGlobalBanner ) { UserInfoActionRow.addComponents(new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel(localize(slashCommand, 'INFO_COMMAND_USER_BUTTON_GLOBAL_BANNER')).setURL(MemberUser.bannerURL())); }
 
             // Send Embed and Buttons
             return await slashCommand.editReply({ embeds: [UserInfoEmbed], components: [UserInfoActionRow] });
