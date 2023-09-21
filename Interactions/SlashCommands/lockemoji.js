@@ -136,7 +136,7 @@ module.exports = {
         await slashCommand.deferReply({ ephemeral: true });
 
         // Upload to Server        
-        await slashCommand.guild.emojis.create({ attachment: InputAttachment.url, name: "UnnamedEmoji", roles: [InputRole.id], reason: localize(slashCommand.locale, 'LOCKEMOJI_COMMAND_AUDIT_LOG_EMOJI_UPLOADED', fetchDisplayName(slashCommand.user, true)) })
+        await slashCommand.guild.emojis.create({ attachment: InputAttachment.url, name: "UnnamedEmoji", roles: [InputRole.id], reason: localize(slashCommand.guildLocale, 'LOCKEMOJI_COMMAND_AUDIT_LOG_EMOJI_UPLOADED', fetchDisplayName(slashCommand.user, true)) })
         .then(async newEmoji => {
             slashCommand.editReply({ content: localize(slashCommand.locale, 'LOCKEMOJI_COMMAND_UPLOAD_SUCCESS') });
             return;
