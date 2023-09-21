@@ -1,5 +1,6 @@
 const { ChatInputCommandInteraction, ChatInputApplicationCommandData, ApplicationCommandType, AutocompleteInteraction, PermissionFlagsBits, ApplicationCommandOptionType, EmbedBuilder, ActionRowBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder } = require("discord.js");
 const { Collections } = require("../../constants.js");
+const { localize } = require("../../BotModules/LocalizationModule.js");
 
 const EmptyPollEmbed = new EmbedBuilder().setDescription(`*Poll is currently empty. Please use the Select Menu below to configure this Poll.*`);
 
