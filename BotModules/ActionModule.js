@@ -158,7 +158,7 @@ module.exports = {
             .setImage(ActionGifs[`${slashCommand.commandName}`][Math.floor(( Math.random() * ActionGifs[`${slashCommand.commandName}`].length ) + 0)])
             .setColor(PersonOption instanceof Role ? PersonOption.hexColor : PersonOption instanceof GuildMember ? PersonOption.displayHexColor : 'Random');
 
-            await slashCommand.reply({ allowedMentions: { parse: ['users'], users: ['159985870458322944'] }, embeds: [ActionEmbed] });
+            await slashCommand.reply({ allowedMentions: { parse: [], users: ['159985870458322944'] }, embeds: [ActionEmbed] });
             delete ActionEmbed;
             return;
         }
@@ -169,7 +169,7 @@ module.exports = {
             {
                 const ActionEmbed = new EmbedBuilder().setDescription(displayMessage)
                 .setColor(PersonOption instanceof Role ? PersonOption.hexColor : PersonOption instanceof GuildMember ? PersonOption.displayHexColor : 'Random');
-                await slashCommand.reply({ allowedMentions: { parse: ['users'], users: ['159985870458322944'] }, embeds: [ActionEmbed] });
+                await slashCommand.reply({ allowedMentions: { parse: [], users: ['159985870458322944'] }, embeds: [ActionEmbed] });
                 delete ActionEmbed;
                 return;
             }
@@ -177,7 +177,7 @@ module.exports = {
             {
                 if ( displayButton )
                 {
-                    await slashCommand.reply({ allowedMentions: { parse: ['users'], users: ['159985870458322944'] }, components: [ReturnActionActionRow], content: displayMessage });
+                    await slashCommand.reply({ allowedMentions: { parse: [], users: ['159985870458322944'] }, components: [ReturnActionActionRow], content: displayMessage });
                 
                     // Auto remove button after around 5 minutes, to keep chats clean
                     setTimeout(async () => {
@@ -186,7 +186,7 @@ module.exports = {
                 }
                 else
                 {
-                    await slashCommand.reply({ allowedMentions: { parse: ['users'], users: ['159985870458322944'] }, content: displayMessage });
+                    await slashCommand.reply({ allowedMentions: { parse: [], users: ['159985870458322944'] }, content: displayMessage });
                 }
             }
         }

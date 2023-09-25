@@ -114,10 +114,10 @@ module.exports = {
 
     // ******* FOR ACTION COMMANDS
     ACTION_COMMAND_OTHER_USER_HEADPAT: `**{{0}}** gave **{{1}}** a headpat`,
-    ACTION_COMMAND_OTHER_USER_HUG: `**{{0}}** cuddled **{{1}}`,
-    ACTION_COMMAND_OTHER_USER_BONK: `**{{0}}** bonked **{{1}}`,
-    ACTION_COMMAND_OTHER_USER_BOOP: `**{{0}}** booped **{{1}}`,
-    ACTION_COMMAND_OTHER_USER_KISS: `**{{0}}** kissed **{{1}}`,
+    ACTION_COMMAND_OTHER_USER_HUG: `**{{0}}** cuddled **{{1}}**`,
+    ACTION_COMMAND_OTHER_USER_BONK: `**{{0}}** bonked **{{1}}**`,
+    ACTION_COMMAND_OTHER_USER_BOOP: `**{{0}}** booped **{{1}}**`,
+    ACTION_COMMAND_OTHER_USER_KISS: `**{{0}}** kissed **{{1}}**`,
 
     ACTION_COMMAND_SELF_USER_HEADPAT: `**{{0}}** gave themself a headpat`,
     ACTION_COMMAND_SELF_USER_HUG: `**{{0}}** gave themself a cuddle`,

@@ -822,9 +822,13 @@ module.exports = {
         let fetchedChannel;
         const OptionChannel = slashCommand.options.getChannel("channel");
 
-        // Catch for KNOWN unsupported Channel Types
-        if ( OptionChannel.type === 14 ) { await slashCommand.editReply({ content: localize(slashCommand.locale, 'INFO_COMMAND_CHANNEL_DIRECTORY_UNSUPPORTED') }); return; }
-        if ( OptionChannel.type === 16 ) { await slashCommand.editReply({ content: localize(slashCommand.locale, 'INFO_COMMAND_CHANNEL_MEDIA_UNSUPPORTED') }); return; }
+        // Catch for KNOWN unsupported Channel Types, for provided option if given to prevent fetching it
+        if ( OptionChannel?.type === 14 ) { await slashCommand.editReply({ content: localize(slashCommand.locale, 'INFO_COMMAND_CHANNEL_DIRECTORY_UNSUPPORTED') }); return; }
+        if ( OptionChannel?.type === 16 ) { await slashCommand.editReply({ content: localize(slashCommand.locale, 'INFO_COMMAND_CHANNEL_MEDIA_UNSUPPORTED') }); return; }
+
+        // Catch for KNOWN unsupported Channel Types, for current Channel, if no given option is provided, to prevent fetching it
+        if ( OptionChannel == null && slashCommand.channel.type === 14 ) { await slashCommand.editReply({ content: localize(slashCommand.locale, 'INFO_COMMAND_CHANNEL_DIRECTORY_UNSUPPORTED') }); return; }
+        if ( OptionChannel == null && slashCommand.channel.type === 16 ) { await slashCommand.editReply({ content: localize(slashCommand.locale, 'INFO_COMMAND_CHANNEL_MEDIA_UNSUPPORTED') }); return; }
 
         try
         {
@@ -1024,7 +1028,7 @@ ${fetchedChannel.parentId != null ? `${localize(slashCommand.locale, 'INFO_COMMA
         const CurrentGuild = await slashCommand.guild.fetch();
 
         // If outage happening, return early
-        if ( !CurrentGuild.available ) { return await slashCommand.editReply({ content: localize(slashCommand, 'INFO_COMMAND_SERVER_ERROR_OUTAGE') }); }
+        if ( !CurrentGuild.available ) { return await slashCommand.editReply({ content: localize(slashCommand.locale, 'INFO_COMMAND_SERVER_ERROR_OUTAGE') }); }
 
         // Check for External Emoji Permission
         const ExternalEmojiPermission = checkEmojiPermission(slashCommand);
@@ -1103,51 +1107,51 @@ ${fetchedChannel.parentId != null ? `${localize(slashCommand.locale, 'INFO_COMMA
         const HasInviteSplash = CurrentGuild.splash === null ? false : true;
 
         // Construct Embed
-        const ServerInfoEmbed = new EmbedBuilder().setAuthor({ name: GuildName }).setFooter({ text: localize(slashCommand, 'CREATED') }).setTimestamp(CurrentGuild.createdAt);
+        const ServerInfoEmbed = new EmbedBuilder().setAuthor({ name: GuildName }).setFooter({ text: localize(slashCommand.locale, 'CREATED') }).setTimestamp(CurrentGuild.createdAt);
 
-        ServerInfoEmbed.setDescription(`${GuildPartnered ? `${ExternalEmojiPermission ? `${EMOJI_PARTNER} ` : `${localize(slashCommand, 'INFO_COMMAND_SERVER_PARTNERED')}. `}` : ""} ${GuildVerified ? `${ExternalEmojiPermission ? `${EMOJI_VERIFIED}` : `${localize(slashCommand, 'INFO_COMMAND_SERVER_VERIFIED')}`}` : ""}\n${GuildDescription}`)
+        ServerInfoEmbed.setDescription(`${GuildPartnered ? `${ExternalEmojiPermission ? `${EMOJI_PARTNER} ` : `${localize(slashCommand.locale, 'INFO_COMMAND_SERVER_PARTNERED')}. `}` : ""} ${GuildVerified ? `${ExternalEmojiPermission ? `${EMOJI_VERIFIED}` : `${localize(slashCommand.locale, 'INFO_COMMAND_SERVER_VERIFIED')}`}` : ""}\n${GuildDescription}`)
         .addFields(
             {
-                name: localize(slashCommand, 'INFO_COMMAND_SERVER_GENERAL_INFO'),
-                value: `${ExternalEmojiPermission ? `${EMOJI_OWNER_CROWN} ` : ""}${localize(slashCommand, 'INFO_COMMAND_SERVER_OWNER')} ${fetchDisplayName(GuildOwner.user, true)}
-${ExternalEmojiPermission ? `${readableGuildPremiumTierEmoji(GuildBoostTier)} ` : ""}${INFO_COMMAND_SERVER_BOOST_TIER} ${readableGuildPremiumTier(GuildBoostTier, slashCommand.locale)}
-${ExternalEmojiPermission ? `${EMOJI_BOOST} ` : ""}${localize(slashCommand, 'INFO_COMMAND_SERVER_BOOST_COUNT')} ${GuildBoostCount}
-${ExternalEmojiPermission ? `${EMOJI_EMOJI} ` : ""}${localize(slashCommand, 'INFO_COMMAND_SERVER_EMOJIS')} ${TotalEmojiCount}
-${ExternalEmojiPermission ? `${EMOJI_STICKER} ` : ""}${localize(slashCommand, 'INFO_COMMAND_SERVER_STICKERS')} ${TotalStickerCount}
-${ExternalEmojiPermission ? `${EMOJI_ROLE} ` : ""}${localize(slashCommand, 'INFO_COMMAND_SERVER_ROLES')} ${TotalRoleCount} / 250${TotalScheduledEvents > 0 ? `\n${ExternalEmojiPermission ? `${EMOJI_SCHEDULED_EVENT} ` : ""}${localize(slashCommand, 'INFO_COMMAND_SERVER_SCHEDULED_EVENTS')} ${TotalScheduledEvents}` : ""}${GuildVanityCode != null ? `\n${localize(slashCommand, 'INFO_COMMAND_SERVER_VANITY')} https://discord.gg/${GuildVanityCode}` : ""}${GuildApproxTotalMembers != null ? `\n${localize(slashCommand, 'INFO_COMMAND_SERVER_APPROX_TOTAL_MEMBERS')} ${GuildApproxTotalMembers}` : ""}${GuildApproxOnlineMembers != null ? `\n${localize(slashCommand, 'INFO_COMMAND_SERVER_APPROX_ONLINE_MEMBERS')} ${GuildApproxOnlineMembers}` : ""}`,
+                name: localize(slashCommand.locale, 'INFO_COMMAND_SERVER_GENERAL_INFO'),
+                value: `${ExternalEmojiPermission ? `${EMOJI_OWNER_CROWN} ` : ""}${localize(slashCommand.locale, 'INFO_COMMAND_SERVER_OWNER')} ${fetchDisplayName(GuildOwner.user, true)}
+${ExternalEmojiPermission ? `${readableGuildPremiumTierEmoji(GuildBoostTier)} ` : ""}${localize(slashCommand.locale, 'INFO_COMMAND_SERVER_BOOST_TIER')} ${readableGuildPremiumTier(GuildBoostTier, slashCommand.locale)}
+${ExternalEmojiPermission ? `${EMOJI_BOOST} ` : ""}${localize(slashCommand.locale, 'INFO_COMMAND_SERVER_BOOST_COUNT')} ${GuildBoostCount}
+${ExternalEmojiPermission ? `${EMOJI_EMOJI} ` : ""}${localize(slashCommand.locale, 'INFO_COMMAND_SERVER_EMOJIS')} ${TotalEmojiCount}
+${ExternalEmojiPermission ? `${EMOJI_STICKER} ` : ""}${localize(slashCommand.locale, 'INFO_COMMAND_SERVER_STICKERS')} ${TotalStickerCount}
+${ExternalEmojiPermission ? `${EMOJI_ROLE} ` : ""}${localize(slashCommand.locale, 'INFO_COMMAND_SERVER_ROLES')} ${TotalRoleCount} / 250${TotalScheduledEvents > 0 ? `\n${ExternalEmojiPermission ? `${EMOJI_SCHEDULED_EVENT} ` : ""}${localize(slashCommand.locale, 'INFO_COMMAND_SERVER_SCHEDULED_EVENTS')} ${TotalScheduledEvents}` : ""}${GuildVanityCode != null ? `\n${localize(slashCommand.locale, 'INFO_COMMAND_SERVER_VANITY')} https://discord.gg/${GuildVanityCode}` : ""}${GuildApproxTotalMembers != null ? `\n${localize(slashCommand.locale, 'INFO_COMMAND_SERVER_APPROX_TOTAL_MEMBERS')} ${GuildApproxTotalMembers}` : ""}${GuildApproxOnlineMembers != null ? `\n${localize(slashCommand.locale, 'INFO_COMMAND_SERVER_APPROX_ONLINE_MEMBERS')} ${GuildApproxOnlineMembers}` : ""}`,
                 inline: true
             },
             {
-                 name: `${localize(slashCommand, 'INFO_COMMAND_SERVER_CHANNEL_INFO')} (${TotalChannelCount} / 500)`,
-                value: `${ExternalEmojiPermission ? `${EMOJI_CHANNEL_TEXT} ` : ""}**${localize(slashCommand, 'CHANNEL_TYPE_TEXT')}:** ${textChannelCount}
-${ExternalEmojiPermission ? `${EMOJI_CHANNEL_NEWS} ` : ""}**${localize(slashCommand, 'CHANNEL_TYPE_ANNOUNCEMENT')}:** ${announcementChannelCount}
-${ExternalEmojiPermission ? `${EMOJI_CHANNEL_VOICE} ` : ""}**${localize(slashCommand, 'CHANNEL_TYPE_VOICE')}:** ${voiceChannelCount}
-${ExternalEmojiPermission ? `${EMOJI_CHANNEL_STAGE} ` : ""}**${localize(slashCommand, 'CHANNEL_TYPE_STAGE')}:** ${stageChannelCount}
-${ExternalEmojiPermission ? `${EMOJI_CHANNEL_CATEGORY} ` : ""}**${localize(slashCommand, 'CHANNEL_TYPE_CATEGORY')}:** ${categoryChannelCount}
-${ExternalEmojiPermission ? `${EMOJI_CHANNEL_FORUM} ` : ""}**${localize(slashCommand, 'CHANNEL_TYPE_FORUM')}:** ${forumChannelCount}${unknownChannelCount > 0 ? `\n${ExternalEmojiPermission ? `❓ ` : ""}**${localize(slashCommand, 'CHANNEL_TYPE_UNKNOWN')}:** ${unknownChannelCount}` : ""}${AfkChannelId != null ? `\n${ExternalEmojiPermission ? `${EMOJI_STATUS_IDLE} ` : ""}**${localize(slashCommand, 'CHANNEL_AFK')}:** <#${AfkChannelId}>` : ""}${SystemChannelId != null ? `\n${ExternalEmojiPermission ? `:gear: ` : ""}**${localize(slashCommand, 'CHANNEL_SYSTEM')}:** <#${SystemChannelId}>` : ""}${RulesChannelId != null ? `\n${ExternalEmojiPermission ? `${EMOJI_CHANNEL_RULES} ` : ""}**${localize(slashCommand, 'CHANNEL_RULES')}:** <#${RulesChannelId}>` : ""}`,
+                 name: `${localize(slashCommand.locale, 'INFO_COMMAND_SERVER_CHANNEL_INFO')} (${TotalChannelCount} / 500)`,
+                value: `${ExternalEmojiPermission ? `${EMOJI_CHANNEL_TEXT} ` : ""}**${localize(slashCommand.locale, 'CHANNEL_TYPE_TEXT')}:** ${textChannelCount}
+${ExternalEmojiPermission ? `${EMOJI_CHANNEL_NEWS} ` : ""}**${localize(slashCommand.locale, 'CHANNEL_TYPE_ANNOUNCEMENT')}:** ${announcementChannelCount}
+${ExternalEmojiPermission ? `${EMOJI_CHANNEL_VOICE} ` : ""}**${localize(slashCommand.locale, 'CHANNEL_TYPE_VOICE')}:** ${voiceChannelCount}
+${ExternalEmojiPermission ? `${EMOJI_CHANNEL_STAGE} ` : ""}**${localize(slashCommand.locale, 'CHANNEL_TYPE_STAGE')}:** ${stageChannelCount}
+${ExternalEmojiPermission ? `${EMOJI_CHANNEL_CATEGORY} ` : ""}**${localize(slashCommand.locale, 'CHANNEL_TYPE_CATEGORY')}:** ${categoryChannelCount}
+${ExternalEmojiPermission ? `${EMOJI_CHANNEL_FORUM} ` : ""}**${localize(slashCommand.locale, 'CHANNEL_TYPE_FORUM')}:** ${forumChannelCount}${unknownChannelCount > 0 ? `\n${ExternalEmojiPermission ? `❓ ` : ""}**${localize(slashCommand.locale, 'CHANNEL_TYPE_UNKNOWN')}:** ${unknownChannelCount}` : ""}${AfkChannelId != null ? `\n${ExternalEmojiPermission ? `${EMOJI_STATUS_IDLE} ` : ""}**${localize(slashCommand.locale, 'CHANNEL_AFK')}:** <#${AfkChannelId}>` : ""}${SystemChannelId != null ? `\n${ExternalEmojiPermission ? `:gear: ` : ""}**${localize(slashCommand.locale, 'CHANNEL_SYSTEM')}:** <#${SystemChannelId}>` : ""}${RulesChannelId != null ? `\n${ExternalEmojiPermission ? `${EMOJI_CHANNEL_RULES} ` : ""}**${localize(slashCommand.locale, 'CHANNEL_RULES')}:** <#${RulesChannelId}>` : ""}`,
                 inline: true
             },
             {
-                name: localize(slashCommand, 'INFO_COMMAND_SERVER_SECURITY_INFO'),
-                value: `${localize(slashCommand, 'INFO_COMMAND_SERVER_VERIFICATION_LEVEL')} ${readableVerificationLevel(GuildVerificationLevel, slashCommand.locale)}
-${localize(slashCommand, 'INFO_COMMAND_SERVER_EXPLICIT_FILTER')} ${readableExplicitFilter(GuildContentFilter, slashCommand.locale)}
-${localize(slashCommand, 'INFO_COMMAND_SERVER_MFA_MODERATION')} ${readableMFALevel(GuildMFALevel, slashCommand.locale)}
-${localize(slashCommand, 'INFO_COMMAND_SERVER_NSFW_LEVEL')} ${readableNSFWLevel(GuildNSFWLevel, slashCommand.locale)}
-${localize(slashCommand, 'INFO_COMMAND_SERVER_DEFAULT_NOTIFICATIONS')} ${readableDefaultNotification(GuildDefaultNotifications, slashCommand.locale)}`
+                name: localize(slashCommand.locale, 'INFO_COMMAND_SERVER_SECURITY_INFO'),
+                value: `${localize(slashCommand.locale, 'INFO_COMMAND_SERVER_VERIFICATION_LEVEL')} ${readableVerificationLevel(GuildVerificationLevel, slashCommand.locale)}
+${localize(slashCommand.locale, 'INFO_COMMAND_SERVER_EXPLICIT_FILTER')} ${readableExplicitFilter(GuildContentFilter, slashCommand.locale)}
+${localize(slashCommand.locale, 'INFO_COMMAND_SERVER_MFA_MODERATION')} ${readableMFALevel(GuildMFALevel, slashCommand.locale)}
+${localize(slashCommand.locale, 'INFO_COMMAND_SERVER_NSFW_LEVEL')} ${readableNSFWLevel(GuildNSFWLevel, slashCommand.locale)}
+${localize(slashCommand.locale, 'INFO_COMMAND_SERVER_DEFAULT_NOTIFICATIONS')} ${readableDefaultNotification(GuildDefaultNotifications, slashCommand.locale)}`
             }
         );
-        if ( guildFeatures.length > 0 ) { ServerInfoEmbed.addFields({name: localize(slashCommand, 'INFO_COMMAND_SERVER_FEATURE_FLAG_INFO'), value: `${guildFeatures.sort().join(', ').slice(0, 1023)}`}); }
+        if ( guildFeatures.length > 0 ) { ServerInfoEmbed.addFields({name: localize(slashCommand.locale, 'INFO_COMMAND_SERVER_FEATURE_FLAG_INFO'), value: `${guildFeatures.sort().join(', ').slice(0, 1023)}`}); }
 
         // Add Asset Buttons
         const ServerInfoActionRow = new ActionRowBuilder();
         if ( HasIcon )
         {
             ServerInfoEmbed.setAuthor({ name: GuildName, iconURL: CurrentGuild.iconURL({ extension: 'png' }) });
-            ServerInfoActionRow.addComponents(new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel(localize(slashCommand, 'INFO_COMMAND_SERVER_BUTTON_ICON')).setURL(CurrentGuild.iconURL()));
+            ServerInfoActionRow.addComponents(new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel(localize(slashCommand.locale, 'INFO_COMMAND_SERVER_BUTTON_ICON')).setURL(CurrentGuild.iconURL()));
         }
-        if ( HasBanner ) { ServerInfoActionRow.addComponents(new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel(localize(slashCommand, 'INFO_COMMAND_SERVER_BUTTON_BANNER')).setURL(CurrentGuild.bannerURL())); }
-        if ( HasInviteSplash ) { ServerInfoActionRow.addComponents(new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel(localize(slashCommand, 'INFO_COMMAND_SERVER_BUTTON_INVITE_SPLASH')).setURL(CurrentGuild.splashURL())); }
-        if ( HasDiscoverySplash ) { ServerInfoActionRow.addComponents(new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel(localize(slashCommand, 'INFO_COMMAND_SERVER_BUTTON_DISCOVERY_SPLASH')).setURL(CurrentGuild.discoverySplashURL())); }
+        if ( HasBanner ) { ServerInfoActionRow.addComponents(new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel(localize(slashCommand.locale, 'INFO_COMMAND_SERVER_BUTTON_BANNER')).setURL(CurrentGuild.bannerURL())); }
+        if ( HasInviteSplash ) { ServerInfoActionRow.addComponents(new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel(localize(slashCommand.locale, 'INFO_COMMAND_SERVER_BUTTON_INVITE_SPLASH')).setURL(CurrentGuild.splashURL())); }
+        if ( HasDiscoverySplash ) { ServerInfoActionRow.addComponents(new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel(localize(slashCommand.locale, 'INFO_COMMAND_SERVER_BUTTON_DISCOVERY_SPLASH')).setURL(CurrentGuild.discoverySplashURL())); }
 
         if ( ServerInfoActionRow.components.length > 0 ) { return await slashCommand.editReply({ embeds: [ServerInfoEmbed], components: [ServerInfoActionRow] }); }
         else { return await slashCommand.editReply({ embeds: [ServerInfoEmbed] }); }
@@ -1172,7 +1176,7 @@ ${localize(slashCommand, 'INFO_COMMAND_SERVER_DEFAULT_NOTIFICATIONS')} ${readabl
         // If atEveryone is selected, reject!
         if ( RoleOption.id === slashCommand.guildId )
         {
-            await slashCommand.editReply({ content: localize(slashCommand, 'INFO_COMMAND_ROLE_ERROR_ATEVERYONE_UNSUPPORTED'), allowedMentions: { parse: [] } });
+            await slashCommand.editReply({ content: localize(slashCommand.locale, 'INFO_COMMAND_ROLE_ERROR_ATEVERYONE_UNSUPPORTED'), allowedMentions: { parse: [] } });
             return;
         }
 
@@ -1180,12 +1184,12 @@ ${localize(slashCommand, 'INFO_COMMAND_SERVER_DEFAULT_NOTIFICATIONS')} ${readabl
         const RoleInfoEmbed = new EmbedBuilder().setAuthor({ name: RoleOption.name }).setColor(RoleOption.hexColor)
         .addFields(
             {
-                name: localize(slashCommand, 'INFO_COMMAND_ROLE_GENERAL_INFO'),
-                value: `${localize(slashCommand, 'INFO_COMMAND_ROLE_CREATED')} <t:${Math.floor(RoleOption.createdAt.getTime() / 1000)}:R>
-${localize(slashCommand, 'INFO_COMMAND_ROLE_COLOR')} ${RoleOption.hexColor}
-${localize(slashCommand, 'INFO_COMMAND_ROLE_HOISTED')} ${RoleOption.hoist ? localize(slashCommand, 'TRUE_LOWERCASE') : localize(slashCommand, 'FALSE_LOWERCASE')}
-${localize(slashCommand, 'INFO_COMMAND_ROLE_MANAGED')} ${RoleOption.managed ? localize(slashCommand, 'TRUE_LOWERCASE') : localize(slashCommand, 'FALSE_LOWERCASE')}
-${localize(slashCommand, 'INFO_COMMAND_ROLE_MEMBERS')} ${RoleOption.members.size}${RoleOption.unicodeEmoji != null ? `\n${localize(slashCommand, 'INFO_COMMAND_ROLE_ICON')} ${RoleOption.unicodeEmoji}` : ""}`
+                name: localize(slashCommand.locale, 'INFO_COMMAND_ROLE_GENERAL_INFO'),
+                value: `${localize(slashCommand.locale, 'INFO_COMMAND_ROLE_CREATED')} <t:${Math.floor(RoleOption.createdAt.getTime() / 1000)}:R>
+${localize(slashCommand.locale, 'INFO_COMMAND_ROLE_COLOR')} ${RoleOption.hexColor}
+${localize(slashCommand.locale, 'INFO_COMMAND_ROLE_HOISTED')} ${RoleOption.hoist ? localize(slashCommand.locale, 'TRUE_LOWERCASE') : localize(slashCommand.locale, 'FALSE_LOWERCASE')}
+${localize(slashCommand.locale, 'INFO_COMMAND_ROLE_MANAGED')} ${RoleOption.managed ? localize(slashCommand.locale, 'TRUE_LOWERCASE') : localize(slashCommand.locale, 'FALSE_LOWERCASE')}
+${localize(slashCommand.locale, 'INFO_COMMAND_ROLE_MEMBERS')} ${RoleOption.members.size}${RoleOption.unicodeEmoji != null ? `\n${localize(slashCommand.locale, 'INFO_COMMAND_ROLE_ICON')} ${RoleOption.unicodeEmoji}` : ""}`
             }
         );
 
@@ -1199,30 +1203,30 @@ ${localize(slashCommand, 'INFO_COMMAND_ROLE_MEMBERS')} ${RoleOption.members.size
         if ( RoleOption.tags != null )
         {
             let roleTagString = ``;
-            if ( RoleOption.tags.botId != undefined ) { roleTagString += `${localize(slashCommand, 'INFO_COMMAND_ROLE_BOT')} <@${RoleOption.tags.botId}>`; }
+            if ( RoleOption.tags.botId != undefined ) { roleTagString += `${localize(slashCommand.locale, 'INFO_COMMAND_ROLE_BOT')} <@${RoleOption.tags.botId}>`; }
             if ( RoleOption.tags.integrationId != undefined && slashCommand.appPermissions.has(PermissionFlagsBits.ManageGuild) )
             {
                 // Fetch Integrations so we can name it since they aren't mentionable
                 // But only if we have MANAGE_GUILD Permission to be able to fetch Integrations!
                 await slashCommand.guild.fetchIntegrations()
                 .then(async Integrations => {
-                    roleTagString += `${roleTagString.length > 4 ? `\n` : ""}${localize(slashCommand, 'INFO_COMMAND_ROLE_INTEGRATION')} ${Integrations.get(RoleOption.tags.integrationId).name}`;
+                    roleTagString += `${roleTagString.length > 4 ? `\n` : ""}${localize(slashCommand.locale, 'INFO_COMMAND_ROLE_INTEGRATION')} ${Integrations.get(RoleOption.tags.integrationId).name}`;
                 });
             }
-            if ( RoleOption.tags.premiumSubscriberRole != undefined ) { roleTagString += `${roleTagString.length > 4 ? `\n` : ""}${localize(slashCommand, 'INFO_COMMAND_ROLE_SERVER_BOOST')} ${RoleOption.tags.premiumSubscriberRole === true ? localize(slashCommand, 'TRUE_LOWERCASE') : localize(slashCommand, 'FALSE_LOWERCASE')}`; }
-            if ( RoleOption.tags.subscriptionListingId != undefined ) { roleTagString += `${roleTagString.length > 4 ? `\n` : ""}${localize(slashCommand, 'INFO_COMMAND_ROLE_MONETIZATION')} ${localize(slashCommand, 'TRUE_LOWERCASE')}`; }
-            if ( RoleOption.tags.availableForPurchase != undefined ) { roleTagString += `${roleTagString.length > 4 ? `\n` : ""}${localize(slashCommand, 'INFO_COMMAND_ROLE_PURCHASABLE')} ${localize(slashCommand, 'TRUE_LOWERCASE')}`; }
-            if ( RoleOption.tags.guildConnections != undefined ) { roleTagString += `${roleTagString.length > 4 ? `\n` : ""}${localize(slashCommand, 'INFO_COMMAND_ROLE_LINKED_CONNECTION')} ${localize(slashCommand, 'TRUE_LOWERCASE')}`; }
+            if ( RoleOption.tags.premiumSubscriberRole != undefined ) { roleTagString += `${roleTagString.length > 4 ? `\n` : ""}${localize(slashCommand.locale, 'INFO_COMMAND_ROLE_SERVER_BOOST')} ${RoleOption.tags.premiumSubscriberRole === true ? localize(slashCommand.locale, 'TRUE_LOWERCASE') : localize(slashCommand.locale, 'FALSE_LOWERCASE')}`; }
+            if ( RoleOption.tags.subscriptionListingId != undefined ) { roleTagString += `${roleTagString.length > 4 ? `\n` : ""}${localize(slashCommand.locale, 'INFO_COMMAND_ROLE_MONETIZATION')} ${localize(slashCommand.locale, 'TRUE_LOWERCASE')}`; }
+            if ( RoleOption.tags.availableForPurchase != undefined ) { roleTagString += `${roleTagString.length > 4 ? `\n` : ""}${localize(slashCommand.locale, 'INFO_COMMAND_ROLE_PURCHASABLE')} ${localize(slashCommand.locale, 'TRUE_LOWERCASE')}`; }
+            if ( RoleOption.tags.guildConnections != undefined ) { roleTagString += `${roleTagString.length > 4 ? `\n` : ""}${localize(slashCommand.locale, 'INFO_COMMAND_ROLE_LINKED_CONNECTION')} ${localize(slashCommand.locale, 'TRUE_LOWERCASE')}`; }
 
-            if ( roleTagString.length > 4 ) { RoleInfoEmbed.addFields({ name: `${localize(slashCommand, 'INFO_COMMAND_ROLE_TAG_INFO')}`, value: roleTagString }); }
+            if ( roleTagString.length > 4 ) { RoleInfoEmbed.addFields({ name: `${localize(slashCommand.locale, 'INFO_COMMAND_ROLE_TAG_INFO')}`, value: roleTagString }); }
         }
 
 
         // Role Flags (if any)
         let roleFlagString = "";
-        if ( RoleOption.flags.has(RoleFlags.InPrompt) ) { roleFlagString += `${localize(slashCommand, 'INFO_COMMAND_ROLE_FLAG_PROMPT')}`; }
+        if ( RoleOption.flags.has(RoleFlags.InPrompt) ) { roleFlagString += `${localize(slashCommand.locale, 'INFO_COMMAND_ROLE_FLAG_PROMPT')}`; }
 
-        if ( roleFlagString.length > 4 ) { RoleInfoEmbed.addFields({ name: localize(slashCommand, 'INFO_COMMAND_ROLE_FLAG_INFO'), value: roleFlagString }); }
+        if ( roleFlagString.length > 4 ) { RoleInfoEmbed.addFields({ name: localize(slashCommand.locale, 'INFO_COMMAND_ROLE_FLAG_INFO'), value: roleFlagString }); }
 
 
         // ACK to User
@@ -1246,7 +1250,7 @@ ${localize(slashCommand, 'INFO_COMMAND_ROLE_MEMBERS')} ${RoleOption.members.size
         let fetchedMember;
         const MemberOption = slashCommand.options.getMember("user");
         if ( !MemberOption || MemberOption == null ) { fetchedMember = await slashCommand.guild.members.fetch(slashCommand.user.id); }
-        else { fetchedMember = await slashCommand.guild.members.fetch(MemberOption.id).catch(async err => { return await slashCommand.editReply({ content: localize(slashCommand, 'INFO_COMMAND_USER_ERROR_NOT_IN_GUILD') }); }); }
+        else { fetchedMember = await slashCommand.guild.members.fetch(MemberOption.id).catch(async err => { return await slashCommand.editReply({ content: localize(slashCommand.locale, 'INFO_COMMAND_USER_ERROR_NOT_IN_GUILD') }); }); }
 
         // Check for External Emoji Permission
         const ExternalEmojiPermission = checkEmojiPermission(slashCommand);
@@ -1284,13 +1288,13 @@ ${localize(slashCommand, 'INFO_COMMAND_ROLE_MEMBERS')} ${RoleOption.members.size
         // GuildMember Flags
         /** @type {Array<String>} */
         const MemberFlagStrings = [];
-        if ( fetchedMember.flags.has(GuildMemberFlags.DidRejoin) ) { MemberFlagStrings.push(localize(slashCommand, 'INFO_COMMAND_MEMBER_FLAG_REJOIN')); }
-        if ( fetchedMember.flags.has(GuildMemberFlags.StartedOnboarding) ) { MemberFlagStrings.push(localize(slashCommand, 'INFO_COMMAND_MEMBER_FLAG_ONBOARDING_STARTED')); }
-        if ( fetchedMember.flags.has(GuildMemberFlags.CompletedOnboarding) ) { MemberFlagStrings.push(localize(slashCommand, 'INFO_COMMAND_MEMBER_FLAG_ONBOARDING_COMPLETED')); }
-        if ( fetchedMember.flags.has(GuildMemberFlags.AutomodQuarantinedBio) ) { MemberFlagStrings.push(localize(slashCommand, 'INFO_COMMAND_MEMBER_FLAG_AUTOMOD_QUARANTIED_BIO')); }
-        if ( fetchedMember.flags.has(GuildMemberFlags.AutomodQuarantinedUsernameOrGuildNickname) ) { MemberFlagStrings.push(localize(slashCommand, 'INFO_COMMAND_MEMBER_FLAG_AUTOMOD_QUARANTIED_NAME')); }
-        if ( fetchedMember.flags.has(GuildMemberFlags.StartedHomeActions) ) { MemberFlagStrings.push(localize(slashCommand, 'INFO_COMMAND_MEMBER_FLAG_GUIDE_TODO_STARTED')); }
-        if ( fetchedMember.flags.has(GuildMemberFlags.CompletedHomeActions) ) { MemberFlagStrings.push(localize(slashCommand, 'INFO_COMMAND_MEMBER_FLAG_GUIDE_TODO_COMPLETED')); }
+        if ( fetchedMember.flags.has(GuildMemberFlags.DidRejoin) ) { MemberFlagStrings.push(localize(slashCommand.locale, 'INFO_COMMAND_MEMBER_FLAG_REJOIN')); }
+        if ( fetchedMember.flags.has(GuildMemberFlags.StartedOnboarding) ) { MemberFlagStrings.push(localize(slashCommand.locale, 'INFO_COMMAND_MEMBER_FLAG_ONBOARDING_STARTED')); }
+        if ( fetchedMember.flags.has(GuildMemberFlags.CompletedOnboarding) ) { MemberFlagStrings.push(localize(slashCommand.locale, 'INFO_COMMAND_MEMBER_FLAG_ONBOARDING_COMPLETED')); }
+        if ( fetchedMember.flags.has(GuildMemberFlags.AutomodQuarantinedBio) ) { MemberFlagStrings.push(localize(slashCommand.locale, 'INFO_COMMAND_MEMBER_FLAG_AUTOMOD_QUARANTIED_BIO')); }
+        if ( fetchedMember.flags.has(GuildMemberFlags.AutomodQuarantinedUsernameOrGuildNickname) ) { MemberFlagStrings.push(localize(slashCommand.locale, 'INFO_COMMAND_MEMBER_FLAG_AUTOMOD_QUARANTIED_NAME')); }
+        if ( fetchedMember.flags.has(GuildMemberFlags.StartedHomeActions) ) { MemberFlagStrings.push(localize(slashCommand.locale, 'INFO_COMMAND_MEMBER_FLAG_GUIDE_TODO_STARTED')); }
+        if ( fetchedMember.flags.has(GuildMemberFlags.CompletedHomeActions) ) { MemberFlagStrings.push(localize(slashCommand.locale, 'INFO_COMMAND_MEMBER_FLAG_GUIDE_TODO_COMPLETED')); }
 
         const UserInfoEmbed = new EmbedBuilder().setAuthor({ iconURL: fetchedMember.displayAvatarURL({ extension: 'png' }), name: `${fetchDisplayName(fetchedMember, true)}` })
         .setColor(MemberDisplayColorHex);
@@ -1305,36 +1309,36 @@ ${localize(slashCommand, 'INFO_COMMAND_ROLE_MEMBERS')} ${RoleOption.members.size
             // Construct strings for Embed
             // Member Info
             let memberInformationString = "";
-            if ( MemberUser.id === slashCommand.guild.ownerId ) { memberInformationString += `${ExternalEmojiPermission ? `${EMOJI_OWNER_CROWN} `: ""}${localize(slashCommand, 'INFO_COMMAND_USER_SERVER_OWNER')} ${localize(slashCommand, 'TRUE_LOWERCASE')}`; }
-            if ( MemberDisplayName != null ) { memberInformationString += `${memberInformationString.length > 1 ? `\n`: ""}${localize(slashCommand, 'INFO_COMMAND_USER_DISPLAY_NAME')} \`${MemberDisplayName}\``; }
-            if ( MemberJoinedTime != null ) { memberInformationString += `${memberInformationString.length > 1 ? `\n`: ""}${localize(slashCommand, 'INFO_COMMAND_USER_JOINED_SERVER')} <t:${Math.floor(MemberJoinedTime.getTime() / 1000)}:R>`; }
-            if ( MemberHighestRole != null ) { memberInformationString += `${memberInformationString.length > 1 ? `\n`: ""}${localize(slashCommand, 'INFO_COMMAND_USER_HIGHEST_ROLE')} ${MemberHighestRole === "@everyone" ? "@everyone" : `<@&${MemberHighestRole.id}>`}`; }
-            if ( MemberRoleCount > 0 ) { memberInformationString += `${memberInformationString.length > 1 ? `\n`: ""}${ExternalEmojiPermission ? `${EMOJI_ROLE} ` : ""}${localize(slashCommand, 'INFO_COMMAND_USER_ROLE_COUNT')} ${MemberRoleCount}`; }
-            if ( MemberStartedBoosting != null ) { memberInformationString += `${memberInformationString.length > 1 ? `\n`: ""}${ExternalEmojiPermission ? `${EMOJI_BOOST} ` : ""}${localize(slashCommand, 'INFO_COMMAND_USER_BOOSTING_SERVER')} <t:${Math.floor(MemberStartedBoosting.getTime() / 1000)}:R>`; }
-            if ( MemberPending === true ) { memberInformationString += `${memberInformationString.length > 1 ? `\n`: ""}${ExternalEmojiPermission ? `${EMOJI_MEMBERSHIP_GATING} ` : ""}${localize(slashCommand, 'INFO_COMMAND_USER_PENDING')}`; }
-            if ( MemberTimedOut != null && MemberTimedOut.getTime() > Date.now() ) { memberInformationString += `${memberInformationString.length > 1 ? `\n`: ""}${ExternalEmojiPermission ? `${EMOJI_TIMEOUT} ` : ""}${localize(slashCommand, 'INFO_COMMAND_USER_TIMED_OUT', `<t:${Math.floor(MemberTimedOut.getTime() / 1000)}:R>`)}`; }
-            if ( memberInformationString.length > 1 ) { UserInfoEmbed.addFields({ name: localize(slashCommand, 'INFO_COMMAND_USER_MEMBER_INFO'), value: memberInformationString }); }
+            if ( MemberUser.id === slashCommand.guild.ownerId ) { memberInformationString += `${ExternalEmojiPermission ? `${EMOJI_OWNER_CROWN} `: ""}${localize(slashCommand.locale, 'INFO_COMMAND_USER_SERVER_OWNER')} ${localize(slashCommand.locale, 'TRUE_LOWERCASE')}`; }
+            if ( MemberDisplayName != null ) { memberInformationString += `${memberInformationString.length > 1 ? `\n`: ""}${localize(slashCommand.locale, 'INFO_COMMAND_USER_DISPLAY_NAME')} \`${MemberDisplayName}\``; }
+            if ( MemberJoinedTime != null ) { memberInformationString += `${memberInformationString.length > 1 ? `\n`: ""}${localize(slashCommand.locale, 'INFO_COMMAND_USER_JOINED_SERVER')} <t:${Math.floor(MemberJoinedTime.getTime() / 1000)}:R>`; }
+            if ( MemberHighestRole != null ) { memberInformationString += `${memberInformationString.length > 1 ? `\n`: ""}${localize(slashCommand.locale, 'INFO_COMMAND_USER_HIGHEST_ROLE')} ${MemberHighestRole === "@everyone" ? "@everyone" : `<@&${MemberHighestRole.id}>`}`; }
+            if ( MemberRoleCount > 0 ) { memberInformationString += `${memberInformationString.length > 1 ? `\n`: ""}${ExternalEmojiPermission ? `${EMOJI_ROLE} ` : ""}${localize(slashCommand.locale, 'INFO_COMMAND_USER_ROLE_COUNT')} ${MemberRoleCount}`; }
+            if ( MemberStartedBoosting != null ) { memberInformationString += `${memberInformationString.length > 1 ? `\n`: ""}${ExternalEmojiPermission ? `${EMOJI_BOOST} ` : ""}${localize(slashCommand.locale, 'INFO_COMMAND_USER_BOOSTING_SERVER')} <t:${Math.floor(MemberStartedBoosting.getTime() / 1000)}:R>`; }
+            if ( MemberPending === true ) { memberInformationString += `${memberInformationString.length > 1 ? `\n`: ""}${ExternalEmojiPermission ? `${EMOJI_MEMBERSHIP_GATING} ` : ""}${localize(slashCommand.locale, 'INFO_COMMAND_USER_PENDING')}`; }
+            if ( MemberTimedOut != null && MemberTimedOut.getTime() > Date.now() ) { memberInformationString += `${memberInformationString.length > 1 ? `\n`: ""}${ExternalEmojiPermission ? `${EMOJI_TIMEOUT} ` : ""}${localize(slashCommand.locale, 'INFO_COMMAND_USER_TIMED_OUT', `<t:${Math.floor(MemberTimedOut.getTime() / 1000)}:R>`)}`; }
+            if ( memberInformationString.length > 1 ) { UserInfoEmbed.addFields({ name: localize(slashCommand.locale, 'INFO_COMMAND_USER_MEMBER_INFO'), value: memberInformationString }); }
 
             // User Info
-            let userInformationString = `${localize(slashCommand, 'INFO_COMMAND_USER_MENTION')} <@${MemberUser.id}>
-${localize(slashCommand, 'INFO_COMMAND_USER_CREATED')} <t:${Math.floor(MemberUser.createdAt.getTime() / 1000)}:R>
-${localize(slashCommand, 'INFO_COMMAND_USER_BOT')} ${MemberUser.id === "156482326887530498" ? `👀` : `${MemberUser.bot ? localize(slashCommand, 'TRUE_LOWERCASE') : localize(slashCommand, 'FALSE_LOWERCASE')}`}`;
-            UserInfoEmbed.addFields({ name: localize(slashCommand, 'INFO_COMMAND_USER_USER_INFO'), value: userInformationString });
+            let userInformationString = `${localize(slashCommand.locale, 'INFO_COMMAND_USER_MENTION')} <@${MemberUser.id}>
+${localize(slashCommand.locale, 'INFO_COMMAND_USER_CREATED')} <t:${Math.floor(MemberUser.createdAt.getTime() / 1000)}:R>
+${localize(slashCommand.locale, 'INFO_COMMAND_USER_BOT')} ${MemberUser.id === "156482326887530498" ? `👀` : `${MemberUser.bot ? localize(slashCommand.locale, 'TRUE_LOWERCASE') : localize(slashCommand.locale, 'FALSE_LOWERCASE')}`}`;
+            UserInfoEmbed.addFields({ name: localize(slashCommand.locale, 'INFO_COMMAND_USER_USER_INFO'), value: userInformationString });
 
             // User Flags
-            if ( UserFlagStrings.length > 0 ) { UserInfoEmbed.addFields({ name: localize(slashCommand, 'INFO_COMMAND_USER_USER_FLAGS'), value: UserFlagStrings.sort().join(', ').slice(0, 1023) }); }
+            if ( UserFlagStrings.length > 0 ) { UserInfoEmbed.addFields({ name: localize(slashCommand.locale, 'INFO_COMMAND_USER_USER_FLAGS'), value: UserFlagStrings.sort().join(', ').slice(0, 1023) }); }
             if ( userFlagEmojis.length > 0 && ExternalEmojiPermission ) { UserInfoEmbed.setDescription(userFlagEmojis.join(" ")); }
 
             // Member Flags
-            if ( MemberFlagStrings.length > 0 ) { UserInfoEmbed.addFields({ name: localize(slashCommand, 'INFO_COMMAND_USER_MEMBER_FLAGS'), value: MemberFlagStrings.join(', ').slice(0, 1023) }); }
+            if ( MemberFlagStrings.length > 0 ) { UserInfoEmbed.addFields({ name: localize(slashCommand.locale, 'INFO_COMMAND_USER_MEMBER_FLAGS'), value: MemberFlagStrings.join(', ').slice(0, 1023) }); }
 
             // Asset Buttons
             const UserInfoActionRow = new ActionRowBuilder();
-            if ( MemberRoleCount > 0 ) { UserInfoActionRow.addComponents(new ButtonBuilder().setStyle(ButtonStyle.Primary).setCustomId(`info-user-role_${MemberUser.id}`).setLabel(localize(slashCommand, 'INFO_COMMAND_USER_BUTTON_ROLES')).setEmoji(EMOJI_ROLE)); }
-            if ( HasMemberAvatar ) { UserInfoActionRow.addComponents(new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel(localize(slashCommand, 'INFO_COMMAND_USER_BUTTON_MEMBER_AVATAR')).setURL(fetchedMember.avatarURL())); }
-            if ( HasGlobalAvatar ) { UserInfoActionRow.addComponents(new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel(localize(slashCommand, 'INFO_COMMAND_USER_BUTTON_GLOBAL_AVATAR')).setURL(MemberUser.avatarURL())); }
-            if ( HasGlobalBanner ) { UserInfoActionRow.addComponents(new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel(localize(slashCommand, 'INFO_COMMAND_USER_BUTTON_GLOBAL_BANNER')).setURL(MemberUser.bannerURL())); }
-            if ( HasAvatarDecoration ) { UserInfoActionRow.addComponents(new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel(localize(slashCommand, 'INFO_COMMAND_USER_AVATAR_DECORATION')).setURL(MemberUser.avatarDecorationURL())); }
+            if ( MemberRoleCount > 0 ) { UserInfoActionRow.addComponents(new ButtonBuilder().setStyle(ButtonStyle.Primary).setCustomId(`info-user-role_${MemberUser.id}`).setLabel(localize(slashCommand.locale, 'INFO_COMMAND_USER_BUTTON_ROLES')).setEmoji(EMOJI_ROLE)); }
+            if ( HasMemberAvatar ) { UserInfoActionRow.addComponents(new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel(localize(slashCommand.locale, 'INFO_COMMAND_USER_BUTTON_MEMBER_AVATAR')).setURL(fetchedMember.avatarURL())); }
+            if ( HasGlobalAvatar ) { UserInfoActionRow.addComponents(new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel(localize(slashCommand.locale, 'INFO_COMMAND_USER_BUTTON_GLOBAL_AVATAR')).setURL(MemberUser.avatarURL())); }
+            if ( HasGlobalBanner ) { UserInfoActionRow.addComponents(new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel(localize(slashCommand.locale, 'INFO_COMMAND_USER_BUTTON_GLOBAL_BANNER')).setURL(MemberUser.bannerURL())); }
+            if ( HasAvatarDecoration ) { UserInfoActionRow.addComponents(new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel(localize(slashCommand.locale, 'INFO_COMMAND_USER_AVATAR_DECORATION')).setURL(MemberUser.avatarDecorationURL())); }
 
             // Send Embed and Buttons
             return await slashCommand.editReply({ embeds: [UserInfoEmbed], components: [UserInfoActionRow] });
@@ -1356,19 +1360,19 @@ ${localize(slashCommand, 'INFO_COMMAND_USER_BOT')} ${MemberUser.id === "15648232
             // Construct strings for Embed
             // Member Info
             let memberInformationString = "";
-            if ( MemberUser.id === slashCommand.guild.ownerId ) { memberInformationString += `${ExternalEmojiPermission ? `${EMOJI_OWNER_CROWN} `: ""}${localize(slashCommand, 'INFO_COMMAND_USER_SERVER_OWNER')} ${localize(slashCommand, 'TRUE_LOWERCASE')}`; }
-            if ( MemberDisplayName != null ) { memberInformationString += `${memberInformationString.length > 1 ? `\n`: ""}${localize(slashCommand, 'INFO_COMMAND_USER_DISPLAY_NAME')} \`${MemberDisplayName}\``; }
-            if ( MemberJoinedTime != null ) { memberInformationString += `${memberInformationString.length > 1 ? `\n`: ""}${localize(slashCommand, 'INFO_COMMAND_USER_JOINED_SERVER')} <t:${Math.floor(MemberJoinedTime.getTime() / 1000)}:R>`; }
-            if ( MemberHighestRole != null ) { memberInformationString += `${memberInformationString.length > 1 ? `\n`: ""}${localize(slashCommand, 'INFO_COMMAND_USER_HIGHEST_ROLE')} ${MemberHighestRole === "@everyone" ? "@everyone" : `<@&${MemberHighestRole.id}>`}`; }
-            if ( MemberRoleCount > 0 ) { memberInformationString += `${memberInformationString.length > 1 ? `\n`: ""}${ExternalEmojiPermission ? `${EMOJI_ROLE} ` : ""}${localize(slashCommand, 'INFO_COMMAND_USER_ROLE_COUNT')} ${MemberRoleCount}`; }
-            if ( MemberTimedOut != null && MemberTimedOut.getTime() > Date.now() ) { memberInformationString += `${memberInformationString.length > 1 ? `\n`: ""}${ExternalEmojiPermission ? `${EMOJI_TIMEOUT} ` : ""}${localize(slashCommand, 'INFO_COMMAND_USER_TIMED_OUT', `<t:${Math.floor(MemberTimedOut.getTime() / 1000)}:R>`)}`; }
-            if ( memberInformationString.length > 1 ) { UserInfoEmbed.addFields({ name: localize(slashCommand, 'INFO_COMMAND_USER_MEMBER_INFO'), value: memberInformationString }); }
+            if ( MemberUser.id === slashCommand.guild.ownerId ) { memberInformationString += `${ExternalEmojiPermission ? `${EMOJI_OWNER_CROWN} `: ""}${localize(slashCommand.locale, 'INFO_COMMAND_USER_SERVER_OWNER')} ${localize(slashCommand.locale, 'TRUE_LOWERCASE')}`; }
+            if ( MemberDisplayName != null ) { memberInformationString += `${memberInformationString.length > 1 ? `\n`: ""}${localize(slashCommand.locale, 'INFO_COMMAND_USER_DISPLAY_NAME')} \`${MemberDisplayName}\``; }
+            if ( MemberJoinedTime != null ) { memberInformationString += `${memberInformationString.length > 1 ? `\n`: ""}${localize(slashCommand.locale, 'INFO_COMMAND_USER_JOINED_SERVER')} <t:${Math.floor(MemberJoinedTime.getTime() / 1000)}:R>`; }
+            if ( MemberHighestRole != null ) { memberInformationString += `${memberInformationString.length > 1 ? `\n`: ""}${localize(slashCommand.locale, 'INFO_COMMAND_USER_HIGHEST_ROLE')} ${MemberHighestRole === "@everyone" ? "@everyone" : `<@&${MemberHighestRole.id}>`}`; }
+            if ( MemberRoleCount > 0 ) { memberInformationString += `${memberInformationString.length > 1 ? `\n`: ""}${ExternalEmojiPermission ? `${EMOJI_ROLE} ` : ""}${localize(slashCommand.locale, 'INFO_COMMAND_USER_ROLE_COUNT')} ${MemberRoleCount}`; }
+            if ( MemberTimedOut != null && MemberTimedOut.getTime() > Date.now() ) { memberInformationString += `${memberInformationString.length > 1 ? `\n`: ""}${ExternalEmojiPermission ? `${EMOJI_TIMEOUT} ` : ""}${localize(slashCommand.locale, 'INFO_COMMAND_USER_TIMED_OUT', `<t:${Math.floor(MemberTimedOut.getTime() / 1000)}:R>`)}`; }
+            if ( memberInformationString.length > 1 ) { UserInfoEmbed.addFields({ name: localize(slashCommand.locale, 'INFO_COMMAND_USER_MEMBER_INFO'), value: memberInformationString }); }
 
             // User Info
-            let userInformationString = `${localize(slashCommand, 'INFO_COMMAND_USER_MENTION')} <@${MemberUser.id}>
-${localize(slashCommand, 'INFO_COMMAND_USER_CREATED')} <t:${Math.floor(MemberUser.createdAt.getTime() / 1000)}:R>
-${localize(slashCommand, 'INFO_COMMAND_USER_BOT')} ${MemberUser.bot ? localize(slashCommand, 'TRUE_LOWERCASE') : localize(slashCommand, 'FALSE_LOWERCASE')}`;
-            UserInfoEmbed.addFields({ name: localize(slashCommand, 'INFO_COMMAND_USER_USER_INFO'), value: userInformationString });
+            let userInformationString = `${localize(slashCommand.locale, 'INFO_COMMAND_USER_MENTION')} <@${MemberUser.id}>
+${localize(slashCommand.locale, 'INFO_COMMAND_USER_CREATED')} <t:${Math.floor(MemberUser.createdAt.getTime() / 1000)}:R>
+${localize(slashCommand.locale, 'INFO_COMMAND_USER_BOT')} ${MemberUser.bot ? localize(slashCommand.locale, 'TRUE_LOWERCASE') : localize(slashCommand.locale, 'FALSE_LOWERCASE')}`;
+            UserInfoEmbed.addFields({ name: localize(slashCommand.locale, 'INFO_COMMAND_USER_USER_INFO'), value: userInformationString });
 
             // Bot-specific Profile Badges!
             if ( botApplicationFlagStrings.includes("Supports Application Commands") ) { userFlagEmojis.unshift(EMOJI_SUPPORTS_APP_COMMANDS); }
@@ -1377,22 +1381,22 @@ ${localize(slashCommand, 'INFO_COMMAND_USER_BOT')} ${MemberUser.bot ? localize(s
             // Bot Information
             let botInformationString = "";
             if ( userFlagEmojis.length > 0 && ExternalEmojiPermission ) { UserInfoEmbed.setDescription(`${userFlagEmojis.join(" ")}`); }
-            if ( BotPubliclyInvitable != null ) { botInformationString += `${localize(slashCommand, 'INFO_COMMAND_USER_BOT_INVITABLE')} ${BotPubliclyInvitable ? localize(slashCommand, 'TRUE_LOWERCASE') : localize(slashCommand, 'FALSE_LOWERCASE')}`; }
-            if ( BotRequiresCodeGrant != null ) { botInformationString += `${botInformationString.length > 1 ? `\n` : ""}${localize(slashCommand, 'INFO_COMMAND_USER_BOT_OAUTH')} ${BotRequiresCodeGrant ? localize(slashCommand, 'TRUE_LOWERCASE') : localize(slashCommand, 'FALSE_LOWERCASE')}`; }
+            if ( BotPubliclyInvitable != null ) { botInformationString += `${localize(slashCommand.locale, 'INFO_COMMAND_USER_BOT_INVITABLE')} ${BotPubliclyInvitable ? localize(slashCommand.locale, 'TRUE_LOWERCASE') : localize(slashCommand.locale, 'FALSE_LOWERCASE')}`; }
+            if ( BotRequiresCodeGrant != null ) { botInformationString += `${botInformationString.length > 1 ? `\n` : ""}${localize(slashCommand.locale, 'INFO_COMMAND_USER_BOT_OAUTH')} ${BotRequiresCodeGrant ? localize(slashCommand.locale, 'TRUE_LOWERCASE') : localize(slashCommand.locale, 'FALSE_LOWERCASE')}`; }
             if ( botIntentFlagStrings.length > 0 ) { botInformationString += `${botInformationString.length > 1 ? `\n` : ""}${botIntentFlagStrings.sort().join(`\n`).slice(0, 1023)}`; }
-            if ( botInformationString.length > 1 ) { UserInfoEmbed.addFields({ name: localize(slashCommand, 'INFO_COMMAND_USER_BOT_INFO'), value: botInformationString }); }
+            if ( botInformationString.length > 1 ) { UserInfoEmbed.addFields({ name: localize(slashCommand.locale, 'INFO_COMMAND_USER_BOT_INFO'), value: botInformationString }); }
 
             // User Flags
-            if ( UserFlagStrings.length > 0 ) { UserInfoEmbed.addFields({ name: localize(slashCommand, 'INFO_COMMAND_USER_USER_FLAGS'), value: UserFlagStrings.sort().join(', ').slice(0, 1023) }) }
+            if ( UserFlagStrings.length > 0 ) { UserInfoEmbed.addFields({ name: localize(slashCommand.locale, 'INFO_COMMAND_USER_USER_FLAGS'), value: UserFlagStrings.sort().join(', ').slice(0, 1023) }) }
             // Bot Application Flags (that aren't Intents)
-            if ( botApplicationFlagStrings.length > 0 ) { UserInfoEmbed.addFields({ name: localize(slashCommand, 'INFO_COMMAND_USER_BOT_FLAGS'), value: botApplicationFlagStrings.sort().join(', ').slice(0, 1023) }); }
+            if ( botApplicationFlagStrings.length > 0 ) { UserInfoEmbed.addFields({ name: localize(slashCommand.locale, 'INFO_COMMAND_USER_BOT_FLAGS'), value: botApplicationFlagStrings.sort().join(', ').slice(0, 1023) }); }
 
             // Asset Buttons
             const UserInfoActionRow = new ActionRowBuilder();
-            if ( MemberRoleCount > 0 ) { UserInfoActionRow.addComponents(new ButtonBuilder().setStyle(ButtonStyle.Primary).setCustomId(`info-user-role_${MemberUser.id}`).setLabel(localize(slashCommand, 'INFO_COMMAND_USER_BUTTON_ROLES')).setEmoji(EMOJI_ROLE)); }
-            if ( HasMemberAvatar ) { UserInfoActionRow.addComponents(new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel(localize(slashCommand, 'INFO_COMMAND_USER_BUTTON_MEMBER_AVATAR')).setURL(fetchedMember.avatarURL())); }
-            if ( HasGlobalAvatar ) { UserInfoActionRow.addComponents(new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel(localize(slashCommand, 'INFO_COMMAND_USER_BUTTON_GLOBAL_AVATAR')).setURL(MemberUser.avatarURL())); }
-            if ( HasGlobalBanner ) { UserInfoActionRow.addComponents(new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel(localize(slashCommand, 'INFO_COMMAND_USER_BUTTON_GLOBAL_BANNER')).setURL(MemberUser.bannerURL())); }
+            if ( MemberRoleCount > 0 ) { UserInfoActionRow.addComponents(new ButtonBuilder().setStyle(ButtonStyle.Primary).setCustomId(`info-user-role_${MemberUser.id}`).setLabel(localize(slashCommand.locale, 'INFO_COMMAND_USER_BUTTON_ROLES')).setEmoji(EMOJI_ROLE)); }
+            if ( HasMemberAvatar ) { UserInfoActionRow.addComponents(new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel(localize(slashCommand.locale, 'INFO_COMMAND_USER_BUTTON_MEMBER_AVATAR')).setURL(fetchedMember.avatarURL())); }
+            if ( HasGlobalAvatar ) { UserInfoActionRow.addComponents(new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel(localize(slashCommand.locale, 'INFO_COMMAND_USER_BUTTON_GLOBAL_AVATAR')).setURL(MemberUser.avatarURL())); }
+            if ( HasGlobalBanner ) { UserInfoActionRow.addComponents(new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel(localize(slashCommand.locale, 'INFO_COMMAND_USER_BUTTON_GLOBAL_BANNER')).setURL(MemberUser.bannerURL())); }
 
             // Send Embed and Buttons
             return await slashCommand.editReply({ embeds: [UserInfoEmbed], components: [UserInfoActionRow] });
@@ -1416,7 +1420,7 @@ ${localize(slashCommand, 'INFO_COMMAND_USER_BOT')} ${MemberUser.bot ? localize(s
         /** @type {Invite} */
         let fetchedInvite = null;
         try { fetchedInvite = await DiscordClient.fetchInvite(InputInviteLink); }
-        catch (err) { return await slashCommand.editReply({ content: localize(slashCommand, 'INFO_COMMAND_INVITE_ERROR_INVALID_INVITE') }); }
+        catch (err) { return await slashCommand.editReply({ content: localize(slashCommand.locale, 'INFO_COMMAND_INVITE_ERROR_INVALID_INVITE') }); }
 
         // Check for External Emoji Permission
         const ExternalEmojiPermission = checkEmojiPermission(slashCommand);
@@ -1435,45 +1439,45 @@ ${localize(slashCommand, 'INFO_COMMAND_USER_BOT')} ${MemberUser.bot ? localize(s
 
 
         // Construct Embed
-        const InviteInfoEmbed = new EmbedBuilder().setAuthor({ name: `${localize(slashCommand, 'INFO_COMMAND_INVITE_DATA')} ${InviteCode}` });
+        const InviteInfoEmbed = new EmbedBuilder().setAuthor({ name: `${localize(slashCommand.locale, 'INFO_COMMAND_INVITE_DATA')} ${InviteCode}` });
         
         // General Invite Info
         let generalInviteInfo = "";
-        if ( InviteCreatorUser != null ) { generalInviteInfo += `${localize(slashCommand, 'INFO_COMMAND_INVITE_CREATOR')} ${fetchDisplayName(InviteCreatorUser, true)}\n${localize(slashCommand, 'INFO_COMMAND_INVITE_CREATOR_IS_BOT')} ${InviteCreatorUser.bot ? localize(slashCommand, 'TRUE_LOWERCASE') : localize(slashCommand, 'FALSE_LOWERCASE')}`; }
-        if ( InviteCreatedTime != null ) { generalInviteInfo += `${generalInviteInfo.length > 1 ? `\n` : ""}${localize(slashCommand, 'INFO_COMMAND_INVITE_CREATED')} <t:${Math.floor(InviteCreatedTime / 1000)}:R>`; }
-        if ( InviteExpireTime != null ) { generalInviteInfo += `${generalInviteInfo.length > 1 ? `\n` : ""}${localize(slashCommand, 'INFO_COMMAND_INVITE_EXPIRES')} <t:${Math.floor(InviteExpireTime / 1000)}:R>`; }
-        if ( generalInviteInfo.length > 1 ) { InviteInfoEmbed.addFields({ name: localize(slashCommand, 'INFO_COMMAND_INVITE_GENERAL_INFO'), value: generalInviteInfo }); }
+        if ( InviteCreatorUser != null ) { generalInviteInfo += `${localize(slashCommand.locale, 'INFO_COMMAND_INVITE_CREATOR')} ${fetchDisplayName(InviteCreatorUser, true)}\n${localize(slashCommand.locale, 'INFO_COMMAND_INVITE_CREATOR_IS_BOT')} ${InviteCreatorUser.bot ? localize(slashCommand.locale, 'TRUE_LOWERCASE') : localize(slashCommand.locale, 'FALSE_LOWERCASE')}`; }
+        if ( InviteCreatedTime != null ) { generalInviteInfo += `${generalInviteInfo.length > 1 ? `\n` : ""}${localize(slashCommand.locale, 'INFO_COMMAND_INVITE_CREATED')} <t:${Math.floor(InviteCreatedTime / 1000)}:R>`; }
+        if ( InviteExpireTime != null ) { generalInviteInfo += `${generalInviteInfo.length > 1 ? `\n` : ""}${localize(slashCommand.locale, 'INFO_COMMAND_INVITE_EXPIRES')} <t:${Math.floor(InviteExpireTime / 1000)}:R>`; }
+        if ( generalInviteInfo.length > 1 ) { InviteInfoEmbed.addFields({ name: localize(slashCommand.locale, 'INFO_COMMAND_INVITE_GENERAL_INFO'), value: generalInviteInfo }); }
         
         // Invite Target Info
         let targetInviteInfo = "";
-        if ( InviteChannel != null ) { targetInviteInfo += `${localize(slashCommand, 'INFO_COMMAND_INVITE_CHANNEL_TYPE')} ${readableChannelType(InviteChannel.type, slashCommand.locale)}\n${localize(slashCommand, 'INFO_COMMAND_INVITE_CHANNEL_NAME')} ${InviteChannel.name}`; }
-        if ( TargetType != null && TargetType === InviteTargetType.Stream ) { targetInviteInfo += `${targetInviteInfo.length > 1 ? `\n` : ""}${localize(slashCommand, 'INFO_COMMAND_INVITE_TARGET_TYPE')} ${localize(slashCommand, 'INFO_COMMAND_INVITE_TARGET_STREAM')}`; }
-        if ( TargetType != null && TargetType === InviteTargetType.EmbeddedApplication ) { targetInviteInfo += `${targetInviteInfo.length > 1 ? `\n` : ""}${localize(slashCommand, 'INFO_COMMAND_INVITE_TARGET_TYPE')} ${localize(slashCommand, 'INFO_COMMAND_INVITE_TARGET_ACTIVITY')}${(TargetApplication != null) && (TargetApplication.name != null) ? `\n${localize(slashCommand, 'INFO_COMMAND_INVITE_TARGET_ACTIVITY_NAME')} ${TargetApplication.name}` : ""}`; }
-        if ( targetInviteInfo.length > 1 ) { InviteInfoEmbed.addFields({ name: localize(slashCommand, 'INFO_COMMAND_INVITE_TARGET_INFO'), value: targetInviteInfo }); }
+        if ( InviteChannel != null ) { targetInviteInfo += `${localize(slashCommand.locale, 'INFO_COMMAND_INVITE_CHANNEL_TYPE')} ${readableChannelType(InviteChannel.type, slashCommand.locale)}\n${localize(slashCommand.locale, 'INFO_COMMAND_INVITE_CHANNEL_NAME')} ${InviteChannel.name}`; }
+        if ( TargetType != null && TargetType === InviteTargetType.Stream ) { targetInviteInfo += `${targetInviteInfo.length > 1 ? `\n` : ""}${localize(slashCommand.locale, 'INFO_COMMAND_INVITE_TARGET_TYPE')} ${localize(slashCommand.locale, 'INFO_COMMAND_INVITE_TARGET_STREAM')}`; }
+        if ( TargetType != null && TargetType === InviteTargetType.EmbeddedApplication ) { targetInviteInfo += `${targetInviteInfo.length > 1 ? `\n` : ""}${localize(slashCommand.locale, 'INFO_COMMAND_INVITE_TARGET_TYPE')} ${localize(slashCommand.locale, 'INFO_COMMAND_INVITE_TARGET_ACTIVITY')}${(TargetApplication != null) && (TargetApplication.name != null) ? `\n${localize(slashCommand.locale, 'INFO_COMMAND_INVITE_TARGET_ACTIVITY_NAME')} ${TargetApplication.name}` : ""}`; }
+        if ( targetInviteInfo.length > 1 ) { InviteInfoEmbed.addFields({ name: localize(slashCommand.locale, 'INFO_COMMAND_INVITE_TARGET_INFO'), value: targetInviteInfo }); }
         
         // Guild Info
         if ( InviteGuild != null )
         {
             if ( InviteGuild.description != null ) { InviteInfoEmbed.setDescription(InviteGuild.description); }
-            if ( InviteGuild.icon != null ) { InviteInfoEmbed.setAuthor({ iconURL: InviteGuild.iconURL({ extension: 'png' }), name: `${localize(slashCommand, 'INFO_COMMAND_INVITE_DATA')} ${InviteCode}` }); }
-            let guildInviteInfo = `${localize(slashCommand, 'INFO_COMMAND_INVITE_SERVER_NAME')} ${InviteGuild.name}
-${ExternalEmojiPermission && InviteGuild.partnered ? `${EMOJI_PARTNER} ` : ""}${localize(slashCommand, 'INFO_COMMAND_INVITE_SERVER_PARTNERED')} ${InviteGuild.partnered ? localize(slashCommand, 'TRUE_LOWERCASE') : localize(slashCommand, 'FALSE_LOWERCASE')}
-${ExternalEmojiPermission && InviteGuild.verified ? `${EMOJI_VERIFIED} ` : ""}${localize(slashCommand, 'INFO_COMMAND_INVITE_SERVER_VERIFIED')} ${InviteGuild.verified ? localize(slashCommand, 'TRUE_LOWERCASE') : localize(slashCommand, 'FALSE_LOWERCASE')}`;
-            if ( InviteGuild.premiumSubscriptionCount != null ) { guildInviteInfo += `\n${localize(slashCommand, 'INFO_COMMAND_INVITE_SERVER_BOOST_COUNT')} ${InviteGuild.premiumSubscriptionCount}` }
-            if ( fetchedInvite.memberCount ) { guildInviteInfo += `\n${localize(slashCommand, 'INFO_COMMAND_INVITE_SERVER_TOTAL_MEMBERS')} ${fetchedInvite.memberCount}`; }
-            if ( fetchedInvite.presenceCount ) { guildInviteInfo += `\n${localize(slashCommand, 'INFO_COMMAND_INVITE_SERVER_ONLINE_MEMBERS')} ${fetchedInvite.presenceCount}`; }
-            InviteInfoEmbed.addFields({ name: localize(slashCommand, 'INFO_COMMAND_INVITE_SERVER_INFO'), value: guildInviteInfo });
+            if ( InviteGuild.icon != null ) { InviteInfoEmbed.setAuthor({ iconURL: InviteGuild.iconURL({ extension: 'png' }), name: `${localize(slashCommand.locale, 'INFO_COMMAND_INVITE_DATA')} ${InviteCode}` }); }
+            let guildInviteInfo = `${localize(slashCommand.locale, 'INFO_COMMAND_INVITE_SERVER_NAME')} ${InviteGuild.name}
+${ExternalEmojiPermission && InviteGuild.partnered ? `${EMOJI_PARTNER} ` : ""}${localize(slashCommand.locale, 'INFO_COMMAND_INVITE_SERVER_PARTNERED')} ${InviteGuild.partnered ? localize(slashCommand.locale, 'TRUE_LOWERCASE') : localize(slashCommand.locale, 'FALSE_LOWERCASE')}
+${ExternalEmojiPermission && InviteGuild.verified ? `${EMOJI_VERIFIED} ` : ""}${localize(slashCommand.locale, 'INFO_COMMAND_INVITE_SERVER_VERIFIED')} ${InviteGuild.verified ? localize(slashCommand.locale, 'TRUE_LOWERCASE') : localize(slashCommand.locale, 'FALSE_LOWERCASE')}`;
+            if ( InviteGuild.premiumSubscriptionCount != null ) { guildInviteInfo += `\n${localize(slashCommand.locale, 'INFO_COMMAND_INVITE_SERVER_BOOST_COUNT')} ${InviteGuild.premiumSubscriptionCount}` }
+            if ( fetchedInvite.memberCount ) { guildInviteInfo += `\n${localize(slashCommand.locale, 'INFO_COMMAND_INVITE_SERVER_TOTAL_MEMBERS')} ${fetchedInvite.memberCount}`; }
+            if ( fetchedInvite.presenceCount ) { guildInviteInfo += `\n${localize(slashCommand.locale, 'INFO_COMMAND_INVITE_SERVER_ONLINE_MEMBERS')} ${fetchedInvite.presenceCount}`; }
+            InviteInfoEmbed.addFields({ name: localize(slashCommand.locale, 'INFO_COMMAND_INVITE_SERVER_INFO'), value: guildInviteInfo });
 
             // Server Feature Flags, grabbing from raw API to ensure up-to-date data
             let rawData = await DiscordClient.rest.get(Routes.invite(InviteCode));
             const RawFeatures = rawData["guild"]["features"];
             let guildFeatures = [];
             RawFeatures.forEach(feature => guildFeatures.push(titleCaseGuildFeature(feature)));
-            if ( guildFeatures.length > 0 ) { InviteInfoEmbed.addFields({ name: localize(slashCommand, 'INFO_COMMAND_INVITE_SERVER_FLAG_INFO'), value: `${guildFeatures.sort().join(', ').slice(0, 1023)}` }); }
+            if ( guildFeatures.length > 0 ) { InviteInfoEmbed.addFields({ name: localize(slashCommand.locale, 'INFO_COMMAND_INVITE_SERVER_FLAG_INFO'), value: `${guildFeatures.sort().join(', ').slice(0, 1023)}` }); }
         }
 
         // Construct Invite Button
-        const InviteLinkButton = new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel(localize(slashCommand, 'INFO_COMMAND_INVITE_BUTTON_JOIN')).setURL(`https://discord.gg/${InviteCode}`);
+        const InviteLinkButton = new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel(localize(slashCommand.locale, 'INFO_COMMAND_INVITE_BUTTON_JOIN')).setURL(`https://discord.gg/${InviteCode}`);
         const InviteInfoActionRow = new ActionRowBuilder().addComponents(InviteLinkButton);
 
         return await slashCommand.editReply({ embeds: [InviteInfoEmbed], components: [InviteInfoActionRow] });
@@ -1494,10 +1498,10 @@ ${ExternalEmojiPermission && InviteGuild.verified ? `${EMOJI_VERIFIED} ` : ""}${
         const ApproxServerCount = (await DiscordClient.application.fetch()).approximateGuildCount;
 
         // Create Link Buttons
-        const ChangelogButton = new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel(localize(slashCommand, 'INFO_COMMAND_BOT_BUTTON_CHANGELOG')).setURL("https://github.com/TwilightZebby/HeccBot/releases");
-        const PrivacyButton = new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel(localize(slashCommand, 'INFO_COMMAND_BOT_BUTTON_PRIVACY')).setURL("https://github.com/TwilightZebby/HeccBot/blob/main/PRIVACY_POLICY.md");
-        const LicenseButton = new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel(localize(slashCommand, 'INFO_COMMAND_BOT_BUTTON_LICENSE')).setURL("https://github.com/TwilightZebby/license/blob/main/license.md");
-        const GitHubButton = new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel(localize(slashCommand, 'INFO_COMMAND_BOT_BUTTON_GITHUB')).setURL("https://github.com/TwilightZebby/HeccBot");
+        const ChangelogButton = new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel(localize(slashCommand.locale, 'INFO_COMMAND_BOT_BUTTON_CHANGELOG')).setURL("https://github.com/TwilightZebby/HeccBot/releases");
+        const PrivacyButton = new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel(localize(slashCommand.locale, 'INFO_COMMAND_BOT_BUTTON_PRIVACY')).setURL("https://github.com/TwilightZebby/HeccBot/blob/main/PRIVACY_POLICY.md");
+        const LicenseButton = new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel(localize(slashCommand.locale, 'INFO_COMMAND_BOT_BUTTON_LICENSE')).setURL("https://github.com/TwilightZebby/license/blob/main/license.md");
+        const GitHubButton = new ButtonBuilder().setStyle(ButtonStyle.Link).setLabel(localize(slashCommand.locale, 'INFO_COMMAND_BOT_BUTTON_GITHUB')).setURL("https://github.com/TwilightZebby/HeccBot");
         const BotInfoActionRow = new ActionRowBuilder().addComponents([ChangelogButton, PrivacyButton, LicenseButton, GitHubButton]);
 
         // Fetch App Commands
@@ -1507,18 +1511,18 @@ ${ExternalEmojiPermission && InviteGuild.verified ? `${EMOJI_VERIFIED} ` : ""}${
 
         // Construct Embed
         const BotInfoEmbed = new EmbedBuilder()
-        .setAuthor({ name: localize(slashCommand, 'INFO_COMMAND_BOT_INFO'), iconURL: `${DiscordClient.user.avatarURL({ extension: 'png' })}` })
-        .setDescription(localize(slashCommand, 'HECCBOT_DESCRIPTION_SHORT', `</bonk:${RegisteredGlobalCommands.find(cmd => cmd.name === "bonk").id}>`))
+        .setAuthor({ name: localize(slashCommand.locale, 'INFO_COMMAND_BOT_INFO'), iconURL: `${DiscordClient.user.avatarURL({ extension: 'png' })}` })
+        .setDescription(localize(slashCommand.locale, 'HECCBOT_DESCRIPTION_SHORT', `</bonk:${RegisteredGlobalCommands.find(cmd => cmd.name === "bonk").id}>`))
         .addFields(
-            { name: localize(slashCommand, 'INFO_COMMAND_BOT_DEVELOPER'), value: `TwilightZebby`, inline: true },
-            { name: localize(slashCommand, 'INFO_COMMAND_BOT_BOT_VERSION'), value: `${Package.version}`, inline: true },
-            { name: localize(slashCommand, 'INFO_COMMAND_BOT_DISCORDJS_VERSION'), value: `${Package.dependencies['discord.js']}`, inline: true },
+            { name: localize(slashCommand.locale, 'INFO_COMMAND_BOT_DEVELOPER'), value: `TwilightZebby`, inline: true },
+            { name: localize(slashCommand.locale, 'INFO_COMMAND_BOT_BOT_VERSION'), value: `${Package.version}`, inline: true },
+            { name: localize(slashCommand.locale, 'INFO_COMMAND_BOT_DISCORDJS_VERSION'), value: `${Package.dependencies['discord.js']}`, inline: true },
 
-            { name: localize(slashCommand, 'INFO_COMMAND_BOT_GLOBAL_COMMANDS'), value: `${RegisteredGlobalCommands.size}`, inline: true },
-            { name: localize(slashCommand, 'INFO_COMMAND_BOT_SERVER_COMMANDS'), value: `${RegisteredGuildCommands.size}`, inline: true },
-            { name: localize(slashCommand, 'INFO_COMMAND_BOT_TOTAL_COMMANDS'), value: `${TotalRegisteredCommands}`, inline: true },
+            { name: localize(slashCommand.locale, 'INFO_COMMAND_BOT_GLOBAL_COMMANDS'), value: `${RegisteredGlobalCommands.size}`, inline: true },
+            { name: localize(slashCommand.locale, 'INFO_COMMAND_BOT_SERVER_COMMANDS'), value: `${RegisteredGuildCommands.size}`, inline: true },
+            { name: localize(slashCommand.locale, 'INFO_COMMAND_BOT_TOTAL_COMMANDS'), value: `${TotalRegisteredCommands}`, inline: true },
 
-            { name: localize(slashCommand, 'INFO_COMMAND_BOT_SERVER_COUNT'), value: `${ApproxServerCount}`}
+            { name: localize(slashCommand.locale, 'INFO_COMMAND_BOT_SERVER_COUNT'), value: `${ApproxServerCount}`}
         );
 
         return await slashCommand.editReply({ embeds: [BotInfoEmbed], components: [BotInfoActionRow] });
