@@ -83,7 +83,7 @@ module.exports = {
     async execute(slashCommand)
     {
         // Ensure only those with the correct Role can use this Command
-        if ( !slashCommand.member.roles.includes('496038912402128918') )
+        if ( !slashCommand.member.roles.cache.has('496038912402128918') )
         {
             await slashCommand.reply({ ephemeral: true, content: localize(slashCommand.locale, 'ACTION_ERROR_HALLOWEEN_NOT_IN_CORRECT_HOUSE', `<@&496038912402128918>`) });
             return;
@@ -93,7 +93,7 @@ module.exports = {
         const PersonArgument = slashCommand.options.getMember("person");
 
         // Prevent use on same house role
-        if ( PersonArgument.roles.includes('496038912402128918') )
+        if ( PersonArgument.roles.cache.has('496038912402128918') )
         {
             await slashCommand.reply({ ephemeral: true, content: localize(slashCommand.locale, 'ACTION_ERROR_HALLOWEEN_CANNOT_USE_ON_OWN_HOUSE', `<@&496038912402128918>`) });
             return;
