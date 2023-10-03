@@ -1,26 +1,27 @@
-const { ChatInputCommandInteraction, ChatInputApplicationCommandData, ApplicationCommandType, AutocompleteInteraction } = require("discord.js");
+const { ChatInputCommandInteraction, ChatInputApplicationCommandData, ApplicationCommandType, AutocompleteInteraction, ApplicationCommandOptionType } = require("discord.js");
 const { DiscordClient, Collections } = require("../../constants.js");
+const { localize } = require("../../BotModules/LocalizationModule.js");
 
 module.exports = {
     // Command's Name
     //     Use full lowercase
-    Name: "commandname",
+    Name: "haunt",
 
     // Command's Description
-    Description: `Description`,
+    Description: `Haunt someone!`,
 
     // Command's Localised Descriptions
     LocalisedDescriptions: {
-        'en-GB': `British Description`,
-        'en-US': `American Description`
+        'en-GB': `Haunt someone!`,
+        'en-US': `Haunt someone!`
     },
 
     // Command's Category
-    Category: "GENERAL",
+    Category: "HALLOWEEN",
 
     // Cooldown, in seconds
     //     Defaults to 3 seconds if missing
-    Cooldown: 3,
+    Cooldown: 5,
 
     // Cooldowns for specific subcommands and/or subcommand-groups
     //     IF SUBCOMMAND: name as "subcommandName"
@@ -57,6 +58,18 @@ module.exports = {
         Data.descriptionLocalizations = this.LocalisedDescriptions;
         Data.type = ApplicationCommandType.ChatInput;
         Data.dmPermission = false;
+        Data.options = [
+            {
+                type: ApplicationCommandOptionType.Mentionable,
+                name: "person",
+                description: "Person you want to haunt",
+                descriptionLocalizations: {
+                    'en-GB': `Person you want to haunt`,
+                    'en-US': `Person you want to haunt`
+                },
+                required: true
+            }
+        ];
 
         return Data;
     },
@@ -69,7 +82,26 @@ module.exports = {
      */
     async execute(slashCommand)
     {
-        //.
+        // Ensure only those with the correct Role can use this Command
+        if ( !slashCommand.member.roles.includes('496038341330862112') )
+        {
+            await slashCommand.reply({ ephemeral: true, content: localize(slashCommand.locale, 'ACTION_ERROR_HALLOWEEN_NOT_IN_CORRECT_HOUSE', `<@&496038341330862112>`) });
+            return;
+        }
+
+        // Grab Params
+        const PersonArgument = slashCommand.options.getMember("person");
+
+        // Prevent use on same house role
+        if ( PersonArgument.roles.includes('496038341330862112') )
+        {
+            await slashCommand.reply({ ephemeral: true, content: localize(slashCommand.locale, 'ACTION_ERROR_HALLOWEEN_CANNOT_USE_ON_OWN_HOUSE', `<@&496038341330862112>`) });
+            return;
+        }
+
+        // Send Message!
+        await slashCommand.reply({ allowedMentions: { parse: [] }, content: localize(slashCommand.guildLocale, 'ACTION_HALLOWEEN_HAUNT', `${slashCommand.member.displayName}`, `${PersonArgument.displayName}`) });
+        return;
     },
 
 

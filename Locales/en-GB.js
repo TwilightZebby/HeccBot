@@ -162,8 +162,18 @@ module.exports = {
     ACTION_RETURN_BOOP: `**{{0}}** revenge booped **{{1}}**!`,
     ACTION_RETURN_KISS: `**{{0}}** kissed **{{1}}** in return!`,
 
+    ACTION_HALLOWEEN_SUCK: `***{{0}}** took a sip of **{{1}}**'s blood!*`,
+    ACTION_HALLOWEEN_PIE: `***{{0}}** threw a pumpkin pie at **{{1}}**!*`,
+    ACTION_HALLOWEEN_CURSE: `***{{0}}** cursed **{{1}}**!*`,
+    ACTION_HALLOWEEN_HAUNT: `***{{0}}** haunts **{{1}}**!*`,
+    ACTION_HALLOWEEN_BRAIN: `***{{0}}** took a nibble of **{{1}}**'s brain!*`,
+    ACTION_HALLOWEEN_HUNT: `***{{0}}** hunts down **{{1}}**!*`,
+    ACTION_HALLOWEEN_NIGHTMARE: `***{{0}}** haunts the nightmares of **{{1}}**!*`,
+
     ACTION_ERROR_RETURN_NOT_TARGETED_AT_SELF: `You cannot return an Action that wasn't aimed at you!`,
     ACTION_ERROR_CANNOT_RETURN_TO_SENDER: `You cannot return the Action you sent!`,
+    ACTION_ERROR_HALLOWEEN_CANNOT_USE_ON_OWN_HOUSE: `You cannot use this Halloween Action on your own {{0}} Halloween House!`,
+    ACTION_ERROR_HALLOWEEN_NOT_IN_CORRECT_HOUSE: `You cannot use this Halloween Action as you don't have the {{0}} Role!`,
 
 
 
