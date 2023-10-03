@@ -38,6 +38,7 @@ module.exports = {
         Data.name = this.Name;
         Data.description = "";
         Data.type = this.CommandType;
+        Data.dmPermission = false;
 
         return Data;
     },
