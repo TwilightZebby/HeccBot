@@ -82,7 +82,7 @@ module.exports = {
      */
     async execute(slashCommand)
     {
-        // Ensure only those with Pie Role can use this Command
+        // Ensure only those with the correct Role can use this Command
         if ( !slashCommand.member.roles.includes('496038912402128918') )
         {
             await slashCommand.reply({ ephemeral: true, content: localize(slashCommand.locale, 'ACTION_ERROR_HALLOWEEN_NOT_IN_CORRECT_HOUSE', `<@&496038912402128918>`) });
@@ -92,7 +92,7 @@ module.exports = {
         // Grab Params
         const PersonArgument = slashCommand.options.getMember("person");
 
-        // Prevent use on Pies
+        // Prevent use on same house role
         if ( PersonArgument.roles.includes('496038912402128918') )
         {
             await slashCommand.reply({ ephemeral: true, content: localize(slashCommand.locale, 'ACTION_ERROR_HALLOWEEN_CANNOT_USE_ON_OWN_HOUSE', `<@&496038912402128918>`) });
