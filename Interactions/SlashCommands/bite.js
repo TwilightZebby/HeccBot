@@ -5,7 +5,7 @@ const { localize } = require("../../BotModules/LocalizationModule.js");
 module.exports = {
     // Command's Name
     //     Use full lowercase
-    Name: "suck",
+    Name: "bite",
 
     // Command's Description
     Description: `Unleash your inner Vampire and take a sip of someone's blood!`,
