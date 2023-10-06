@@ -660,4 +660,10 @@ An auto-updating preview of what your new Poll will look like is shown below.`,
     DSTATUS_COMMAND_SUBSCRIPTION_SUCCESS: `Successfully subscribed this Server to the Discord Outage Feed!\nAny Discord Outages will be notified about in the {{0}} Channel.`,
     DSTATUS_COMMAND_UNSUBSCRIPTION_SUCCESS_AUDIT_LOG: `{{0}} unsubscribed from the Discord Outage Feed`,
     DSTATUS_COMMAND_UNSUBSCRIPTION_SUCCESS: `Successfully unsubscribed from the Discord Outage Feed.\nThis Server will no longer receive notifications from this Bot about Discord's Outages.{{0}}`,
+
+
+
+    // ******* JAIL COMMAND
+    JAIL_COMMAND_SUCCESS: `**{{0}}** was sent to jail by **{{1}}**!`,
+    JAIL_COMMAND_ERROR_CANNOT_JAIL_SELF: `You cannot send yourself to jail!`
 };
