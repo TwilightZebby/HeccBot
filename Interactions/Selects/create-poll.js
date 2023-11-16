@@ -2,6 +2,7 @@ const { StringSelectMenuInteraction, ModalBuilder, ActionRowBuilder, TextInputBu
 const fs = require('fs');
 const { Collections } = require("../../constants.js");
 const { localize } = require("../../BotModules/LocalizationModule.js");
+const { PollModel } = require("../../Mongoose/Models.js");
 
 
 module.exports = {
@@ -132,7 +133,8 @@ async function saveAndDisplay(selectInteraction)
     let temp;
     /** @type {Array<ActionRowBuilder>} */
     let buttonsArray = [];
-    let choiceVoteObject = {};
+    /** @type {Array<{name: String, votes: [String]}>} */
+    let choiceVoteObject = [];
 
     for ( let i = 0; i <= ButtonCache.length - 1; i++ )
     {
@@ -143,7 +145,7 @@ async function saveAndDisplay(selectInteraction)
         {
             // First Button on first row
             temp = new ActionRowBuilder().addComponents(ButtonCache[i].setCustomId(`poll_${tempCustomID}`));
-            choiceVoteObject[`${ChoiceCache[i].label.toLowerCase().replace(" ", "_")}`] = 0;
+            choiceVoteObject.push({ name: ChoiceCache[i].label.toLowerCase().replace(" ", "_"), votes: [] });
 
             // push early if only Button
             if ( ButtonCache.length - 1 === i ) { buttonsArray.push(temp); }
@@ -152,7 +154,7 @@ async function saveAndDisplay(selectInteraction)
         {
             // First row, buttons two through four
             temp.addComponents(ButtonCache[i].setCustomId(`poll_${tempCustomID}`));
-            choiceVoteObject[`${ChoiceCache[i].label.toLowerCase().replace(" ", "_")}`] = 0;
+            choiceVoteObject.push({ name: ChoiceCache[i].label.toLowerCase().replace(" ", "_"), votes: [] });
 
             // push early if last Button
             if ( ButtonCache.length - 1 === i ) { buttonsArray.push(temp); }
@@ -163,29 +165,16 @@ async function saveAndDisplay(selectInteraction)
     // Send Poll
     await selectInteraction.channel.send({ embeds: [EmbedCache], components: buttonsArray, allowedMentions: { parse: [] } })
     .then(async sentMessage => {
-        // Save to JSON
-        PollJson[sentMessage.id] = {
-            MESSAGE_ID: sentMessage.id,
-            CHANNEL_ID: sentMessage.channel.id,
-            GUILD_ID: sentMessage.guild.id,
-            POLL_TYPE: "MANUAL",
-            CHOICE_TYPE: "BUTTON",
-            EMBED: {
-                TITLE: EmbedCache.data.title,
-                DESCRIPTION: EmbedCache.data.description !== undefined ? EmbedCache.data.description : null,
-                COLOR: EmbedCache.data.color !== undefined ? EmbedCache.data.color : null
-            },
-            CHOICES: choiceVoteObject,
-            MEMBERS_VOTED: []
-        };
-
-        fs.writeFile('./JsonFiles/Hidden/ActivePolls.json', JSON.stringify(PollJson, null, 4), async (err) => {
-            if ( err )
-            {
-                await selectInteraction.followUp({ ephemeral: true, content: localize(selectInteraction.locale, 'POLL_ERROR_CREATION_GENERIC') });
-                return;
-            }
+        // Save to DB
+        let newPoll = await PollModel.create({ messageId: sentMessage.id, pollType: 'MANUAL', maximumVotes: 1, choices: choiceVoteObject, requiredRole: null })
+        .catch(async err => {
+            await selectInteraction.followUp({ ephemeral: true, content: localize(selectInteraction.locale, 'POLL_ERROR_CREATION_GENERIC') });
+            return;
         });
+
+        //newPoll.isNew = true;
+        try { await newPoll.save(); }
+        catch (err) { await selectInteraction.followUp({ ephemeral: true, content: localize(selectInteraction.locale, 'POLL_ERROR_CREATION_GENERIC') }); return; }
 
 
         // Clean Up

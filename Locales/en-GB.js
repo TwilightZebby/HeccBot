@@ -353,9 +353,11 @@ An auto-updating preview of what your new Poll will look like is shown below.`,
     POLL_ERROR_DUPLICATE_CHOICE: `Sorry, but your new Choice was detected to be a duplicate of an existing Choice already on your Poll!`,
     
     END_POLL_COMMAND_ERROR_MESSAGE_INVALID: `Sorry, but this Command can only be used on Messages containing active Polls.`,
+    END_POLL_COMMAND_ERROR_FAILED_TO_REMOVE: `Sorry, but there was an error trying to remove this Poll from the Database. Please try again, or contact HeccBot's Developers if the issue continues.`,
     END_POLL_COMMAND_ERROR_GENERIC: `An error occurred trying to end your Poll...`,
 
     POLL_BUTTON_ERROR_ALREADY_VOTED: `You have already voted on this Poll!\nIt is not possible to vote multiple times or to edit your vote on Polls made with this Bot.`,
+    POLL_ERROR_MAXIMUM_VOTES_REACHED: `You have already reached the maximum number of Votes you can add to this Poll!\n*(Note: It is not possible to revoke or remove your prior Votes)*`,
     POLL_BUTTON_ERROR_GENERIC: `Sorry, an error occurred while trying to process your Poll vote...`,
 
 

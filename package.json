@@ -1,6 +1,6 @@
 {
   "name": "heccbot",
-  "version": "8.1.0",
+  "version": "9.0.0",
   "description": "A semi-private general purpose Discord Bot",
   "main": "index.js",
   "scripts": {
@@ -16,11 +16,10 @@
     "nodejs",
     "discordjs",
     "node-js",
-    "discord-js",
-    "private"
+    "discord-js"
   ],
   "author": "TwilightZebby",
-  "license": "https://github.com/TwilightZebby/license",
+  "license": "SEE LICENSE IN https://github.com/TwilightZebby/license",
   "bugs": {
     "url": "https://github.com/TwilightZebby/HeccBot/issues"
   },
@@ -30,10 +29,11 @@
     "@discordjs/voice": "^0.16.0",
     "@napi-rs/canvas": "^0.1.44",
     "bufferutil": "^4.0.6",
-    "discord.js": "^14.13.0",
+    "discord.js": "^14.14.1",
     "emoji-regex": "^10.1.0",
     "erlpack": "github:discord/erlpack",
     "ffmpeg-static": "^5.1.0",
+    "mongoose": "^7.5.4",
     "node-fetch": "^2.6.7",
     "play-dl": "^1.9.6",
     "sodium-native": "^4.0.4",

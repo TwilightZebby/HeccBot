@@ -1,3 +1,4 @@
+const Mongoose = require("mongoose");
 const { RateLimitError, DMChannel, Collection, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, Webhook, Colors, TextChannel, PartialGroupDMChannel } = require("discord.js");
 const { Statuspage, StatuspageUpdates } = require("statuspage.js");
 const fs = require("fs");
@@ -95,6 +96,9 @@ DiscordClient.on('error', (err) => { return console.error("***DISCORD ERROR: ", 
 
 // Discord Rate Limit - Only uncomment when debugging
 //DiscordClient.rest.on('rateLimited', (RateLimitError) => { return console.log("***DISCORD RATELIMIT HIT: ", RateLimitError); });
+
+// Mongoose Errors
+Mongoose.connection.on('error', console.error);
 
 
 
@@ -335,3 +339,4 @@ DiscordStatusClient.on("incident_update", async (incident) => {
 
 DiscordClient.login(Config.TOKEN); // Login to and start the Discord Bot Client
 DiscordStatusClient.start(); // Start listening for Discord Status Page Updates
+Mongoose.connect(Config.MongoString).catch(console.error);

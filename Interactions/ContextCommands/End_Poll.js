@@ -1,6 +1,7 @@
 const { ApplicationCommandType, ApplicationCommandData, ContextMenuCommandInteraction, PermissionFlagsBits, EmbedBuilder } = require("discord.js");
 const fs = require("fs");
 const { localize } = require("../../BotModules/LocalizationModule");
+const { PollModel } = require("../../Mongoose/Models.js");
 
 module.exports = {
     // Command's Name
@@ -53,68 +54,53 @@ module.exports = {
      */
     async execute(contextCommand)
     {
-        // Fetch Message and JSON
-        const SourceMessage = contextCommand.options.getMessage("message", true);
-        let pollJson = require("../../JsonFiles/Hidden/ActivePolls.json");
+        await contextCommand.deferReply({ ephemeral: true });
 
-        // Validate Message does contain a Poll made with this Bot
-        if ( !pollJson[SourceMessage.id] )
+        // Fetch Message and ensure this Message contains a HeccBot Poll
+        const SourceMessage = contextCommand.options.getMessage("message", true);
+
+        if ( await PollModel.exists({ messageId: SourceMessage.id }) == null )
         {
-            await contextCommand.reply({ ephemeral: true, content: localize(contextCommand.locale, 'END_POLL_COMMAND_ERROR_MESSAGE_INVALID') });
+            await contextCommand.editReply({ ephemeral: true, content: localize(contextCommand.locale, 'END_POLL_COMMAND_ERROR_MESSAGE_INVALID') });
             return;
         }
 
+        // Grab Poll Data
+        const FetchedPoll = await PollModel.findOne({ messageId: SourceMessage.id });
 
-        // Grab current votes, total votes, and what the choices were
-        const OriginalChoices = SourceMessage.embeds[0].fields.shift().value.split(`• `);
-        const FinalChoiceVotes = pollJson[SourceMessage.id]["CHOICES"];
-        /** @type {Number} */
-        const TotalVotes = pollJson[SourceMessage.id]["MEMBERS_VOTED"].length;
-
-        
-        // Calculate & map votes & percentages to their Choices
+        // Calculate and map votes to their Choices
         let mappedResults = [];
-        OriginalChoices.forEach(ChoiceString => {
-            if ( ChoiceString != "" && ChoiceString != " " )
-            {
-                ChoiceString = ChoiceString.trim();
-                let temp = "";
-                let choiceValue = ChoiceString.toLowerCase().replace(" ", "-");
-                
-                // Choice Name (For UX)
-                temp += `• **${ChoiceString}** `;
-                // Number of Votes for Choice
-                temp += `- ${FinalChoiceVotes[choiceValue]} Vote${FinalChoiceVotes[choiceValue] === 1 ? "" : "s"} `;
-                // Percentage of Total Votes
-                temp += `(${FinalChoiceVotes[choiceValue] < 1 ? "0" : `~${((FinalChoiceVotes[choiceValue] / TotalVotes) * 100).toFixed(1)}`}%)`
-
-                mappedResults.push(temp);
-            }
+        FetchedPoll.choices.forEach(Choice => {
+            mappedResults.push(`- **${Choice.name}** - ${Choice.votes.length} Vote${Choice.votes.length === 1 ? "" : "s"}`);
         });
 
 
         // Edit into Embed
+        // TODO: Add support for Total Votes & Percentages
         let updateEmbed = EmbedBuilder.from(SourceMessage.embeds[0]);
-        updateEmbed = updateEmbed.spliceFields(0, 3);
-        updateEmbed.addFields({ name: `Poll Choices:`, value: mappedResults.join(`\n`) });
-        updateEmbed.setFooter({ text: `Final Total Votes: ${TotalVotes}` });
+        updateEmbed = updateEmbed.spliceFields(0, 25);
+        updateEmbed.addFields({ name: `Final Poll Results:`, value: mappedResults.join(`\n`) })
+        .setFooter({ text: `Max Votes per User: ${FetchedPoll.maximumVotes}\nPoll ended at` })
+        .setTimestamp(Date.now());
 
-        // Update Message
+
+        // Update into Source Message
         await SourceMessage.edit({ components: [], embeds: [updateEmbed] })
         .then(async updatedMessage => {
-            // Purge from JSON
-            delete pollJson[SourceMessage.id];
-            fs.writeFile('./JsonFiles/Hidden/ActivePolls.json', JSON.stringify(pollJson, null, 4), async (err) => {
-                if ( err )
-                {
-                    await contextCommand.reply({ ephemeral: true, content: localize(contextCommand.locale, 'END_POLL_COMMAND_ERROR_GENERIC') });
-                    return;
-                }
+            // Purge from DB
+            await PollModel.deleteOne({ messageId: SourceMessage.id })
+            .catch(async err => {
+                await contextCommand.editReply({ content: localize(contextCommand.locale, 'END_POLL_COMMAND_ERROR_FAILED_TO_REMOVE') });
+                return;
+            })
+            .then(async () => {
+                await contextCommand.editReply({ ephemeral: true, content: localize(contextCommand.locale, 'END_POLL_COMMAND_SUCCESS') });
             });
-
-            await contextCommand.reply({ ephemeral: true, content: localize(contextCommand.locale, 'END_POLL_COMMAND_SUCCESS') });
+        })
+        .catch(async err => {
+            await contextCommand.editReply({ content: localize(contextCommand.locale, 'END_POLL_COMMAND_ERROR_GENERIC') });
             return;
-        });
+        })
 
         return;
     }
