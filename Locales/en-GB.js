@@ -303,6 +303,7 @@ An auto-updating preview of what your updated Role Menu will look like is shown 
 
     // ******* POLL STUFF
     POLL_PREVIEW_EMPTY: `*Poll is currently empty. Please use the Select Menu below to configure this Poll.*`,
+    POLL_SELECT_EDIT: `Configure Poll`,
     POLL_SET_POLL_TYPE: `Set Poll Type`,
     POLL_SET_POLL_TYPE_DESCRIPTION: `Change how this Poll will behave once posted`,
     POLL_CONFIGURE_EMBED: `Configure Embed`,
@@ -317,8 +318,10 @@ An auto-updating preview of what your updated Role Menu will look like is shown 
     POLL_CANCEL_CREATION_DESCRIPTION: `Cancels creation of this Poll`,
 
     POLL_ANSWER_CHOICE: `Answer Choice`,
+    POLL_ANSWER_LABEL: `Answer Button Label`,
     POLL_BUTTON_EMOJI: `Button Emoji`,
     POLL_EDIT_CHOICE: `Edit Choice`,
+    POLL_SELECT_CHOICE_EDIT: `Edit a Choice`,
     POLL_SELECT_CHOICE_REMOVE: `Pick a Choice to remove`,
 
     POLL_CONFIGURE_POLL_EMBED: `Configure Poll Embed`,
@@ -333,14 +336,14 @@ An auto-updating preview of what your updated Role Menu will look like is shown 
     POLL_RESULTS_SHOWN_WHEN_ENDED: `*Results will be shown once this Poll ends.*`,
 
     POLL_CREATE_INTRUCTIONS: `__**Poll Creation**__
-Use the Select Menu to configure this Poll's Embed and Buttons. Press an existing Button to edit its label.
+Use the Select Menu to configure this Poll's Embed and Choices.
     
 An auto-updating preview of what your new Poll will look like is shown below.`,
 
     POLL_REMOVE_CHOICE_INSTRUCTIONS: `Please use the Select Menu below to pick which Choice you want to remove from your Poll.`,
 
     POLL_CREATION_CANCELLED: `Creation of your new Poll has been cancelled. You may now dismiss or delete this Message.`,
-    POLL_CREATION_SUCCESS: `Successfully created and posted your new Poll!\n\nTo end your Poll, simply right-click or long-press on the Message containing the Poll, and use the "End Poll" Command under the "App" section. [Image Example]({{0}})`,
+    POLL_CREATION_SUCCESS: `Successfully created and posted your new Poll!\n\nTo end your Poll, simply right-click or long-press on the Message containing the Poll, and use the "End Poll" Command under the "Apps" section. [Image Example]({{0}})`,
     END_POLL_COMMAND_SUCCESS: `Successfully ended your Poll.`,
 
     POLL_BUTTON_CHOICES: `Choices:`,
@@ -348,7 +351,7 @@ An auto-updating preview of what your new Poll will look like is shown below.`,
     POLL_BUTTON_VOTE_SUCCESS: `Successfully voted for {{0}}`,
 
     POLL_ERROR_ACTIVE_CREATION: `Sorry, but there seems to already be an active Poll creation happening on this Server right now; either by yourself or someone else.\nPlease either wait for the User to finish creating their Poll, or wait for the inactive creation timer to expire (which is about one hour from initial use of this Slash Command).`,
-    POLL_ERROR_EXCEEDED_BUTTON_LIMIT: `Sorry, but you cannot add more than 5 Choices to a single Poll at this time.`,
+    POLL_ERROR_EXCEEDED_BUTTON_LIMIT: `Sorry, but you cannot add more than 25 Choices to a single Poll.`,
     POLL_ERROR_CREATION_GENERIC: `Sorry, but there was an error trying to save your new Poll...`,
     POLL_ERROR_DUPLICATE_CHOICE: `Sorry, but your new Choice was detected to be a duplicate of an existing Choice already on your Poll!`,
     

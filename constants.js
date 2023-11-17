@@ -1,4 +1,4 @@
-const { Client, GatewayIntentBits, Collection, Partials, EmbedBuilder, StringSelectMenuInteraction, ButtonBuilder, User, GuildMember } = require("discord.js");
+const { Client, GatewayIntentBits, Collection, Partials, EmbedBuilder, StringSelectMenuInteraction, ButtonBuilder, User, GuildMember, StringSelectMenuBuilder } = require("discord.js");
 const { StatuspageUpdates } = require("statuspage.js");
 const { DiscordStatusPageID } = require("./config.js");
 const { VoiceConnection, AudioPlayer } = require("@discordjs/voice");
@@ -36,7 +36,7 @@ module.exports =
         /** @type {Collection<String, {type: String, originMessageId: String, embed: EmbedBuilder, roles: Array<{id: String, style: String, emoji: ?String, label: ?String}>, buttons: Array<ButtonBuilder>, interaction: ?StringSelectMenuInteraction, timeout: NodeJS.Timeout}>} */
         RoleMenuConfiguration: new Collection(),
 
-        /** @type {Collection<String, {type: String, embed: EmbedBuilder, choices: Array<{label: String, emoji: ?String}>, buttons: Array<ButtonBuilder>, interaction: ?StringSelectMenuInteraction, timeout: NodeJS.Timeout}>} */
+        /** @type {Collection<String, {type: String, embed: EmbedBuilder, choices: Array<{name: String, label: ?String, emoji: ?String}>, select: StringSelectMenuBuilder, buttons: Array<ButtonBuilder>, interaction: ?StringSelectMenuInteraction, timeout: NodeJS.Timeout}>} */
         PollCreation: new Collection(),
 
         /** Contains Message IDs for each Incident, mapped by Webhook IDs, all mapped by Incident IDs

@@ -5,7 +5,7 @@ const { localize } = require("../../BotModules/LocalizationModule.js");
 const EmptyPollEmbed = new EmbedBuilder().setDescription(`*Poll is currently empty. Please use the Select Menu below to configure this Poll.*`);
 
 const InitialSelectMenu = new ActionRowBuilder().addComponents([
-    new StringSelectMenuBuilder().setCustomId(`create-poll`).setMinValues(1).setMaxValues(1).setPlaceholder("Please select an action").setOptions([
+    new StringSelectMenuBuilder().setCustomId(`create-poll`).setMinValues(1).setMaxValues(1).setPlaceholder("Configure Poll").setOptions([
         //new StringSelectMenuOptionBuilder().setLabel("Set Poll Type").setValue("set-type").setDescription("Change how the Poll will behave once saved").setEmoji(`🔧`),
         new StringSelectMenuOptionBuilder().setLabel("Configure Embed").setValue("configure-embed").setDescription("Set the Question, Description, and Colour of the Poll").setEmoji(`<:StatusRichPresence:842328614883295232>`),
         new StringSelectMenuOptionBuilder().setLabel("Cancel Creation").setValue("cancel").setDescription("Cancels creation of this Poll").setEmoji(`❌`)
@@ -116,6 +116,7 @@ module.exports = {
                     type: "SINGLE_CHOICE",
                     embed: new EmbedBuilder(),
                     choices: [],
+                    select: new StringSelectMenuBuilder().setCustomId(`new-poll-choices`).setMinValues(1).setMaxValues(1).setPlaceholder(localize(slashCommand.locale, 'POLL_SELECT_CHOICE_EDIT')),
                     buttons: [],
                     interaction: null,
                     timeout: timeoutExpiry

@@ -26,7 +26,8 @@ module.exports = {
     async execute(selectInteraction)
     {
         const AddChoiceModal = new ModalBuilder().setCustomId(`create-poll-add-choice`).setTitle(localize(selectInteraction.locale, 'POLL_ADD_CHOICE')).addComponents([
-            new ActionRowBuilder().addComponents([ new TextInputBuilder().setCustomId("label").setLabel(localize(selectInteraction.locale, 'POLL_ANSWER_CHOICE')).setMaxLength(80).setStyle(TextInputStyle.Short).setRequired(true) ])
+            new ActionRowBuilder().addComponents([ new TextInputBuilder().setCustomId("name").setLabel(localize(selectInteraction.locale, 'POLL_ANSWER_CHOICE')).setMaxLength(80).setStyle(TextInputStyle.Short).setRequired(true) ]),
+            new ActionRowBuilder().addComponents([ new TextInputBuilder().setCustomId("label").setLabel(localize(selectInteraction.locale, 'POLL_ANSWER_LABEL')).setMaxLength(80).setStyle(TextInputStyle.Short).setRequired(true) ])
         ]);
 
 
@@ -52,15 +53,15 @@ module.exports = {
 
             // Add a new Choice
             case "add-choice":
-                // Validate Poll doesn't have more than 5 Choices (limit will be increased at a later date)
+                // Validate Poll doesn't have more than 25 Choices
                 let fetchedChoices = Collections.PollCreation.get(selectInteraction.guildId).choices;
-                if ( fetchedChoices.length === 5 )
+                if ( fetchedChoices.length === 25 )
                 {
                     await selectInteraction.reply({ ephemeral: true, content: localize(selectInteraction.locale, 'POLL_ERROR_EXCEEDED_BUTTON_LIMIT') });
                     break;
                 }
 
-                // Ask for Choice Label & Emoji
+                // Ask for Choice Name & Label
                 await selectInteraction.showModal(AddChoiceModal);
                 break;
 

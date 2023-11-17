@@ -22,7 +22,7 @@ module.exports = {
     async execute(modalInteraction)
     {
         const MenuSelectNoChoices = new ActionRowBuilder().addComponents([
-            new StringSelectMenuBuilder().setCustomId(`create-poll`).setMinValues(1).setMaxValues(1).setPlaceholder(localize(modalInteraction.locale, 'PLEASE_SELECT_AN_ACTION')).setOptions([
+            new StringSelectMenuBuilder().setCustomId(`create-poll`).setMinValues(1).setMaxValues(1).setPlaceholder(localize(modalInteraction.locale, 'POLL_SELECT_EDIT')).setOptions([
                 new StringSelectMenuOptionBuilder().setLabel(localize(modalInteraction.locale, 'POLL_CONFIGURE_EMBED')).setValue("configure-embed").setDescription(localize(modalInteraction.locale, 'POLL_CONFIGURE_EMBED_DESCRIPTION')).setEmoji(`<:StatusRichPresence:842328614883295232>`),
                 new StringSelectMenuOptionBuilder().setLabel(localize(modalInteraction.locale, 'POLL_ADD_CHOICE')).setValue("add-choice").setDescription(localize(modalInteraction.locale, 'POLL_ADD_CHOICE_DESCRIPTION')).setEmoji(`<:plusGrey:997752068439818280>`),
                 new StringSelectMenuOptionBuilder().setLabel(localize(modalInteraction.locale, 'POLL_CANCEL_CREATION')).setValue("cancel").setDescription(localize(modalInteraction.locale, 'POLL_CANCEL_CREATION_DESCRIPTION')).setEmoji(`❌`)

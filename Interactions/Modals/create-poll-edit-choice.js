@@ -20,7 +20,7 @@ module.exports = {
     async execute(modalInteraction)
     {
         const MenuSelect = new ActionRowBuilder().addComponents([
-            new StringSelectMenuBuilder().setCustomId(`create-poll`).setMinValues(1).setMaxValues(1).setPlaceholder(localize(modalInteraction.locale, 'PLEASE_SELECT_AN_ACTION')).setOptions([
+            new StringSelectMenuBuilder().setCustomId(`create-poll`).setMinValues(1).setMaxValues(1).setPlaceholder(localize(modalInteraction.locale, 'POLL_SELECT_EDIT')).setOptions([
                 new StringSelectMenuOptionBuilder().setLabel(localize(modalInteraction.locale, 'POLL_CONFIGURE_EMBED')).setValue("configure-embed").setDescription(localize(modalInteraction.locale, 'POLL_CONFIGURE_EMBED_DESCRIPTION')).setEmoji(`<:StatusRichPresence:842328614883295232>`),
                 new StringSelectMenuOptionBuilder().setLabel(localize(modalInteraction.locale, 'POLL_ADD_CHOICE')).setValue("add-choice").setDescription(localize(modalInteraction.locale, 'POLL_ADD_CHOICE_DESCRIPTION')).setEmoji(`<:plusGrey:997752068439818280>`),
                 new StringSelectMenuOptionBuilder().setLabel(localize(modalInteraction.locale, 'POLL_REMOVE_CHOICE')).setValue("remove-choice").setDescription(localize(modalInteraction.locale, 'POLL_REMOVE_CHOICE_DESCRIPTION')).setEmoji(`<:IconDeleteTrashcan:750152850310561853>`),
@@ -31,7 +31,7 @@ module.exports = {
         
         
         const MaxChoicesMenuSelect = new ActionRowBuilder().addComponents([
-            new StringSelectMenuBuilder().setCustomId(`create-poll`).setMinValues(1).setMaxValues(1).setPlaceholder(localize(modalInteraction.locale, 'PLEASE_SELECT_AN_ACTION')).setOptions([
+            new StringSelectMenuBuilder().setCustomId(`create-poll`).setMinValues(1).setMaxValues(1).setPlaceholder(localize(modalInteraction.locale, 'POLL_SELECT_EDIT')).setOptions([
                 new StringSelectMenuOptionBuilder().setLabel(localize(modalInteraction.locale, 'POLL_CONFIGURE_EMBED')).setValue("configure-embed").setDescription(localize(modalInteraction.locale, 'POLL_CONFIGURE_EMBED_DESCRIPTION')).setEmoji(`<:StatusRichPresence:842328614883295232>`),
                 new StringSelectMenuOptionBuilder().setLabel(localize(modalInteraction.locale, 'POLL_REMOVE_CHOICE')).setValue("remove-choice").setDescription(localize(modalInteraction.locale, 'POLL_REMOVE_CHOICE_DESCRIPTION')).setEmoji(`<:IconDeleteTrashcan:750152850310561853>`),
                 new StringSelectMenuOptionBuilder().setLabel(localize(modalInteraction.locale, 'POLL_SAVE_AND_POST')).setValue("save").setDescription(localize(modalInteraction.locale, 'POLL_SAVE_AND_POST_DESCRIPTION')).setEmoji(`<:IconActivity:815246970457161738>`),
