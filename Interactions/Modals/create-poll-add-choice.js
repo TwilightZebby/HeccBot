@@ -49,6 +49,9 @@ module.exports = {
         InputName = InputName.trim();
         InputLabel = InputLabel.trim();
 
+        // Just so I can have the Label be NULL if left undefined. Just makes things a little easier :P
+        if ( InputLabel == '' ) { InputLabel = null; }
+
 
         // Update Cache & create new Choice
         let pollData = Collections.PollCreation.get(modalInteraction.guildId);
@@ -66,9 +69,21 @@ module.exports = {
 
         // Fetch Select & add new Choice
         let pollChoiceSelect = pollData.select;
-        pollChoiceSelect.addOptions(
-            new StringSelectMenuOptionBuilder().setValue(InputName.toLowerCase().replace(" ", "-")).setLabel(InputLabel)
-        );
+
+        // Label was given
+        if ( InputLabel != null )
+        {
+            pollChoiceSelect.addOptions(
+                new StringSelectMenuOptionBuilder().setValue(InputName.toLowerCase().replace(" ", "-")).setLabel(InputLabel).setDescription(`(Choice: ${InputName})`)
+            );
+        }
+        // No Label was given. Use Name instead
+        else
+        {
+            pollChoiceSelect.addOptions(
+                new StringSelectMenuOptionBuilder().setValue(InputName.toLowerCase().replace(" ", "-")).setLabel(InputName)
+            );
+        }
 
         // Save to main cache
         pollData.select = pollChoiceSelect;
@@ -87,18 +102,32 @@ module.exports = {
         {
             // See if Name & Label are exactly the same, as to clean up UX
             let identicalChoiceField = false;
-            if ( choiceCache[i].name === choiceCache[i].label ) { identicalChoiceField = true; }
+            if ( (choiceCache[i].label != null) && (choiceCache[i].name === choiceCache[i].label) ) { identicalChoiceField = true; }
 
             // Ensure not hitting character limits
             if (choicesTextFieldOne.length <= 900)
             {
-                if ( !identicalChoiceField ) { choicesTextFieldOne += `- ${choiceCache[i].name} (${choiceCache[i].label})\n`; }
-                else { choicesTextFieldOne += `- ${choiceCache[i].name}\n`; }
+                if ( choiceCache[i].label != null )
+                {
+                    if ( !identicalChoiceField ) { choicesTextFieldOne += `- ${choiceCache[i].name} (${choiceCache[i].label})\n`; }
+                    else { choicesTextFieldOne += `- ${choiceCache[i].name}\n`; }
+                }
+                else
+                {
+                    choicesTextFieldOne += `- ${choiceCache[i].name}\n`;
+                }
             }
             else
             {
-                if ( !identicalChoiceField ) { choicesTextFieldTwo += `- ${choiceCache[i].name} (${choiceCache[i].label})\n`; }
-                else { choicesTextFieldTwo += `- ${choiceCache[i].name}\n`; }
+                if ( choiceCache[i].label != null )
+                {
+                    if ( !identicalChoiceField ) { choicesTextFieldTwo += `- ${choiceCache[i].name} (${choiceCache[i].label})\n`; }
+                    else { choicesTextFieldTwo += `- ${choiceCache[i].name}\n`; }
+                }
+                else
+                {
+                    choicesTextFieldTwo += `- ${choiceCache[i].name}\n`;
+                }
             }
         }
 

@@ -27,7 +27,7 @@ module.exports = {
     {
         const AddChoiceModal = new ModalBuilder().setCustomId(`create-poll-add-choice`).setTitle(localize(selectInteraction.locale, 'POLL_ADD_CHOICE')).addComponents([
             new ActionRowBuilder().addComponents([ new TextInputBuilder().setCustomId("name").setLabel(localize(selectInteraction.locale, 'POLL_ANSWER_CHOICE')).setMaxLength(80).setStyle(TextInputStyle.Short).setRequired(true) ]),
-            new ActionRowBuilder().addComponents([ new TextInputBuilder().setCustomId("label").setLabel(localize(selectInteraction.locale, 'POLL_ANSWER_LABEL')).setMaxLength(80).setStyle(TextInputStyle.Short).setRequired(true) ])
+            new ActionRowBuilder().addComponents([ new TextInputBuilder().setCustomId("label").setLabel(localize(selectInteraction.locale, 'POLL_ANSWER_LABEL')).setMaxLength(80).setStyle(TextInputStyle.Short).setRequired(false) ])
         ]);
 
 
