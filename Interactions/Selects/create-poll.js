@@ -74,7 +74,7 @@ module.exports = {
                 let cachedChoices = Collections.PollCreation.get(selectInteraction.guildId).choices;
                 let removeChoiceSelect = new StringSelectMenuBuilder().setCustomId("create-poll-remove-choice").setMinValues(1).setMaxValues(1).setPlaceholder(localize(selectInteraction.locale, 'POLL_SELECT_CHOICE_REMOVE'));
                 cachedChoices.forEach(choiceObj => {
-                    removeChoiceSelect.addOptions(new StringSelectMenuOptionBuilder().setLabel(choiceObj.label).setValue(choiceObj.label.toLowerCase()));
+                    removeChoiceSelect.addOptions(new StringSelectMenuOptionBuilder().setLabel(choiceObj.name).setValue(choiceObj.name.toLowerCase()));
                 });
 
                 // ACK to User

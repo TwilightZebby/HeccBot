@@ -51,65 +51,92 @@ module.exports = {
         const InputChoice = selectInteraction.values.shift();
         let cachedPollData = Collections.PollCreation.get(selectInteraction.guildId);
         let cachedChoices = cachedPollData.choices;
-        let cachedButtons = cachedPollData.buttons;
+        let cachedSelect = cachedPollData.select;
         let cachedEmbed = cachedPollData.embed;
 
         // Remove Choice
         for ( let i = 0; i <= cachedChoices.length - 1; i++ )
         {
-            if ( cachedChoices[i].label.toLowerCase() === InputChoice )
+            if ( cachedChoices[i].name.toLowerCase() === InputChoice )
             {
-                cachedButtons.splice(i, 1);
                 cachedChoices.splice(i, 1);
+                cachedSelect.spliceOptions(i, 1);
                 break;
             }
         }
 
-
+        
         // Update Embed
         cachedEmbed = cachedEmbed.spliceFields(0, 3);
         /** @type {Array<ActionRowBuilder>} */
-        let updatedButtonsArray = [];
-        let temp;
+        let updatedComponents = [];
         let choicesTextFieldOne = "";
+        let choicesTextFieldTwo = "";
 
-        for ( let i = 0; i <= cachedButtons.length - 1; i++ )
+        for ( let i = 0; i <= cachedChoices.length - 1; i++ )
         {
-            // First button
-            if ( i === 0 )
+            // See if Name & Label are exactly the same, as to clean up UX
+            let identicalChoiceField = false;
+            if ( (cachedChoices[i].label != null) && (cachedChoices[i].name === cachedChoices[i].label) ) { identicalChoiceField = true; }
+
+            // Ensure not hitting character limits
+            if (choicesTextFieldOne.length <= 900)
             {
-                temp = new ActionRowBuilder().addComponents(cachedButtons[i]);
-                choicesTextFieldOne += `• ${cachedChoices[i].label}\n`
-                //Push early if last Button
-                if ( cachedButtons.length - 1 === i ) { updatedButtonsArray.push(temp); }
+                if ( cachedChoices[i].label != null )
+                {
+                    if ( !identicalChoiceField ) { choicesTextFieldOne += `- ${cachedChoices[i].name} (${cachedChoices[i].label})\n`; }
+                    else { choicesTextFieldOne += `- ${cachedChoices[i].name}\n`; }
+                }
+                else
+                {
+                    choicesTextFieldOne += `- ${cachedChoices[i].name}\n`;
+                }
             }
-            // Buttons 2 - 5
             else
             {
-                temp.addComponents(cachedButtons[i]);
-                choicesTextFieldOne += `• ${cachedChoices[i].label}\n`
-                //Push early if last Button
-                if ( cachedButtons.length - 1 === i ) { updatedButtonsArray.push(temp); }
+                if ( cachedChoices[i].label != null )
+                {
+                    if ( !identicalChoiceField ) { choicesTextFieldTwo += `- ${cachedChoices[i].name} (${cachedChoices[i].label})\n`; }
+                    else { choicesTextFieldTwo += `- ${cachedChoices[i].name}\n`; }
+                }
+                else
+                {
+                    choicesTextFieldTwo += `- ${cachedChoices[i].name}\n`;
+                }
             }
         }
 
-        cachedEmbed.addFields({ name: `Poll Choices:`, value: choicesTextFieldOne }, { name: `\u200B`, value: localize(selectInteraction.guildLocale, 'POLL_RESULTS_SHOWN_WHEN_ENDED') });
+        // Add Select(s), depending on choice amount
+        if ( cachedChoices.length < 1 ) { updatedComponents.push(NoChoicesMenuSelect); }
+        else { updatedComponents.push(new ActionRowBuilder().addComponents(cachedSelect)); updatedComponents.push(MenuSelect); }
 
-        // Add Select Menu, depending on number of choices left
-        if ( cachedChoices.length < 1 ) { updatedButtonsArray.push(NoChoicesMenuSelect); }
-        else { updatedButtonsArray.push(MenuSelect); }
+        // Add to Embed
+        if ( choicesTextFieldTwo.length >= 3 )
+        {
+            cachedEmbed.addFields(
+                { name: localize(selectInteraction.guildLocale, 'POLL_BUTTON_CHOICES'), value: choicesTextFieldOne },
+                { name: `\u200B`, value: choicesTextFieldTwo },
+                { name: `\u200B`, value: localize(selectInteraction.guildLocale, 'POLL_RESULTS_SHOWN_WHEN_ENDED') }
+            );
+        }
+        else if ( choicesTextFieldOne.length >= 1 )
+        {
+            cachedEmbed.addFields(
+                { name: localize(selectInteraction.guildLocale, 'POLL_BUTTON_CHOICES'), value: choicesTextFieldOne },
+                { name: `\u200B`, value: localize(selectInteraction.guildLocale, 'POLL_RESULTS_SHOWN_WHEN_ENDED') }
+            );
+        }
 
         // Add back to cache
-        cachedPollData.buttons = cachedButtons;
+        cachedPollData.select = cachedSelect;
         cachedPollData.choices = cachedChoices;
         cachedPollData.embed = cachedEmbed;
 
-        
         // ACK to User
-        await cachedPollData.interaction.editReply({ components: updatedButtonsArray, embeds: [cachedEmbed] });
+        await cachedPollData.interaction.editReply({ components: updatedComponents, embeds: [cachedEmbed] });
         await selectInteraction.deleteReply();
 
-        // Purge cached Interaction
+        // Purge cached Interaction & save to main cache
         cachedPollData.interaction = null;
         Collections.PollCreation.set(selectInteraction.guildId, cachedPollData);
 

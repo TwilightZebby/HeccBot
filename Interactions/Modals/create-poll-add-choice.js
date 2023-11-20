@@ -92,7 +92,7 @@ module.exports = {
 
 
         // Reconstruct Embed, add Components
-        let pollEmbed = pollData.embed.spliceFields(0, 25);
+        let pollEmbed = pollData.embed.spliceFields(0, 3);
         /** @type {Array<ActionRowBuilder>} */
         let updatedComponents = [ new ActionRowBuilder().addComponents(pollChoiceSelect) ];
         let choicesTextFieldOne = "";
@@ -130,8 +130,7 @@ module.exports = {
                 }
             }
         }
-
-        // TODO: The rest of the Poll code to support Selects instead of Buttons. Next up - create-poll-remove-choice.js
+        
 
         // Add Select, depending on choice amount
         if ( choiceCache.length >= 25 ) { updatedComponents.push(MaxChoicesMenuSelect); }
