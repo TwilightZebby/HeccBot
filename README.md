@@ -1,4 +1,7 @@
-↖ *Want to jump to a specific heading? Use the navigation menu! (Which doesn't exist on GitHub's Mobile App sadly)*
+*Want to jump to a specific heading? Use the navigation menu! (Which doesn't exist on GitHub's Mobile App sadly)* ↗
+
+> **Note**
+> HeccBot's code has been migrated to [a new GitHub Repo, found here](https://github.com/HeccBot/HeccBot/). The below is left for archival purposes.
 
 # HeccBot
 
